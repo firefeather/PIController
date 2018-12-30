@@ -110,7 +110,7 @@ def findUser(**idOrName):
     return users
 
 def findAndCreatedIfUserNotFound(**idOrName):
-    userList = findUser(idOrName)
+    userList = findUser(**idOrName)
     if len(userList) == 0:#如果没找到该用户 则将该用户保存后返回
         user = User(id=idOrName['id'])
         addUser(user)
@@ -119,4 +119,4 @@ def findAndCreatedIfUserNotFound(**idOrName):
 
 if __name__ == "__main__":
     # user = User(name='333aaa')
-    print(MANAGER)
+    print(MANAGER.Id=='omyqB1uI5qSm5Ypdum43V2zMrTVk')
