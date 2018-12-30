@@ -4,8 +4,6 @@
 import os
 import platform
 from time import time
-import pyscreenshot as ImageGrab
-from PIL import ImageGrab
 
 def _GetImagePath():
     if not os.path.exists("./ScreenShoot/"):
@@ -19,14 +17,16 @@ def getScreenImg():
     im = None
     if platform.system() == 'Windows' or platform.system() == 'Darwin':
         try:
+            from PIL import ImageGrab
             im = ImageGrab.grab()
         except OSError as e:
             return "截图失败，请重试。"
 
     elif platform.system() == 'Linux':
         try:
+            import pyscreenshot as ImageGrab
             im = ImageGrab.grab()
-        except OSError as e:
+        except Exception as e:
             return "截图失败，请重试。"
     im.save(imName)
     if os.path.exists(imName):
