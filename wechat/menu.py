@@ -33,7 +33,7 @@ class Menu(object):
 
 if __name__ == '__main__':
     myMenu = Menu()
-    postJson = """
+    data = """
     {
         "button":
         [
@@ -68,4 +68,4 @@ if __name__ == '__main__':
     """
     accessToken = Tocken().get_access_token()
     #myMenu.delete(accessToken)
-    myMenu.create(postJson, accessToken)
+    myMenu.create(data, accessToken)

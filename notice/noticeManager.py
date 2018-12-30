@@ -11,14 +11,14 @@ noticeWays = getGeneralConfig()['notice_ways']
 
 def sendNotice(text,toUser = MANAGER):
     result = []
-    if 'sms' in noticeWays:
-        if not toUser.Phone is None:
-           sendTemplateSMS(text,toUser.Phone)
-           result.append('发送短信成功')
-    if 'email' in noticeWays:
-        if not toUser.Email is None:
-           sendText(text,toUser.Email)
-           result.append('发送邮件成功')
+#     if 'sms' in noticeWays:
+#         if not toUser.Phone is None:
+#            sendTemplateSMS(text,toUser.Phone)
+#            result.append('发送短信成功')
+#     if 'email' in noticeWays:
+#         if not toUser.Email is None:
+#            sendText(text,toUser.Email)
+#            result.append('发送邮件成功')
     if 'wechat' in noticeWays:
         if not toUser.Id is None:
            sendTextMsg(text,toUser.Id)

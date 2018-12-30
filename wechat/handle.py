@@ -3,7 +3,7 @@
 
 import hashlib,web
 from wechat import receive,reply
-import controllers.main as controllers
+import controllers.controller as controllers
 from users import findAndCreatedIfUserNotFound
 from allComands import ALL_COMANDS
 
@@ -39,12 +39,14 @@ class Handle(object):
             if isinstance(recMsg, receive.Msg):
                 if recMsg.MsgType == 'text':
                     content = recMsg.Content.decode('utf-8')
-                    print(content)
-                    result = controllers.handCommands(content,fromUser)
+                    result = controllers.handText(content,fromUser)
                     replyMsg = reply.TextMsg(toUserName, fromUserName, content+':\n'+result)
                 elif recMsg.MsgType == 'image':
-                    mediaId = recMsg.MediaId
-                    replyMsg = reply.ImageMsg(toUserName, fromUserName, mediaId)
+                    result = controllers.handImage(recMsg.PicUrl,fromUser)
+                    if result is None:
+                       replyMsg = reply.ImageMsg(toUserName, fromUserName, recMsg.MediaId)
+                    else:
+                       replyMsg = reply.TextMsg(toUserName, fromUserName, result)
                 else:
                     content = "好的,朕知道了!"
                     replyMsg = reply.TextMsg(toUserName, fromUserName, content)

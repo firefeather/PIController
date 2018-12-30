@@ -3,12 +3,22 @@
 
 import copy
 from command import Command,PERMISSION_LEVEL
+from tools.chatBot import BOTS
 
 global ALL_COMANDS
 ALL_COMANDS = [
    Command(name='获取所有用户',func='获取当前系统所有的用户信息',usage='获取所有用户',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
    Command(name='获取用户信息',func='传入用户id,获取指定用户的微信信息',usage='获取用户信息:id=XXX',parmas="DIC",permission=PERMISSION_LEVEL['ADMIN']),
    Command(name='更新用户',func='更新用户(包含姓名、权限、电话、邮箱等),必须包含id参数,其他可选',usage='更新用户:id=XXX,level=XXX,name=XXX',parmas="DIC",permission=PERMISSION_LEVEL['ADMIN']),
+   Command(name='获取ip',func='获取服务器的IP地址',usage='获取ip',parmas=None,permission=PERMISSION_LEVEL['ADMIN']),
+   Command(name='最新电影',func='获取猫眼上最新电影前十名',usage='最新电影',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='截屏',func='获取服务器当前屏幕截图',usage='截屏',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
+   Command(name='新闻',func='获取feebuf最新安全新闻',usage='新闻',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='翻译',func='获取有道翻译结果',usage='翻译:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='查询天气',func='获取指定地区(最小为区县)的当日天气情况',usage='查询天气:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='设置机器人',func='设置聊天机器人,当前支持'+','.join(BOTS)+',如参数错误则随机机器人',usage='设置机器人:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='取消机器人',func='取消聊天机器人',usage='取消机器人',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
+
 ]
 
 def findComandByStr(text):#根据用户输入尝试解析出对应命令
@@ -24,7 +34,7 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
           result = comand
        elif comand.Parmas == "STR":
           if len(args) > 1:#有参数命令,需解码参数
-             comand.Parmas == args[1]
+             comand.Parmas = args[1].strip()
              result = comand
        elif comand.Parmas == "DIC":
             if len(args) > 1:#有参数命令,需解码参数
@@ -46,7 +56,7 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
           result = '参数错误,用法:\n'+comand.Usage
        return result
     else:
-        print('找不到该命令')
+        print('未找到指定命令')
         return None
 
 
