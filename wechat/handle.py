@@ -40,7 +40,7 @@ class Handle(object):
                 if recMsg.MsgType == 'text':
                     content = recMsg.Content.decode('utf-8')
                     result = controllers.handText(content,fromUser)
-                    replyMsg = reply.TextMsg(toUserName, fromUserName, content+':\n'+result)
+                    replyMsg = reply.TextMsg(toUserName, fromUserName, result)
                 elif recMsg.MsgType == 'image':
                     result = controllers.handImage(recMsg.PicUrl,fromUser)
                     if result is None:

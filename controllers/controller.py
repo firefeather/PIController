@@ -11,17 +11,17 @@ def handText(text,user):
    command = findComandByStr(text.strip())
    if command is None:
        if getCurrentChatBot() is None:
-          result = '未找到命令'
+          result = '未找到命令:<'+text+'>'
        else:
           result = getReply(text)
    elif isinstance(command, str):
-       result = command
+       result = '<'+text+'>'+command
    else:
        print('找到命令:',command)
        if command.Permission > user.Level:
-          result = '权限不足'
+          result = '<'+text+'>:权限不足'
        else:
-          result = executCommand(command,user)
+          result = '<'+text+'>\n'+executCommand(command,user)
    return result
 
 def handImage(imageUrl,user):
