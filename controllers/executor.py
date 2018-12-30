@@ -18,7 +18,7 @@ from tools.chatBot import setChatBot,clearChatBot
 def executCommand(command,user):
    if command.Name == ALL_COMANDS[0].Name:#获取所有用户
       users = getUsers()
-      result = ''
+      result = '当前共{}位用户:\n'.format(len(users))
       for temp in users:
           result += (temp.Name+'('+temp.Id+'):'+'%s'+'\n') % temp.Level
    elif command.Name == ALL_COMANDS[1].Name:#获取用户微信信息
