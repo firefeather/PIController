@@ -97,13 +97,13 @@ def findUser(**idOrName):
     users = []
     if 'id' in idOrName:
        userId = idOrName['id']
-       if userId == MANAGER.id:
+       if userId == MANAGER.Id:
           users.append(MANAGER)
        else:  
           users = list(filter(lambda user:user.Id == userId, ALL_USERS))
     if 'name' in idOrName:
        userName = idOrName['name']
-       if userId == MANAGER.id:
+       if userName == MANAGER.Name:
           users.append(MANAGER)
        else:  
           users = list(filter(lambda user:user.Name == userName, ALL_USERS))
