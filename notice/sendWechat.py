@@ -16,7 +16,7 @@ def sendTextMsg(content,toId):
               "msgtype":"text",
               "text":
                   {
-                  "content":content
+                  "content":content.encode("utf-8").decode("latin1")
                   }   
             }
     return sendMsg(msgJson)
@@ -83,7 +83,7 @@ def sendMusicMsg(toId,url,path,title,desc):
 
 if __name__ == '__main__':
   #  addServer('qin-1','daniel',123456)
-  #  sendTextMsg('omyqB1uI5qSm5Ypdum43V2zMrTVk','你好')
-   sendImageMsg('omyqB1uI5qSm5Ypdum43V2zMrTVk','../test.png')
+   sendTextMsg('omyqB1uI5qSm5Ypdum43V2zMrTVk','你好')
+  #  sendImageMsg('omyqB1uI5qSm5Ypdum43V2zMrTVk','../test.png')
   #  servers = getServersList()
   #  print(servers)

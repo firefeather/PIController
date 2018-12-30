@@ -5,7 +5,6 @@ import requests,json
 
 def postJson(url,params):
     data = json.dumps(params,ensure_ascii=False)
-    print('111111111',data)
     response = requests.post(url, data)
     result = response.json()
     print('postJson:',url,params,result)

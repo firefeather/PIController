@@ -5,13 +5,11 @@ import time
 from users import getUsers,updateUserByDict,findUser
 from wechat.wechatUserInfo import getWechatUser
 from allComands import findComandByStr,ALL_COMANDS
-from notice.noticeManager import sendNotice
 
 def handCommands(commandText,user):
    # print('命令:',commandText,'发起人:',user)
    command = findComandByStr(commandText.strip())
    if command is None:
-       sendNotice(commandText)
        result = '未找到命令'
    elif isinstance(command, str):
        result = command
