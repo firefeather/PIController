@@ -6,7 +6,7 @@ import requests,json
 from wechat.tocken import Tocken
 from fetch import get
 
-def uplaod(filePath, mediaType):
+def upload(filePath, mediaType):
     accessToken = Tocken().get_access_token()
     file = {'file': open(filePath, 'rb')}
     param = {'media': file}
@@ -27,4 +27,4 @@ def download(filePath, mediaId):
     
 
 if __name__ == '__main__':
-    uplaod('../test.png','image')
+    upload('../test.png','image')

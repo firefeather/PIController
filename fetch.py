@@ -9,11 +9,11 @@ def post(url, data=None, json=None,text=False, **kwargs):
        data = jsonLib.dumps(json,ensure_ascii=False)
     response = requests.post(url, data, **kwargs)
     result = response.text if text else response.json()
-    print('post:',url,data if json is None else json,result)
+    # print('post:',url,data if json is None else json,result)
     return result
 
 def get(url, params=None,text=False, **kwargs):
     response = requests.get(url, params, **kwargs)  
     result = response.text if text else response.json()
-    print('get:',url,result)
+    # print('get:',url,result)
     return result

@@ -9,7 +9,7 @@ qcloudsms = QcloudSms(smsConfig['appid'], smsConfig['appkey'])
 template_id = smsConfig['template_id']
 sign = smsConfig['sms_sign']
 
-def sendTemplateSMS(text,toNumber):
+def sendTemplateSMS(toNumber,text):
     ssender = qcloudsms.SmsSingleSender()
     params = [text]  
     try:
@@ -19,7 +19,7 @@ def sendTemplateSMS(text,toNumber):
     except Exception as e:
         print('短信发送失败:',e)
 
-def sendGroupTemplateSMS(text,toNumbers):
+def sendGroupTemplateSMS(toNumbers,text):
     msender = qcloudsms.SmsMultiSender()
     params = [text]
     try:

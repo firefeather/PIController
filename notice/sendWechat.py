@@ -2,7 +2,7 @@
 #通过微信公众号发送微信消息
 from wechat.tocken import Tocken
 from fetch import get,post
-from wechat.media import uplaod
+from wechat.media import upload
 
 def sendMsg(msgJson):
     accessToken = Tocken().get_access_token()
@@ -10,7 +10,7 @@ def sendMsg(msgJson):
     result = post(postUrl,json=msgJson)
     return result
 
-def sendTextMsg(content,toId):
+def sendTextMsg(toId,content):
     msgJson = {
               "touser":toId,
               "msgtype":"text",
@@ -22,7 +22,9 @@ def sendTextMsg(content,toId):
     return sendMsg(msgJson)
 
 def sendImageMsg(toId,path):
-    result = uplaod(path,'image')
+    result = upload(path,'image')
+    if 'errcode' in result:
+       return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {
               "touser":toId,
@@ -35,7 +37,9 @@ def sendImageMsg(toId,path):
     return sendMsg(msgJson)
   
 def sendVoiceMsg(toId,path):
-    result = uplaod(path,'voice')
+    result = upload(path,'voice')
+    if 'errcode' in result:
+       return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {
               "touser":toId,
@@ -48,7 +52,9 @@ def sendVoiceMsg(toId,path):
     return sendMsg(msgJson)
 
 def sendVideoMsg(toId,path,title,desc):
-    result = uplaod(path,'video')
+    result = upload(path,'video')
+    if 'errcode' in result:
+       return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {
               "touser":toId,
@@ -64,7 +70,9 @@ def sendVideoMsg(toId,path,title,desc):
     return sendMsg(msgJson)
 
 def sendMusicMsg(toId,url,path,title,desc):
-    result = uplaod(path,'music')
+    result = upload(path,'music')
+    if 'errcode' in result:
+       return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {
               "touser":toId,

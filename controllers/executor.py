@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 主控制器,所有的命令经由这里分发
 
-import time
+import time,threading,shutil
 from users import getUsers,updateUserByDict,findUser
 from wechat.wechatUserInfo import getWechatUser
 from allComands import ALL_COMANDS
@@ -10,10 +10,12 @@ from tools.ip import getServerIp
 from spider.movies import getMovies
 from spider.news import getNews
 from script.screenShoot import getScreenImg
-from notice.sendWechat import sendImageMsg
+from notice.sendWechat import sendImageMsg,sendTextMsg
 from tools.translate import translate
 from tools.weather import getWeather
 from tools.chatBot import setChatBot,clearChatBot
+from spider.lagou import getJobInfo
+from utils.excel2Image import ReportImage
 
 def executCommand(command,user):
    if command.Name == ALL_COMANDS[0].Name:#获取所有用户
@@ -24,22 +26,11 @@ def executCommand(command,user):
    elif command.Name == ALL_COMANDS[1].Name:#获取用户微信信息
         if 'id' in command.Parmas:
            userId = command.Parmas['id']
-           userInfo = getWechatUser(userId)
-           if 'errcode' in userInfo:
-               print('获取用户信息失败:',userInfo['errmsg'])
-               result = userInfo['errmsg']
-           else:
-               updateUserByDict(userInfo)
-               result = '姓名:'+userInfo['nickname']+'\n'+\
-                        '性别:'+('男' if userInfo['sex'] == 1 else '女')+'\n'+\
-                        '省份:'+userInfo['province']+'\n'+\
-                        '城市:'+userInfo['city']+'\n'+\
-                        '头像:'+userInfo['headimgurl']+'\n'+\
-                        '时间:'+time.strftime("%Y年%m月%d日",time.localtime(userInfo['subscribe_time']))+'\n'
+           result = sendResultLater(user,_getWechatUserInfoAndSend,(userId))
         else:
-            result = '未指定id无法查询'
+           result = '未指定id无法查询'
    elif command.Name == ALL_COMANDS[2].Name:#更新用户信息
-        if 'id' in userInfo:
+        if 'id' in command.Parmas:
             targetUserId = command.Parmas['id']
             users = findUser(id=targetUserId)
             if len(users) == 0:
@@ -53,16 +44,13 @@ def executCommand(command,user):
         else:
             result = '未指定id无法更新'
    elif command.Name == ALL_COMANDS[3].Name:#获取IP地址
-        result = getServerIp()
+        result = sendResultLater(user,getServerIp)
    elif command.Name == ALL_COMANDS[4].Name:#获取最新电影
-        result = getMovies()
+        result = sendResultLater(user,getMovies)
    elif command.Name == ALL_COMANDS[5].Name:#截屏
-        result = getScreenImg()
-        if '.png' in result:
-           sendImageMsg(user.Id,result)
-           result = '截图成功'
+        result = sendResultLater(user,getScreenImg)
    elif command.Name == ALL_COMANDS[6].Name:#新闻
-        result = getNews()
+        result = sendResultLater(user,getNews)
    elif command.Name == ALL_COMANDS[7].Name:#翻译
         result = translate(command.Parmas)
    elif command.Name == ALL_COMANDS[8].Name:#天气
@@ -72,6 +60,49 @@ def executCommand(command,user):
    elif command.Name == ALL_COMANDS[10].Name:#取消机器人
         clearChatBot()
         result = '已取消聊天机器人'
+   elif command.Name == ALL_COMANDS[11].Name:#拉勾职位
+        threading.Thread (target=_getJobInfoAndSend, args=(user,command.Parmas) ).start()
+        result = '已开始查询'
    else:
         result = '暂未完成'
    return result
+
+def sendResultLater(to,func,args=None):
+    def getResultAndSend():
+        try:
+           result = func() if args is None else func(args)
+           if len(result)<50 and ('.png' in result or '.jpg' in result):#如果是个图片 则发送图片
+              sendImageMsg(to.Id,result)
+           else:
+              sendTextMsg(to.Id,result)
+        except Exception as e:
+           print(func,' error',e)
+#     newArges = ()
+    threading.Thread (target=getResultAndSend).start()
+    return '已开始执行'
+
+def _getJobInfoAndSend(to,jobName):
+    try:
+       filePath = getJobInfo(jobName)
+       tempDir = 'temp/'
+       images = ReportImage.excel2Image(filePath,tempDir,50)
+       for image in images:
+           sendImageMsg(to.Id,image)
+       shutil.rmtree(tempDir) 
+    except Exception as e:
+       print('_getJobInfoAndSend error',e)
+    
+def _getWechatUserInfoAndSend(userId):
+     userInfo = getWechatUser(userId)
+     if 'errcode' in userInfo:
+         print('获取用户信息失败:',userInfo['errmsg'])
+         result = userInfo['errmsg']
+     else:
+          updateUserByDict(userInfo)
+          result = '姓名:'+userInfo['nickname']+'\n'+\
+                   '性别:'+('男' if userInfo['sex'] == 1 else '女')+'\n'+\
+                   '省份:'+userInfo['province']+'\n'+\
+                   '城市:'+userInfo['city']+'\n'+\
+                   '头像:'+userInfo['headimgurl']+'\n'+\
+                   '时间:'+time.strftime("%Y年%m月%d日",time.localtime(userInfo['subscribe_time']))+'\n'
+     return result

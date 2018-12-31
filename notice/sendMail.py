@@ -24,12 +24,12 @@ smtpserver = emailConfig['server']
 username = emailConfig['account']
 password = emailConfig['password']
  
-def sendText(text,receiver,title=subject):
+def sendText(receiver,text,title=subject):
     # MIMEText有三个参数，第一个对应文本内容，第二个对应文本的格式，第三个对应文本编码
     thebody = MIMEText(text, 'plain', 'utf-8')
     loginAndSend(receiver,thebody,title)
 
-def sendFile(text,filePath,receiver,title=subject):
+def sendFile(receiver,text,filePath,title=subject):
     # 读取xlsx文件作为附件，open()要带参数'rb'，使文件变成二进制格式,从而使'base64'编码产生作用，否则附件打开乱码
     att = MIMEText(open(filePath, 'rb').read(), 'base64', 'utf-8')
     att['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
