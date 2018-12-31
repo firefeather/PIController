@@ -41,11 +41,15 @@ def executCommand(command,user):
    elif command.Name == ALL_COMANDS[2].Name:#更新用户信息
         if 'id' in userInfo:
             targetUserId = command.Parmas['id']
-            targetUser = findUser(id=targetUserId)
-            if user.Level<=targetUser.Level:
-               result = '权限不足,无法修改'
+            users = findUser(id=targetUserId)
+            if len(users) == 0:
+               result = '未找到指定用户,更新失败'
             else:
-               result = updateUserByDict(command.Parmas)
+               targetUser = users[0]
+               if user.Level<=targetUser.Level:
+                    result = '权限不足,无法修改'
+               else:
+                    result = updateUserByDict(command.Parmas)
         else:
             result = '未指定id无法更新'
    elif command.Name == ALL_COMANDS[3].Name:#获取IP地址
