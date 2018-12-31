@@ -17,3 +17,7 @@ def get(url, params=None,text=False, **kwargs):
     result = response.text if text else response.json()
     # print('get:',url,result)
     return result
+
+def download(url):
+    response = requests.get(url, stream=True)  
+    return response

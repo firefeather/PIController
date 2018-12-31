@@ -29,6 +29,9 @@ def getEmailConfig():
 
 def getSmsConfig():
     return getConfig().configs['sms']
+
+def getVoiceConfig():
+    return getConfig().configs['voice']
     
 def getConfig():
     global config

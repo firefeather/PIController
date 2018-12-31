@@ -5,12 +5,14 @@ import time
 from allComands import findComandByStr
 from controllers.executor import executCommand
 from tools.chatBot import getCurrentChatBot,getReply,getPictureReplyByXiaoBing
+from utils.baiduVoice import say
 
 def handText(text,user):
    # print('命令:',text,'发起人:',user)
    command = findComandByStr(text.strip())
    if command is None:
        if getCurrentChatBot() is None:
+          say(text)
           result = '未找到命令:<'+text+'>'
        else:
           result = getReply(text)
