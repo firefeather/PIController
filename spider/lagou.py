@@ -3,7 +3,6 @@
 
 import time,os,random
 from openpyxl import Workbook
-import pymysql.cursors
 from fetch import post
 
 citys = ['武汉','北京', '深圳', '杭州'] 

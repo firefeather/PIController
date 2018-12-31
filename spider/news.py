@@ -12,7 +12,7 @@ def getNews():
     res = get(url,headers=headers,text=True)
     news = re.findall('<h5><a href=\"javascript:void\(0\)\">(.*?)</a></h5>.*?<div class="bugs-text">(.*?)<a href="(.*?)" target="_blank">\[(.*?)\]</a>',res,re.S)
     res = ''
-    for i in range(10):
+    for i in range(2):
         res += '★'+news[i][0]+'\n'
         res += news[i][1]+'\n'
         res += news[i][2]+'\n'
