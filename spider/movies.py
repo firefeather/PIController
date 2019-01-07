@@ -8,7 +8,7 @@ from fetch import get
 def getMovies():
     url = 'http://maoyan.com/board/7'
     headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
-    dataNum = time.strftime('%Y年%m月%日',time.localtime(time.time()))
+    dataNum = time.strftime('%Y年%m月%d日',time.localtime(time.time()))
     
     response = get(url,headers=headers,text=True)
     result1 = re.findall('<p class="name"><a href="(.*?)" title="(.*?)" data-act="boarditem-click" data-val=".*?">.*?</a></p>.*?<p class="star">\s+(.*?)\s+</p>.*?<p class="releasetime">(.*?)</p>    </div>.*?<div class="movie-item-number score-num">.*?<p class="score"><i class="integer">(.*?)</i><i class="fraction">(.*?)</i></p>        ',response,re.S)

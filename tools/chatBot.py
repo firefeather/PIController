@@ -54,7 +54,7 @@ def getXiaoIResponse(msg):
     r = requests.get(url, cookies=cookie)
     pattern = re.compile(r'\"fontColor\":0,\"content\":\"(.*?)\"')
     result = pattern.findall(r.text)
-    return random.choice(result)
+    return random.choice(result).strip(r'\n\r\n')
 
 # def getXiaoBingResponse(msg):
 
