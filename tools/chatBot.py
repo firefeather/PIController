@@ -3,7 +3,7 @@ from urllib.parse import quote
 BOTS = ['图灵','小冰','小I']
 
 global _CURRENT_BOT
-_CURRENT_BOT=None
+_CURRENT_BOT=BOTS[0]
 
 def setChatBot(bot):
     global _CURRENT_BOT
