@@ -65,6 +65,14 @@ class Handle(object):
                                         '用法:'+comand.Usage+'\n'
                                 descs.append(desc)
                             content = '\n\n'.join(descs)
+                    elif recMsg.Eventkey == 'movie':
+                         content = controllers.handText('最新电影',fromUser)
+                    elif recMsg.Eventkey == 'news':
+                         content = controllers.handText('新闻',fromUser)
+                    elif recMsg.Eventkey == 'screen':
+                         content = controllers.handText('截屏',fromUser)
+                    else:
+                        content = '未识别的操作'
                 elif recMsg.Event in ('subscribe', 'unsubscribe'):
                     if recMsg.Subscribed:
                         content = ("感谢小可爱的关注")

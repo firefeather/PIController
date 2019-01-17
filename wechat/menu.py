@@ -2,8 +2,10 @@
 # filename: menu.py
 # 公众号菜单(需提前单独执行)
 
+import sys
+sys.path.append("../")
+from tocken import Tocken
 from fetch import get,post
-from wechat.tocken import Tocken
 
 class Menu(object):
     def __init__(self):
@@ -43,18 +45,18 @@ if __name__ == '__main__':
                 [
                     {
                         "type": "click",
-                        "name": "命令1",
-                        "key":  "comand1"
+                        "name": "截屏",
+                        "key":  "screen"
                     },
                     {
                         "type": "click",
-                        "name": "命令2",
-                        "key":  "comand2"
+                        "name": "新闻",
+                        "key":  "news"
                     },
                     {
                         "type": "click",
-                        "name": "命令3",
-                        "key":  "comand3"
+                        "name": "电影",
+                        "key":  "movie"
                     }
                 ]
             },
