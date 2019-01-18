@@ -20,14 +20,14 @@ def getScreenImg():
             from PIL import ImageGrab
             im = ImageGrab.grab()
         except OSError as e:
-            return "截图失败，请重试."
+            return "截图失败，请重试."+e.strerror
 
     elif platform.system() == 'Linux':
         try:
             import pyscreenshot as ImageGrab
             im = ImageGrab.grab()
-        except Exception as e:
-            return "截图失败，请重试.."
+        except OSError as e:
+            return "截图失败，请重试.."+e.strerror
     im.save(imName)
     if os.path.exists(imName):
         return imName

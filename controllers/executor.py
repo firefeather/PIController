@@ -63,6 +63,9 @@ def executCommand(command,user):
    elif command.Name == ALL_COMANDS[11].Name:#拉勾职位
         threading.Thread (target=_getJobInfoAndSend, args=(user,command.Parmas) ).start()
         result = '已开始查询'
+   elif command.Name == ALL_COMANDS[12].Name:#群发消息
+        threading.Thread (target=_sendMsgToAll, args=(user,command.Parmas) ).start()
+        result = '已开始发送'
    else:
         result = '暂未完成'
    return result
@@ -106,3 +109,17 @@ def _getWechatUserInfoAndSend(userId):
                    '头像:'+userInfo['headimgurl']+'\n'+\
                    '时间:'+time.strftime("%Y年%m月%d日",time.localtime(userInfo['subscribe_time']))+'\n'
      return result
+
+def _sendMsgToAll(commander,msg):
+     getUsers()
+     users = getUsers()
+     result=''
+     if len(users)>0:
+        for user in users:
+          sendTextMsg(user.Id,msg)
+        result='已发送<'+msg+'>至{}位用户'.format(len(users))
+     else:
+        result='没有可用用户'
+     sendTextMsg(commander.Id,result)
+     
+     
