@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 主控制器,所有的命令经由这里分发
 
-import time,threading,shutil
+import time,threading,shutil,subprocess
 from users import getUsers,updateUserByDict,findUser
 from wechat.wechatUserInfo import getWechatUser
 from allComands import ALL_COMANDS
@@ -66,6 +66,9 @@ def executCommand(command,user):
    elif command.Name == ALL_COMANDS[12].Name:#群发消息
         threading.Thread (target=_sendMsgToAll, args=(user,command.Parmas) ).start()
         result = '已开始发送'
+   elif command.Name == ALL_COMANDS[13].Name:#执行shell命令
+        threading.Thread (target=_executeShell, args=(user,command.Parmas) ).start()
+        result = '已开始执行<'+command.Parmas+'>'
    else:
         result = '暂未完成'
    return result
@@ -111,7 +114,6 @@ def _getWechatUserInfoAndSend(userId):
      return result
 
 def _sendMsgToAll(commander,msg):
-     getUsers()
      users = getUsers()
      result=''
      if len(users)>0:
@@ -122,4 +124,7 @@ def _sendMsgToAll(commander,msg):
         result='没有可用用户'
      sendTextMsg(commander.Id,result)
      
-     
+def _executeShell(user,command):
+    status,output = subprocess.getstatusoutput(command)
+    result = ('执行成功:\n' if status == 0 else '执行失败:\n')+output
+    sendTextMsg(user.Id,result)
