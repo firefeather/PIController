@@ -96,6 +96,8 @@ def release_weibo(weibos):
     )
     time.sleep(3)
     release_button.click()
+    time.sleep(3)
+    browser.quit()
 
 
 if __name__=='__main__':
