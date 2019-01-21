@@ -1,13 +1,17 @@
 #coding=utf-8
 
-import time
+import time,platform
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-
-browser = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+if platform.system() == 'Linux':
+    # 以 headless 方案运行
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+browser = webdriver.Chrome(chrome_options=options)
 wait = WebDriverWait(browser,10)
 
 def login():
