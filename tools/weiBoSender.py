@@ -30,28 +30,33 @@ def login():
     time.sleep(2)
     button.click()
 
-def release_weibo(content):
-    main_button = wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR,'#weibo_top_public > div > div > div.gn_position > div.gn_nav > ul > li:nth-child(1) > a'))
-    )
-    main_button.click()
-    input = wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR,'#v6_pl_content_publishertop > div > div.input > textarea'))
-    )
-    input.clear()
-    now = time.strftime('%Y-%m-%d')
-    weibo_content=content+'\n---------本微博由树莓派发送<'+now+'>'
-    input.send_keys(weibo_content)
-    release_button = wait.until(
-        EC.presence_of_element_located((By.CSS_SELECTOR,'#v6_pl_content_publishertop > div > div.func_area.clearfix > div.func > a'))
-    )
-    time.sleep(3)
-    release_button.click()
-    time.sleep(3)
-    browser.quit()
+def sendWeibo(content):
+    result=''
+    try:
+        login()
+        time.sleep(6)
+        input = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR,'#v6_pl_content_publishertop > div > div.input > textarea'))
+        )
+        input.clear()
+        now = time.strftime('%Y-%m-%d')
+        weibo_content=content+'\n---------本微博由树莓派发送<'+now+'>'
+        input.send_keys(weibo_content)
+        release_button = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR,'#v6_pl_content_publishertop > div > div.func_area.clearfix > div.func > a'))
+        )
+        time.sleep(3)
+        release_button.click()
+        time.sleep(3)
+        browser.quit()
+        result='发送成功'
+    except Exception as e:
+        print('发送微博失败:',e)
+        result='发送失败'
+    return result
 
 
 if __name__=='__main__':
     login()
     time.sleep(6)
-    release_weibo('今天天气不错啊')
+    sendWeibo('今天天气不错啊')

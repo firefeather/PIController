@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 主控制器,所有的命令经由这里分发
 
-import time,threading,shutil,subprocess
+import time,threading,shutil,subprocess,os
 from users import getUsers,updateUserByDict,findUser
 from wechat.wechatUserInfo import getWechatUser
 from allComands import ALL_COMANDS
@@ -16,6 +16,7 @@ from tools.weather import getWeather
 from tools.chatBot import setChatBot,clearChatBot
 from spider.lagou import getJobInfo
 from utils.excel2Image import ReportImage
+from tools.weiBoSender import sendWeibo
 
 def executCommand(command,user):
    if command.Name == ALL_COMANDS[0].Name:#获取所有用户
@@ -69,6 +70,8 @@ def executCommand(command,user):
    elif command.Name == ALL_COMANDS[13].Name:#执行shell命令
         threading.Thread (target=_executeShell, args=(user,command.Parmas) ).start()
         result = '已开始执行<'+command.Parmas+'>'
+   elif command.Name == ALL_COMANDS[14].Name:#发微博
+        result = sendResultLater(user,sendWeibo,command.Parmas)
    else:
         result = '暂未完成'
    return result
@@ -79,6 +82,7 @@ def sendResultLater(to,func,args=None):
            result = func() if args is None else func(args)
            if len(result)<50 and ('.png' in result or '.jpg' in result):#如果是个图片 则发送图片
               sendImageMsg(to.Id,result)
+              os.remove(result)
            else:
               sendTextMsg(to.Id,result)
         except Exception as e:

@@ -21,6 +21,8 @@ ALL_COMANDS = [
    Command(name='职位信息',func='获取指定岗位在拉勾上的最新信息',usage='职位信息:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='群发消息',func='群发消息给所有用户',usage='群发消息:XXX',parmas='STR',permission=PERMISSION_LEVEL['SUPER']),
    Command(name='执行代码',func='在命令终端中执行相应的代码',usage='执行代码:XXX',parmas='STR',permission=PERMISSION_LEVEL['SUPER']),
+   Command(name='发微博',func='模拟网页登录发送微博(会带小尾巴)',usage='发微博:XXX',parmas='STR',permission=PERMISSION_LEVEL['SUPER']),
+
 ]
 
 def findComandByStr(text):#根据用户输入尝试解析出对应命令
