@@ -11,6 +11,7 @@ if platform.system() == 'Linux':
     # 以 headless 方案运行
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
+    options.add_argument('window-size=1024,768')
 browser = webdriver.Chrome(chrome_options=options)
 wait = WebDriverWait(browser,10)
 
