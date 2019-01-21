@@ -39,7 +39,7 @@ def sendWeibo(content):
             EC.presence_of_element_located((By.CSS_SELECTOR,'#v6_pl_content_publishertop > div > div.input > textarea'))
         )
         input.clear()
-        now = time.strftime('%Y-%m-%d')
+        now = time.strftime('%Y-%m-%d H%:M%:S%')
         weibo_content=content+'\n---------本微博由树莓派发送<'+now+'>'
         input.send_keys(weibo_content)
         release_button = wait.until(
