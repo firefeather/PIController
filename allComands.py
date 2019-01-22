@@ -4,6 +4,7 @@
 import copy
 from command import Command,PERMISSION_LEVEL
 from tools.chatBot import BOTS
+from logger import Logger
 
 global ALL_COMANDS
 ALL_COMANDS = [
@@ -52,15 +53,15 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
                      data[key]=value
                   comand.Parmas = data
                   result = comand
-               except Exception:
-                  print('命令参数解析失败')
+               except Exception as e:
+                  Logger.e('命令参数解析失败', e)
        else:
           result = comand
        if result is None:
           result = '参数错误,用法:\n'+comand.Usage
        return result
     else:
-        print('未找到指定命令')
+      #   print('未找到指定命令')
         return None
 
 

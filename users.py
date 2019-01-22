@@ -4,6 +4,7 @@
 import pickle,os
 from user import User
 from config import getManagerInfo
+from logger import Logger
 
 USERS_FILE_PATH = './USERS.DB'
 global ALL_USERS
@@ -22,14 +23,12 @@ def loadUsersFromDisk():
     try:
        with open(USERS_FILE_PATH, 'rb') as f:# load 从数据文件中读取数据，并转换为python的数据结构
             ALL_USERS = pickle.load(f) or []
-    except Exception: #捕获异常
-       print('读取缓存文件失败')
+    except Exception as e: #捕获异常
+       Logger.e('读取缓存文件失败',e)
        ALL_USERS = []
-    # print "加载用户列表",ALL_USERS
 
 def saveUsers():
     global ALL_USERS
-    print ("存储用户列表",ALL_USERS)
     with open(USERS_FILE_PATH, 'wb') as f: # dump 将数据通过特殊的形式转换为只有python语言认识的字符串，并写入文件
          pickle.dump(ALL_USERS, f)
 
@@ -40,10 +39,11 @@ def updateUserByDict(userInfo):
     elif 'id' in userInfo:
         userId = userInfo['id']
     if userId is None:
-       print('updateUserByDict失败','无用户id')
+       Logger.e('更新用户失败','无用户id')
        return '更新失败'
     users = findUser(id = userId)
     if len(users) == 0:
+       Logger.e('更新用户失败','未找到用户')
        return '未找到用户,更新失败'
     user = users[0]
     if 'nickname' in userInfo:
@@ -58,18 +58,18 @@ def updateUserByDict(userInfo):
         user.Phone = userInfo['phone']
     if 'email' in userInfo:
         user.Email = userInfo['email']
-    # print "更新用户列表",users,ALL_USERS
     saveUsers()
+    Logger.v('更新用户<'+user.Name+'>成功:'+str(userInfo)+',新信息:'+str(user))
     return '更新成功'
 
 
 def removeUser(**idOrName):
     global ALL_USERS
-    # print "移除用户",user,ALL_USERS
     if 'id' in idOrName:
        ALL_USERS = list(filter(lambda user:user.Id != idOrName['id'], ALL_USERS))
     if 'name' in idOrName:
        ALL_USERS = list(filter(lambda user:user.Name != idOrName['name'], ALL_USERS))
+    Logger.v('移除用户成功:'+str(idOrName))
     saveUsers()
 
 def addUser(newUser):
@@ -82,6 +82,7 @@ def addUser(newUser):
          print ("已有该用户,不再添加")
          return
   ALL_USERS.append(newUser)
+  Logger.v('添加用户成功:'+str(newUser))
   saveUsers()
 
 def getUsers():

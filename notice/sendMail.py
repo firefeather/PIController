@@ -4,7 +4,7 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
- 
+from logger import Logger
 from config import getEmailConfig
 
 emailConfig = getEmailConfig()
@@ -56,8 +56,12 @@ def loginAndSend(receiver,content,title):
     # smtp.sendmail(asender, areceiver.split(','), msgroot.as_string())
     #发送给多人、同时抄送给多人，发送人和抄送人放在同一个列表中
     receiverStr = receiver.split(',') if isinstance(receiver,list) else receiver
-    smtp.sendmail(username, receiverStr, msgroot.as_string())
-    smtp.quit()
+    try:
+       smtp.sendmail(username, receiverStr, msgroot.as_string())
+    except Exception as e:
+        Logger.e('发送邮件失败', e)
+    finally:
+      smtp.quit()
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@
 from wechat.tocken import Tocken
 from fetch import get,post
 from wechat.media import upload
+from logger import Logger
 
 def sendMsg(msgJson):
     accessToken = Tocken().get_access_token()
@@ -24,6 +25,7 @@ def sendTextMsg(toId,content):
 def sendImageMsg(toId,path):
     result = upload(path,'image')
     if 'errcode' in result:
+       Logger.e('文件上传失败', result['errmsg'])
        return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {
@@ -39,6 +41,7 @@ def sendImageMsg(toId,path):
 def sendVoiceMsg(toId,path):
     result = upload(path,'voice')
     if 'errcode' in result:
+       Logger.e('文件上传失败', result['errmsg'])
        return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {
@@ -54,6 +57,7 @@ def sendVoiceMsg(toId,path):
 def sendVideoMsg(toId,path,title,desc):
     result = upload(path,'video')
     if 'errcode' in result:
+       Logger.e('文件上传失败', result['errmsg'])
        return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {
@@ -72,6 +76,7 @@ def sendVideoMsg(toId,path,title,desc):
 def sendMusicMsg(toId,url,path,title,desc):
     result = upload(path,'music')
     if 'errcode' in result:
+       Logger.e('文件上传失败', result['errmsg'])
        return sendTextMsg(toId,'文件上传失败:'+result['errmsg'])
     mediaId = result['media_id']
     msgJson = {

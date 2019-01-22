@@ -8,7 +8,6 @@ from selenium.webdriver.common.by import By
 from pyquery import PyQuery as pq
 from jieba import analyse
 
-
 browser = webdriver.Chrome()
 wait = WebDriverWait(browser,10)
 
@@ -46,7 +45,7 @@ def get_detail_content():
     for button in getHot():
         weibo = []
         weibo.append(button.text)
-        print(button.text)
+        # print(button.text)
         button.click()
         browser.switch_to.window(browser.window_handles[target])
         target+=1

@@ -52,7 +52,7 @@ class ReportImage:
            os.mkdir(imageDirPath)
         htmlList = ReportImage.excel2Html(excelFilePath,imageDirPath)
         imageList = ReportImage.html2Image(htmlList, imageDirPath,quality)
-        print('转换',excelFilePath,'完毕')
+        # print('转换',excelFilePath,'完毕')
         return imageList
 
  

@@ -4,6 +4,7 @@
 import web
 import controllers.controller as controllers
 from users import MANAGER
+import task
 
 urls = (
     '/wx', 'Handle',
@@ -14,6 +15,7 @@ if __name__ == '__main__':
 #    result = controllers.handImage("http://yun.itheima.com/Upload/Images/20170614/594106ee6ace5.jpg",MANAGER)
 #    result = controllers.handText("设置机器人:图灵",MANAGER)
 #    print('result:',result)
-   result = controllers.handText("发微博:今天好无聊啊",MANAGER)
+   result = controllers.handText("新闻",MANAGER)
 #    result = controllers.handText("获取用户信息:id=omyqB1uI5qSm5Ypdum43V2zMrTVk",MANAGER)
-   print('result:',result)
+   print('result',result)
+#    task.startTasks()

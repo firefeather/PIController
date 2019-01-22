@@ -2,6 +2,7 @@
 #通过腾讯云发送短信  100条/月
 from qcloudsms_py import QcloudSms
 from config import getSmsConfig
+from logger import Logger
 
 smsConfig = getSmsConfig()
 qcloudsms = QcloudSms(smsConfig['appid'], smsConfig['appkey'])  
@@ -15,9 +16,10 @@ def sendTemplateSMS(toNumber,text):
     try:
         sendResult = ssender.send_with_param(86, toNumber,
             template_id, params, sign=sign, extend="", ext="")
-        print('短信发送结果:',sendResult)
+        Logger.v('短信发送结果<'+str(sendResult)+'>')
+        # print('短信发送结果:',sendResult)
     except Exception as e:
-        print('短信发送失败:',e)
+        Logger.e('发送短信', e)
 
 def sendGroupTemplateSMS(toNumbers,text):
     msender = qcloudsms.SmsMultiSender()

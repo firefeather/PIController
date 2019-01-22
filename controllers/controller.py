@@ -5,9 +5,11 @@ import time
 from allComands import findComandByStr
 from controllers.executor import executCommand
 from tools.chatBot import getCurrentChatBot,getReply,getPictureReplyByXiaoBing
+from logger import Logger
 
 def handText(text,user):
    # print('命令:',text,'发起人:',user)
+   Logger.v('收到<'+user.Name+'>的文本消息<'+text+'>')
    command = findComandByStr(text.strip())
    if command is None:
        if getCurrentChatBot() is None:
@@ -17,7 +19,8 @@ def handText(text,user):
    elif isinstance(command, str):
        result = '<'+text+'>'+command
    else:
-       print('找到命令:',command)
+      #  print('找到命令:',command)
+       Logger.v('执行命令<'+command.Name+'>,参数<'+(command.Parmas or '无')+'>,发起人<'+user.Name+'>')
        if command.Permission > user.Level:
           result = '<'+text+'>:权限不足'
        else:
@@ -25,7 +28,7 @@ def handText(text,user):
    return result
 
 def handImage(imageUrl,user):
-    print('命令:',imageUrl,'发起人:',user)
+    Logger.v('收到<'+user.Name+'>的图片消息<'+imageUrl+'>')
    #  if not getCurrentChatBot() is None:
          #  result = getPictureReplyByXiaoBing(imageUrl)
     result = getPictureReplyByXiaoBing(imageUrl)

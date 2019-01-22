@@ -5,6 +5,7 @@ from aip import AipSpeech
 from config import getVoiceConfig
 from fetch import get,download
 import platform
+from logger import Logger
 
 voiceFile = 'auido.mp3'
 
@@ -27,13 +28,13 @@ def voice(text):
       with open(voiceFile, 'wb') as f:
         f.write(result)
     else:
-      print(text,'合成失败',result['error_msg'])
+      Logger.e('语音合成失败', result['error_msg'])
+      # print(text,'合成失败',result['error_msg'])
     playSound()
     
 def say(text):
     url = 'http://tts.baidu.com/text2audio?idx=1&tex={}&cuid=baidu_speech_demo&cod=2&lan=zh&ctp=1&pdt=1&spd=5&per=4&vol=5&pit=5'.format(text)
     result = download(url)
-    # print('1111',result)
     with open(voiceFile, 'wb') as f:
         for chunk in result.iter_content(chunk_size=1024):
           if chunk:
