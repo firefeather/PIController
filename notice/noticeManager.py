@@ -14,6 +14,9 @@ def sendNotice(text,toUser = MANAGER):
     result = []
     if 'sms' in noticeWays:
         if not toUser.Phone is None:
+           if len(text)>12:
+              text = text[:12]
+              Logger.v('短信<'+text+'>长度超过限制,已自动截取前12个字符')
            notice.sendSMS.sendTemplateSMS(toUser.Phone,text)
            result.append('发送短信成功')
     if 'email' in noticeWays:

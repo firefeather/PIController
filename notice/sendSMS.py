@@ -16,10 +16,11 @@ def sendTemplateSMS(toNumber,text):
     try:
         sendResult = ssender.send_with_param(86, toNumber,
             template_id, params, sign=sign, extend="", ext="")
-        Logger.v('短信发送结果<'+str(sendResult)+'>')
+        if sendResult['result']!=0:
+            Logger.e('短信发送失败',sendResult['errmsg'])
         # print('短信发送结果:',sendResult)
     except Exception as e:
-        Logger.e('发送短信', e)
+        Logger.e('发送短信失败', e)
 
 def sendGroupTemplateSMS(toNumbers,text):
     msender = qcloudsms.SmsMultiSender()

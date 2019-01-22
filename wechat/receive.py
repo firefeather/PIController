@@ -5,8 +5,9 @@ import xml.etree.ElementTree as ET
 import sys
 sys.path.append("..")
 from baseObject import BaseObject
-from users import addUser,removeUser
+from users import addUser, removeUser
 from user import User
+
 
 def parse_xml(web_data):
     if len(web_data) == 0:
@@ -20,15 +21,16 @@ def parse_xml(web_data):
         elif event_type in ('subscribe', 'unsubscribe'):
             return Subscribe(xmlData)
         #elif event_type == 'VIEW':
-            #return View(xmlData)
+        #return View(xmlData)
         #elif event_type == 'LOCATION':
-            #return LocationEvent(xmlData)
+        #return LocationEvent(xmlData)
         #elif event_type == 'SCAN':
-            #return Scan(xmlData)
+        #return Scan(xmlData)
     elif msg_type == 'text':
         return TextMsg(xmlData)
     elif msg_type == 'image':
         return ImageMsg(xmlData)
+
 
 class Msg(BaseObject):
     def __init__(self, xmlData):
@@ -38,16 +40,19 @@ class Msg(BaseObject):
         self.MsgType = xmlData.find('MsgType').text
         self.MsgId = xmlData.find('MsgId').text
 
+
 class TextMsg(Msg):
     def __init__(self, xmlData):
         Msg.__init__(self, xmlData)
         self.Content = xmlData.find('Content').text.encode("utf-8")
+
 
 class ImageMsg(Msg):
     def __init__(self, xmlData):
         Msg.__init__(self, xmlData)
         self.PicUrl = xmlData.find('PicUrl').text
         self.MediaId = xmlData.find('MediaId').text
+
 
 class EventMsg(object):
     def __init__(self, xmlData):
@@ -56,18 +61,20 @@ class EventMsg(object):
         self.CreateTime = xmlData.find('CreateTime').text
         self.MsgType = xmlData.find('MsgType').text
         self.Event = xmlData.find('Event').text
-        
+
+
 class Click(EventMsg):
     def __init__(self, xmlData):
         EventMsg.__init__(self, xmlData)
         self.Eventkey = xmlData.find('EventKey').text
+
 
 class Subscribe(EventMsg):
     def __init__(self, xmlData):
         EventMsg.__init__(self, xmlData)
         self.Subscribed = self.Event == 'subscribe'
         if self.Subscribed:
-            user = User(id=self.userName)
+            user = User(id=self.ToUserName)
             addUser(user)
         else:
             removeUser(name=self.FromUserName)

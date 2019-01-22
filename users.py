@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 所有用户  用于权限控制
 
-import pickle,os
+import pickle, os
 from user import User
 from config import getManagerInfo
 from logger import Logger
@@ -16,35 +16,41 @@ def initManager():
     managerInfo['level'] = 10
     return User(**managerInfo)
 
+
 MANAGER = initManager()
+
 
 def loadUsersFromDisk():
     global ALL_USERS
     try:
-       with open(USERS_FILE_PATH, 'rb') as f:# load 从数据文件中读取数据，并转换为python的数据结构
+        with open(USERS_FILE_PATH,
+                  'rb') as f:  # load 从数据文件中读取数据，并转换为python的数据结构
             ALL_USERS = pickle.load(f) or []
-    except Exception as e: #捕获异常
-       Logger.e('读取缓存文件失败',e)
-       ALL_USERS = []
+    except Exception as e:  #捕获异常
+        Logger.e('读取缓存文件失败', e)
+        ALL_USERS = []
+
 
 def saveUsers():
     global ALL_USERS
-    with open(USERS_FILE_PATH, 'wb') as f: # dump 将数据通过特殊的形式转换为只有python语言认识的字符串，并写入文件
-         pickle.dump(ALL_USERS, f)
+    with open(USERS_FILE_PATH,
+              'wb') as f:  # dump 将数据通过特殊的形式转换为只有python语言认识的字符串，并写入文件
+        pickle.dump(ALL_USERS, f)
+
 
 def updateUserByDict(userInfo):
     global ALL_USERS
     if 'openid' in userInfo:
-       userId = userInfo['openid']
+        userId = userInfo['openid']
     elif 'id' in userInfo:
         userId = userInfo['id']
     if userId is None:
-       Logger.e('更新用户失败','无用户id')
-       return '更新失败'
-    users = findUser(id = userId)
+        Logger.e('更新用户失败', '无用户id')
+        return '更新失败'
+    users = findUser(id=userId)
     if len(users) == 0:
-       Logger.e('更新用户失败','未找到用户')
-       return '未找到用户,更新失败'
+        Logger.e('更新用户失败', '未找到用户')
+        return '未找到用户,更新失败'
     user = users[0]
     if 'nickname' in userInfo:
         user.Name = userInfo['nickname']
@@ -59,65 +65,73 @@ def updateUserByDict(userInfo):
     if 'email' in userInfo:
         user.Email = userInfo['email']
     saveUsers()
-    Logger.v('更新用户<'+user.Name+'>成功:'+str(userInfo)+',新信息:'+str(user))
+    Logger.v('更新用户<' + user.Name + '>成功:' + str(userInfo) + ',新信息:' +
+             str(user))
     return '更新成功'
 
 
 def removeUser(**idOrName):
     global ALL_USERS
     if 'id' in idOrName:
-       ALL_USERS = list(filter(lambda user:user.Id != idOrName['id'], ALL_USERS))
+        ALL_USERS = list(
+            filter(lambda user: user.Id != idOrName['id'], ALL_USERS))
     if 'name' in idOrName:
-       ALL_USERS = list(filter(lambda user:user.Name != idOrName['name'], ALL_USERS))
-    Logger.v('移除用户成功:'+str(idOrName))
+        ALL_USERS = list(
+            filter(lambda user: user.Name != idOrName['name'], ALL_USERS))
+    Logger.v('移除用户成功:' + str(idOrName))
     saveUsers()
 
+
 def addUser(newUser):
-  global ALL_USERS
-#   print ("添加用户",user,ALL_USERS)
-  if ALL_USERS is None:
-      loadUsersFromDisk()
-  for user in ALL_USERS:
-      if newUser.Id == user.Id:
-         print ("已有该用户,不再添加")
-         return
-  ALL_USERS.append(newUser)
-  Logger.v('添加用户成功:'+str(newUser))
-  saveUsers()
+    global ALL_USERS
+    #   print ("添加用户",user,ALL_USERS)
+    if ALL_USERS is None:
+        loadUsersFromDisk()
+    for user in ALL_USERS:
+        if newUser.Id == user.Id:
+            #  print ("已有该用户,不再添加")
+            return
+    ALL_USERS.append(newUser)
+    Logger.v('添加用户成功:' + str(newUser))
+    saveUsers()
+
 
 def getUsers():
-  global ALL_USERS
-  if ALL_USERS is None:
-      loadUsersFromDisk()
-  return ALL_USERS
+    global ALL_USERS
+    if ALL_USERS is None:
+        loadUsersFromDisk()
+    return ALL_USERS
+
 
 def findUser(**idOrName):
     global ALL_USERS
     if ALL_USERS is None:
-      loadUsersFromDisk()
+        loadUsersFromDisk()
     users = []
     if 'id' in idOrName:
-       userId = idOrName['id']
-       if userId == MANAGER.Id:
-          users.append(MANAGER)
-       else:  
-          users = list(filter(lambda user:user.Id == userId, ALL_USERS))
+        userId = idOrName['id']
+        if userId == MANAGER.Id:
+            users.append(MANAGER)
+        else:
+            users = list(filter(lambda user: user.Id == userId, ALL_USERS))
     if 'name' in idOrName:
-       userName = idOrName['name']
-       if userName == MANAGER.Name:
-          users.append(MANAGER)
-       else:  
-          users = list(filter(lambda user:user.Name == userName, ALL_USERS))
+        userName = idOrName['name']
+        if userName == MANAGER.Name:
+            users.append(MANAGER)
+        else:
+            users = list(filter(lambda user: user.Name == userName, ALL_USERS))
     return users
+
 
 def findAndCreatedIfUserNotFound(**idOrName):
     userList = findUser(**idOrName)
-    if len(userList) == 0:#如果没找到该用户 则将该用户保存后返回
+    if len(userList) == 0:  #如果没找到该用户 则将该用户保存后返回
         user = User(id=idOrName['id'])
         addUser(user)
         userList.append(user)
     return userList
 
+
 if __name__ == "__main__":
     # user = User(name='333aaa')
-    print(MANAGER.Id=='omyqB1uI5qSm5Ypdum43V2zMrTVk')
+    print(MANAGER.Id == 'omyqB1uI5qSm5Ypdum43V2zMrTVk')

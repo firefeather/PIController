@@ -4,13 +4,13 @@
 import time
 from baseObject import BaseObject
 from wechat.wechatUserInfo import getWechatUser
-from logger import Logger
 
 class User(BaseObject):
     def __init__(self, **info):
         if 'id' in info:
            self.Id = info['id']
         else:
+           from logger import Logger
            Logger.e('添加用户失败','用户id为空无法添加')
            return
         nowTime = int(time.time())

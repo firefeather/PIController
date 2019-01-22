@@ -3,7 +3,6 @@
 
 import os, logging, time, datetime
 from config import getGeneralConfig
-import notice.noticeManager
 
 LOG_LEVEL = {
     'verbose': 0,  #都记录
@@ -59,8 +58,15 @@ class Logger:
         此方式为最高级别警告,将触发系统通知
         """
         logger = getLogger(True)
-        logger.warning('发现异常!' + title + ':' + content)
-        notice.noticeManager.sendNotice(content)
+        if isinstance(content, str):
+            content=content
+        elif isinstance(content, Exception):
+            content = content.__str__()
+        else:
+            content = str(content)
+        logger.warning('\n!!!发现异常!!!\n' + title + ':' + content,exc_info=True)
+        import notice.noticeManager
+        notice.noticeManager.sendNotice(title + ':' + content)
 
 
 if __name__ == '__main__':
