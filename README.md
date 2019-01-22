@@ -1,5 +1,1 @@
-# RUN
-- pip3 install -r requirements.txt
-- run "sudo python app.py 80"
-
-
+简单的树莓派控制器,通过微信公众号执行一些简单命令
