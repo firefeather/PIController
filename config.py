@@ -8,7 +8,7 @@ config = None
 
 class Config(BaseObject):
     def __init__(self):
-        conf = configparser.ConfigParser()
+        conf = configparser.RawConfigParser()
         conf.read('config.conf')
         sections = conf.sections()
         self.configs = {}

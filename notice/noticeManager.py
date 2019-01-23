@@ -7,10 +7,13 @@ import notice.sendSMS
 import notice.sendMail 
 import notice.sendWechat 
 from logger import Logger
+import platform
 
 noticeWays = getGeneralConfig()['notice_ways']
 
 def sendNotice(text,toUser = MANAGER):
+    if platform.system() == 'Darwin':
+       _notify('系统通知',text)
     result = []
     if 'sms' in noticeWays:
         if not toUser.Phone is None:
@@ -28,3 +31,11 @@ def sendNotice(text,toUser = MANAGER):
            notice.sendWechat.sendTextMsg(toUser.Id,text)
            result.append('发送微信成功')
     Logger.v('发送通知--->'+'<'+text+'>至<'+toUser.Name+'>,结果<'+','.join(result)+'>')
+
+
+# Mac脚本通知
+def _notify(title, text):
+   import os
+   os.system("""
+					osascript -e 'display notification "{0}" with title "{1}"'
+				""".format(text, title))
