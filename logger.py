@@ -25,7 +25,7 @@ def _GetLogPath():
 
 
 def getLogger(saveToFile=False):
-    logger = logging.getLogger('pi')
+    logger = logging.getLogger('{}'.format(int(time.time())))
     if saveToFile and not logger.handlers:
         logName = _GetLogPath() + time.strftime("%Y-%m-%d") + '.log'
         handler = logging.FileHandler(logName)
