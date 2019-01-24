@@ -44,7 +44,7 @@ def _startMiTask():#执行打卡和一分钱抽奖
 def startTasks():
     scheduler = BlockingScheduler()
     scheduler.add_job(func=_clearLog, trigger='interval', days=1)#每天执行一次清理日志任务
-    scheduler.add_job(func=_startMiDaka,trigger='cron',day_of_week ='0-7',hour = 6,minute = 0,second = 0)#每天早上6点执行小米早起打卡
-    scheduler.add_job(func=_startMiTask,trigger='cron',day_of_week ='0-7',hour = random.randint(11,20),minute = random.randint(1,59),second = random.randint(1,59))#每天随机时间点执行小米抽奖
+    scheduler.add_job(func=_startMiDaka,trigger='cron',day_of_week ='0-6',hour = 6,minute = 0,second = 0)#每天早上6点执行小米早起打卡
+    scheduler.add_job(func=_startMiTask,trigger='cron',day_of_week ='0-6',hour = random.randint(11,20),minute = random.randint(1,59),second = random.randint(1,59))#每天随机时间点执行小米抽奖
     
     scheduler.start()
