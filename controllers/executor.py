@@ -18,6 +18,7 @@ from spider.lagou import getJobInfo
 from utils.excel2Image import ReportImage
 from tools.weiBoSender import sendWeibo
 from logger import Logger
+from task import getJobs
 
 
 def executCommand(command, user):
@@ -78,6 +79,8 @@ def executCommand(command, user):
         result = '已开始执行<' + command.Parmas + '>'
     elif command.Name == ALL_COMANDS[14].Name:  #发微博
         result = sendResultLater(user, sendWeibo, command.Parmas)
+    elif command.Name == ALL_COMANDS[15].Name:  #获取定时任务情况
+        result = getJobs()
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')

@@ -23,6 +23,7 @@ ALL_COMANDS = [
    Command(name='群发消息',func='群发消息给所有用户',usage='群发消息:XXX',parmas='STR',permission=PERMISSION_LEVEL['SUPER']),
    Command(name='执行代码',func='在命令终端中执行相应的代码',usage='执行代码:XXX',parmas='STR',permission=PERMISSION_LEVEL['SUPER']),
    Command(name='发微博',func='模拟网页登录发送微博(会带小尾巴)',usage='发微博:XXX',parmas='STR',permission=PERMISSION_LEVEL['SUPER']),
+   Command(name='获取任务详情',func='获取定时任务的详细情况',usage='获取任务详情',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
 
 ]
 
