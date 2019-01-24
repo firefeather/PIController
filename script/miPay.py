@@ -9,7 +9,7 @@ from time import sleep, strftime
 from PIL import Image
 from utils.chaojiying import imageToCode
 from logger import Logger
-
+import platform
 
 #该方法用来确认元素是否存在，如果存在返回flag=true，否则返回false
 def isElementExist(driver, id):
@@ -49,7 +49,12 @@ def check(driver):
 
 
 def login(username, password):
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    if platform.system() == 'Linux':
+        # 以 headless 方案运行
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+    driver = webdriver.Chrome(chrome_options=options)
     driver.implicitly_wait(5)  # 隐性等待，最长等5秒
     driver.set_window_size(400, 1170)
     driver.get('https://s.pay.xiaomi.com')
@@ -164,9 +169,9 @@ def getUpEarly(driver):
 
 
 def startMiPay(username,password,onlyDaka=False):
+    driver = login(username,password)
+    # driver = login('102734075@qq.com', 'ibelieve5')
     try:
-        driver = login(username,password)
-        # driver = login('102734075@qq.com', 'ibelieve5')
         getUpEarly(driver)
         if not onlyDaka:
            goodLuck(driver)

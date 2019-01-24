@@ -48,3 +48,6 @@ def startTasks():
     scheduler.add_job(func=_startMiTask,trigger='cron',day_of_week ='0-6',hour = random.randint(11,20),minute = random.randint(1,59),second = random.randint(1,59))#每天随机时间点执行小米抽奖
     
     scheduler.start()
+
+if __name__ == '__main__':
+    _startMiTask()
