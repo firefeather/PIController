@@ -26,13 +26,13 @@ def _clearLog():
                 os.remove(filename)
                 Logger.v('自动删除日志文件:' + filename)
 
-    ITEMS = os.listdir(logPath)
-    NEWLIST = []
-    for names in ITEMS:
-        if names.endswith(".log"):
-            NEWLIST.append(logPath + names)
-        for names in NEWLIST:
-            _removeLog(names, int(logSaveDays) * 24 * 60 * 60)
+    files = os.listdir(logPath)
+    logs = []
+    for file in files:
+        if file.endswith(".log"):
+            logs.append(logPath + file)
+        for log in logs:
+            _removeLog(log, int(logSaveDays) * 24 * 60 * 60)
 
 
 def _startMiDaka():  #只执行打卡
@@ -90,8 +90,9 @@ def startTasks():
     _addClearLogJob()
     _addMiDakaJob()
     _addMiTaskJob()
-    
+
     scheduler.start()
+
 
 def getJobs():
     # scheduler.print_jobs()
