@@ -5,6 +5,7 @@ from config import getGeneralConfig
 from logger import Logger
 from script.miPay import startMiPay
 from apscheduler.schedulers.background import BackgroundScheduler
+from script.wangyiPlanet import autoCollectCoins
 
 config = getGeneralConfig()
 
@@ -53,6 +54,24 @@ def _startMiTask():  #执行打卡和一分钱抽奖
     _addMiTaskJob()
 
 
+def _startWangyiCollet():  #网易星球自动收钻
+    Logger.v('开始执行网易星球自动收取钻石')
+    autoCollectCoins()
+    scheduler.remove_job(job_ids['_startWangyiCollet'])
+    _addWangyiJob()
+
+
+def _addWangyiJob():
+    job_ids['_startWangyiCollet'] = scheduler.add_job(
+        func=_startWangyiCollet,
+        trigger='cron',
+        day_of_week='0-6',
+        hour=random.randint(8, 22),
+        minute=random.randint(0, 59),
+        second=random.randint(0, 59)  #每天8-22点随机时刻收取网易星球黑钻
+    ).id
+
+
 def _addMiDakaJob():
     job_ids['_startMiDaka'] = scheduler.add_job(
         func=_startMiDaka,
@@ -90,7 +109,8 @@ def startTasks():
     _addClearLogJob()
     _addMiDakaJob()
     _addMiTaskJob()
-
+    _addWangyiJob()
+    
     scheduler.start()
 
 
