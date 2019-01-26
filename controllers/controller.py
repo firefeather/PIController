@@ -20,7 +20,7 @@ def handText(text,user):
        result = '<'+text+'>'+command
    else:
       #  print('找到命令:',command)
-       Logger.v('执行命令<'+command.Name+'>,参数<'+(command.Parmas or '无')+'>,发起人<'+user.Name+'>')
+       Logger.v('执行命令<'+command.Name+'>,参数<'+(str(command.Parmas) or '无')+'>,发起人<'+user.Name+'>')
        if command.Permission > user.Level:
           result = '<'+text+'>:权限不足'
        else:

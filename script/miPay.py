@@ -156,7 +156,7 @@ def getUpEarly(driver):
         button.click()
         sleep(2)
         driver.find_element_by_class_name("btn-daka").click()
-        sleep(2)
+        sleep(3)
         try:
             driver.find_element_by_class_name("btn-daka")#打卡按钮还在  说明没有跳转
             Logger.v('小米早期打卡等待中或打卡成功')

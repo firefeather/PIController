@@ -18,7 +18,7 @@ from spider.lagou import getJobInfo
 from utils.excel2Image import ReportImage
 from tools.weiBoSender import sendWeibo
 from logger import Logger
-from task import getJobs
+import task
 
 
 def executCommand(command, user):
@@ -80,7 +80,15 @@ def executCommand(command, user):
     elif command.Name == ALL_COMANDS[14].Name:  #发微博
         result = sendResultLater(user, sendWeibo, command.Parmas)
     elif command.Name == ALL_COMANDS[15].Name:  #获取定时任务情况
-        result = getJobs()
+        result = task.getJobs()
+    elif command.Name == ALL_COMANDS[16].Name:  #立即执行定时任务
+        if 'name' in command.Parmas:
+            funcName = command.Parmas['name']
+            threading.Thread(
+                target=_runTaskRightNow, args=(user,funcName)).start()
+            result = '已开始执行'
+        else:
+            result = '参数错误'
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
@@ -148,3 +156,10 @@ def _executeShell(user, command):
     status, output = subprocess.getstatusoutput(command)
     result = ('执行成功:\n' if status == 0 else '执行失败:\n') + output
     sendTextMsg(user.Id, result)
+
+def _runTaskRightNow(user,funcName):
+   func=getattr(task,funcName)
+   if func is None:
+       sendTextMsg(user.Id, '未找到指定任务')
+   else:
+       func()

@@ -88,6 +88,5 @@ def getJobs():
 
     return text
 
-
 if __name__ == '__main__':
     _startMiTask()
