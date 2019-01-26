@@ -8,8 +8,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 config = getGeneralConfig()
 
-global scheduler
-scheduler = None
+scheduler = BackgroundScheduler()
+
+job_ids = {}
 
 
 def _clearLog():
@@ -39,6 +40,8 @@ def _startMiDaka():  #只执行打卡
     username = config['mi_user_name']
     password = config['mi_pass_word']
     startMiPay(username, password, True)
+    scheduler.remove_job(job_ids['_startMiDaka'])
+    _addMiDakaJob()
 
 
 def _startMiTask():  #执行打卡和一分钱抽奖
@@ -46,47 +49,63 @@ def _startMiTask():  #执行打卡和一分钱抽奖
     username = config['mi_user_name']
     password = config['mi_pass_word']
     startMiPay(username, password, False)
+    scheduler.remove_job(job_ids['_startMiTask'])
+    _addMiTaskJob()
 
 
-def startTasks():
-    global scheduler
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(
-        func=_clearLog,
-        trigger='cron',
-        day_of_week=random.randint(0, 6),
-        hour=random.randint(0, 23),
-        minute=random.randint(0, 59),
-        second=random.randint(0, 59))  #每周随机时间清理一次日志
-    scheduler.add_job(
+def _addMiDakaJob():
+    job_ids['_startMiDaka'] = scheduler.add_job(
         func=_startMiDaka,
         trigger='cron',
         day_of_week='0-6',
         hour=6,
         minute=random.randint(0, 30),
-        second=random.randint(0, 59))  #每天早上6点-6点半执行小米早起打卡
-    scheduler.add_job(
+        second=random.randint(0, 59)  #每天早上6点-6点半执行小米早起打卡
+    ).id
+
+
+def _addClearLogJob():
+    job_ids['_clearLog'] = scheduler.add_job(
+        func=_clearLog,
+        trigger='cron',
+        day_of_week=random.randint(0, 6),
+        hour=random.randint(0, 23),
+        minute=random.randint(0, 59),
+        second=random.randint(0, 59)  #每周随机时间清理一次日志
+    ).id
+
+
+def _addMiTaskJob():
+    job_ids['_startMiTask'] = scheduler.add_job(
         func=_startMiTask,
         trigger='cron',
         day_of_week='0-6',
-        hour=random.randint(11, 19),
-        minute=random.randint(1, 59),
-        second=random.randint(1, 59))  #每天随机时间点执行小米抽奖
+        hour=random.randint(10, 18),
+        minute=random.randint(0, 59),
+        second=random.randint(0, 59)  #每天随机时间点执行小米抽奖
+    ).id
 
+
+def startTasks():
+    _addClearLogJob()
+    _addMiDakaJob()
+    _addMiTaskJob()
+    
     scheduler.start()
 
 def getJobs():
     # scheduler.print_jobs()
     jobs = scheduler.get_jobs()
-    text=''
+    text = ''
     if len(jobs):
-        text='共{}个任务:\n'.format(len(jobs))
+        text = '共{}个任务:\n'.format(len(jobs))
         for job in jobs:
-            text+=str(job)+'\n\n'
+            text += str(job) + '\n\n'
     else:
-        text='暂无任务'
+        text = '暂无任务'
 
     return text
+
 
 if __name__ == '__main__':
     _startMiTask()
