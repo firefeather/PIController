@@ -11,6 +11,7 @@ from utils.chaojiying import imageToCode
 from logger import Logger
 import platform
 
+
 #该方法用来确认元素是否存在，如果存在返回flag=true，否则返回false
 def isElementExist(driver, id):
     flag = True
@@ -41,7 +42,7 @@ def check(driver):
         im = im.crop((left, top, right, bottom))
         im.save('code.png')
         code = imageToCode('code.png')
-        Logger.v('小米登录验证码识别结果:'+code)
+        Logger.v('小米登录验证码识别结果:' + code)
         driver.find_element_by_id("captcha-code").send_keys(code)
         driver.find_element_by_id("login-button").click()
     else:
@@ -112,7 +113,7 @@ def pay(driver):
         sleep(1)
         result = True
     except Exception as e:
-        Logger.e('小米支付失败',e)
+        Logger.e('小米支付失败', e)
     finally:
         return result
 
@@ -129,7 +130,7 @@ def goodLuck(driver):  #一分钱抽奖
         sleep(2)
         payResult = pay(driver)
         if payResult:
-           paySuccessCount += 1
+            paySuccessCount += 1
         driver.find_element_by_link_text("继续参与").click()
         driver.get(driver.current_url)
         sleep(2)
@@ -144,12 +145,13 @@ def goodLuck(driver):  #一分钱抽奖
     ).click()
 
     # 结束后发送通知
-    noticeTxt='共有' + str(total) + '个活动, 新参加了' +str(paySuccessCount)+ '个活动,共参与了' + str(count) + '个活动.'
-    Logger.n('小米抽奖活动',noticeTxt)
+    noticeTxt = '共有' + str(total) + '个活动, 新参加了' + str(
+        paySuccessCount) + '个活动,共参与了' + str(count) + '个活动.'
+    Logger.n('小米抽奖活动', noticeTxt)
     return driver
 
 
-def getUpEarly(driver):
+def getUpEarly(driver, onlyDaka=False):
     driver.get('https://s.pay.xiaomi.com')
     try:
         button = driver.find_element_by_link_text("早起打卡")
@@ -157,30 +159,32 @@ def getUpEarly(driver):
         sleep(2)
         driver.find_element_by_class_name("btn-daka").click()
         sleep(3)
-        try:
-            driver.find_element_by_class_name("btn-daka")#打卡按钮还在  说明没有跳转
-            Logger.v('小米早期打卡等待中或打卡成功')
-        except:
-            payResult = pay(driver)
-            if payResult:
-               Logger.v('小米早起打卡支付成功')
+        if not onlyDaka:  #不只是打卡 则尝试支付明天的
+            try:
+                driver.find_element_by_class_name("btn-daka")  #打卡按钮还在  说明没有跳转
+                Logger.v('小米早期打卡等待中或打卡成功')
+            except:
+                payResult = pay(driver)
+                if payResult:
+                    Logger.v('小米早起打卡支付成功')
     except Exception as e:
-          Logger.e('小米早起打卡失败',e)
+        Logger.e('小米早起打卡失败', e)
 
 
-def startMiPay(username,password,onlyDaka=False):
-    driver = login(username,password)
+def startMiPay(username, password, onlyDaka=False):
+    driver = login(username, password)
     # driver = login('102734075@qq.com', 'ibelieve5')
     try:
-        getUpEarly(driver)
+        getUpEarly(driver, onlyDaka)
         if not onlyDaka:
-           goodLuck(driver)
+            goodLuck(driver)
     except Exception as e:
-        Logger.e('小米支付任务异常',e)
+        Logger.e('小米支付任务异常', e)
     finally:
-        sleep(10)
+        sleep(5)
         driver.quit()
         Logger.v('小米支付任务执行完毕')
+
 
 if __name__ == '__main__':
     startMiPay('18671717521', 'qdq19910913qdq')
