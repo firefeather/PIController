@@ -79,8 +79,8 @@ def collectCoins(coinId):
         data=data,
         verify=False)
     result = response.json()['msg']
-    Logger.v('网易星球收取<' + coinId + '>' + result)
-
+    if not '成功' in result:
+        Logger.e('网易星球收取黑钻失败',result)
 
 def autoCollectCoins():
     # 1、请求首页数据，检查是否有coin可以收集。有则将coin保存到列表容器
@@ -96,9 +96,8 @@ def autoCollectCoins():
         # 2、检查coin列表容器是否有值，遍历请求领取coin接口
         Logger.v('共有{}个黑钻可收取'.format(len(collectCoinsList)))
         for collectCoinsItem in collectCoinsList:
-            coinId = collectCoinsItem['id']
-            Logger.v('网易星球开始收取<' + coinId + '>')
-            collectCoins(coinId)
+            collectCoins(collectCoinsItem['id'])
+        Logger.v('网易星球收取黑钻毕')
 
 
 if __name__ == "__main__":
