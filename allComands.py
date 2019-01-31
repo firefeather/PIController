@@ -25,6 +25,7 @@ ALL_COMANDS = [
    Command(name='发微博',func='模拟网页登录发送微博(会带小尾巴)',usage='发微博:XXX',parmas='STR',permission=PERMISSION_LEVEL['SUPER']),
    Command(name='获取任务详情',func='获取定时任务的详细情况',usage='获取任务详情',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
    Command(name='立即执行任务',func='立即执行指定的定时任务',usage='立即执行任务:name=xxx',parmas='DIC',permission=PERMISSION_LEVEL['SUPER']),
+   Command(name='说话',func='让树莓派通过音响将指定文字说出来',usage='说话:XXX',parmas='STR',permission=PERMISSION_LEVEL['ADMIN']),
 
 ]
 

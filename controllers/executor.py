@@ -19,6 +19,7 @@ from utils.excel2Image import ReportImage
 from tools.weiBoSender import sendWeibo
 from logger import Logger
 import task
+from utils.speaker import speak
 
 
 def executCommand(command, user):
@@ -89,6 +90,9 @@ def executCommand(command, user):
             result = '已开始执行'
         else:
             result = '参数错误'
+    elif command.Name == ALL_COMANDS[17].Name:  #说话
+        speak(command.Parmas)
+        result = '已执行'
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
