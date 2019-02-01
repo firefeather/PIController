@@ -20,6 +20,7 @@ from tools.weiBoSender import sendWeibo
 from logger import Logger
 import task
 from utils.speaker import speak
+from config import getGeneralConfig
 
 
 def executCommand(command, user):
@@ -86,13 +87,15 @@ def executCommand(command, user):
         if 'name' in command.Parmas:
             funcName = command.Parmas['name']
             threading.Thread(
-                target=_runTaskRightNow, args=(user,funcName)).start()
+                target=_runTaskRightNow, args=(user, funcName)).start()
             result = '已开始执行'
         else:
             result = '参数错误'
     elif command.Name == ALL_COMANDS[17].Name:  #说话
         speak(command.Parmas)
         result = '已执行'
+    elif command.Name == ALL_COMANDS[18].Name:  #读取日志
+        result = sendResultLater(user, _getSysLog, command.Parmas)
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
@@ -110,8 +113,9 @@ def sendResultLater(to, func, args=None):
             else:
                 sendTextMsg(to.Id, result)
         except Exception as e:
-            Logger.e(func.__name__+'执行失败', e)
+            Logger.e(func.__name__ + '执行失败', e)
         #  print(func,' error',e)
+
     threading.Thread(target=getResultAndSend).start()
     return '已开始执行'
 
@@ -161,9 +165,26 @@ def _executeShell(user, command):
     result = ('执行成功:\n' if status == 0 else '执行失败:\n') + output
     sendTextMsg(user.Id, result)
 
-def _runTaskRightNow(user,funcName):
-   func=getattr(task,funcName)
-   if func is None:
-       sendTextMsg(user.Id, '未找到指定任务')
-   else:
-       func()
+
+def _runTaskRightNow(user, funcName):
+    func = getattr(task, funcName)
+    if func is None:
+        sendTextMsg(user.Id, '未找到指定任务')
+    else:
+        func()
+
+
+def _getSysLog(name):
+    logPath = getGeneralConfig()['log_path']
+    logName = logPath + name + '.log'
+    result = ''
+    if os.path.exists(logName):
+        try:
+            with open(logName, 'r') as file:
+                result = file.read()
+        except Exception as e:
+            Logger.e('读取日志文件' + logName + '失败', e)
+            result = '读取日志失败'
+    else:
+        result = '日志不存在'
+    return result

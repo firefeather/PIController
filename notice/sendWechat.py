@@ -9,6 +9,8 @@ def sendMsg(msgJson):
     accessToken = Tocken().get_access_token()
     postUrl = ("https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s" % accessToken )
     result = post(postUrl,json=msgJson)
+    if result['errcode']:
+       Logger.e('发送微信消息失败',result['errmsg'])
     return result
 
 def sendTextMsg(toId,content):

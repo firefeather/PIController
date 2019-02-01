@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 所有的命令
 
-import copy
+import copy,time
 from command import Command,PERMISSION_LEVEL
 from tools.chatBot import BOTS
 from logger import Logger
@@ -26,6 +26,7 @@ ALL_COMANDS = [
    Command(name='获取任务详情',func='获取定时任务的详细情况',usage='获取任务详情',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
    Command(name='立即执行任务',func='立即执行指定的定时任务',usage='立即执行任务:name=xxx',parmas='DIC',permission=PERMISSION_LEVEL['SUPER']),
    Command(name='说话',func='让树莓派通过音响将指定文字说出来',usage='说话:XXX',parmas='STR',permission=PERMISSION_LEVEL['ADMIN']),
+   Command(name='查看日志',func='查看指定日期日志文件(格式YYYY-MM-DD)',usage='查看日志:X-X-X',parmas='STR',permission=PERMISSION_LEVEL['SUPER'],default=time.strftime("%Y-%m-%d")),
 
 ]
 
@@ -40,11 +41,14 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
        comand = copy.deepcopy(commandList[0])
        if comand.Parmas == None:
           result = comand
-       elif comand.Parmas == "STR":
+       elif comand.Parmas == "STR":#字符串型参数
           if len(args) > 1:#有参数命令,需解码参数
              comand.Parmas = args[1].strip()
              result = comand
-       elif comand.Parmas == "DIC":
+          elif not comand.Default is None:
+             comand.Parmas = comand.Default
+             result = comand
+       elif comand.Parmas == "DIC":#字典型参数
             if len(args) > 1:#有参数命令,需解码参数
                try:
                   parmasList = args[1].split(",")
@@ -58,6 +62,9 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
                   result = comand
                except Exception as e:
                   Logger.e('命令参数解析失败', e)
+            elif not comand.Default is None:
+               comand.Parmas = comand.Default
+               result = comand
        else:
           result = comand
        if result is None:
