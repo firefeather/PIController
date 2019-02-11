@@ -45,11 +45,6 @@ if __name__ == '__main__':
                 [
                     {
                         "type": "click",
-                        "name": "截屏",
-                        "key":  "screen"
-                    },
-                    {
-                        "type": "click",
                         "name": "新闻",
                         "key":  "news"
                     },
@@ -60,13 +55,18 @@ if __name__ == '__main__':
                     },
                     {
                         "type": "click",
-                        "name": "重启",
-                        "key":  "restart"
+                        "name": "截屏",
+                        "key":  "screen"
                     },
                     {
                         "type": "click",
                         "name": "任务",
                         "key":  "task"
+                    },
+                    {
+                        "type": "click",
+                        "name": "重启",
+                        "key":  "restart"
                     }
                 ]
             },
