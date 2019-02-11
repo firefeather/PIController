@@ -57,6 +57,16 @@ if __name__ == '__main__':
                         "type": "click",
                         "name": "电影",
                         "key":  "movie"
+                    },
+                    {
+                        "type": "click",
+                        "name": "重启",
+                        "key":  "restart"
+                    },
+                    {
+                        "type": "click",
+                        "name": "任务",
+                        "key":  "task"
                     }
                 ]
             },

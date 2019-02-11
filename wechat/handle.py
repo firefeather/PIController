@@ -71,6 +71,10 @@ class Handle(object):
                          content = controllers.handText('新闻',fromUser)
                     elif recMsg.Eventkey == 'screen':
                          content = controllers.handText('截屏',fromUser)
+                    elif recMsg.Eventkey == 'task':
+                         content = controllers.handText('查看任务详情',fromUser)
+                    elif recMsg.Eventkey == 'restart':
+                         content = controllers.handText('重启系统',fromUser)
                     else:
                         content = '未识别的操作'
                 elif recMsg.Event in ('subscribe', 'unsubscribe'):
