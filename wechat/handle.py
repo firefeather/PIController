@@ -75,6 +75,8 @@ class Handle(object):
                          content = controllers.handText('查看任务详情',fromUser)
                     elif recMsg.Eventkey == 'restart':
                          content = controllers.handText('重启系统',fromUser)
+                    elif recMsg.Eventkey == 'log':
+                         content = controllers.handText('查看日志',fromUser)
                     else:
                         content = '未识别的操作'
                 elif recMsg.Event in ('subscribe', 'unsubscribe'):

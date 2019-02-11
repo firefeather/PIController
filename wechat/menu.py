@@ -45,13 +45,8 @@ if __name__ == '__main__':
                 [
                     {
                         "type": "click",
-                        "name": "新闻",
-                        "key":  "news"
-                    },
-                    {
-                        "type": "click",
-                        "name": "电影",
-                        "key":  "movie"
+                        "name": "日志",
+                        "key":  "log"
                     },
                     {
                         "type": "click",
