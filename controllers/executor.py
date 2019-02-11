@@ -97,7 +97,7 @@ def executCommand(command, user):
         result = '已执行'
     elif command.Name == ALL_COMANDS[18].Name:  #读取日志
         result = sendResultLater(user, _getSysLog, command.Parmas)
-    elif command.Name == ALL_COMANDS[18].Name:  #读取日志
+    elif command.Name == ALL_COMANDS[19].Name:  #重启控制器
         Logger.n('警告', '正在尝试重启控制器')
         threading.Thread(
             target=_executeShell,
