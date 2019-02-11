@@ -72,7 +72,7 @@ class Handle(object):
                     elif recMsg.Eventkey == 'screen':
                          content = controllers.handText('截屏',fromUser)
                     elif recMsg.Eventkey == 'task':
-                         content = controllers.handText('查看任务详情',fromUser)
+                         content = controllers.handText('获取任务详情',fromUser)
                     elif recMsg.Eventkey == 'restart':
                          content = controllers.handText('重启系统',fromUser)
                     elif recMsg.Eventkey == 'log':
