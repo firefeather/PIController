@@ -101,7 +101,7 @@ def executCommand(command, user):
         Logger.n('警告', '正在尝试重启控制器')
         threading.Thread(
             target=_executeShell,
-            args=(user, 'sudo /home/pi/Script/start/controller.sh')).start()
+            args=(user, 'git pull && sudo /home/pi/Script/start/controller.sh')).start()
         result = '正在重启控制器'
     else:
         result = '暂未完成'
