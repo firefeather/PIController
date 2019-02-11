@@ -64,7 +64,7 @@ class Logger:
             content = content.__str__()
         else:
             content = str(content)
-        logger.warning('\n!!!发现异常!!!\n' + title + ':' + content,exc_info=True)
+        logger.warning('\n!!!重要!!!\n' + title + ':' + content,exc_info=True)
         import notice.noticeManager
         notice.noticeManager.sendNotice(title + ':' + content)
 

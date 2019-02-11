@@ -14,7 +14,7 @@ urls = (
 
 if __name__ == '__main__':
     try:
-        sendTextMsg(MANAGER.Id,'树莓派小助手已启动')
+        sendTextMsg(MANAGER.Id,'树莓派控制器已启动')
         task.startTasks()
         app = web.application(urls, globals())
         app.run()

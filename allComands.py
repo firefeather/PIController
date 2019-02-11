@@ -27,6 +27,7 @@ ALL_COMANDS = [
    Command(name='立即执行任务',func='立即执行指定的定时任务',usage='立即执行任务:name=xxx',parmas='DIC',permission=PERMISSION_LEVEL['SUPER']),
    Command(name='说话',func='让树莓派通过音响将指定文字说出来',usage='说话:XXX',parmas='STR',permission=PERMISSION_LEVEL['ADMIN']),
    Command(name='查看日志',func='查看指定日期日志文件(格式YYYY-MM-DD)',usage='查看日志:X-X-X',parmas='STR',permission=PERMISSION_LEVEL['SUPER'],default=time.strftime("%Y-%m-%d")),
+   Command(name='重启系统',func='重启控制器',usage='重启系统',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
 
 ]
 

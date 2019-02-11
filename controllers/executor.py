@@ -97,7 +97,12 @@ def executCommand(command, user):
         result = '已执行'
     elif command.Name == ALL_COMANDS[18].Name:  #读取日志
         result = sendResultLater(user, _getSysLog, command.Parmas)
-        # result = _getSysLog(user, command.Parmas)
+    elif command.Name == ALL_COMANDS[18].Name:  #读取日志
+        Logger.n('警告', '正在尝试重启控制器')
+        threading.Thread(
+            target=_executeShell,
+            args=(user, 'sudo /home/pi/Script/start/controller.sh')).start()
+        result = '正在重启控制器'
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
