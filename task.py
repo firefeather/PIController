@@ -19,11 +19,11 @@ def _clearLog():
     logPath = config['log_path']
     logSaveDays = config['log_save_days']
 
-    def _removeLog(filename, timedifference):
-        date = datetime.datetime.fromtimestamp(os.path.getmtime(filename))
-        now = datetime.datetime.now()
-        if (now - date).seconds > timedifference:
-            if os.path.exists(filename):
+    def _removeLog(filename, daysDiff):
+        if os.path.exists(filename):
+            date = datetime.datetime.fromtimestamp(os.path.getctime(filename))
+            now = datetime.datetime.now()
+            if (now - date).days > daysDiff:
                 os.remove(filename)
                 Logger.v('自动删除日志文件:' + filename)
 
@@ -33,7 +33,7 @@ def _clearLog():
         if file.endswith(".log"):
             logs.append(logPath + file)
         for log in logs:
-            _removeLog(log, int(logSaveDays) * 24 * 60 * 60)
+            _removeLog(log, int(logSaveDays))
 
 
 def _startMiDaka():  #只执行打卡
@@ -110,7 +110,7 @@ def startTasks():
     _addMiDakaJob()
     _addMiTaskJob()
     _addWangyiJob()
-    
+
     scheduler.start()
 
 
