@@ -5,6 +5,7 @@ import os
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 import shutil
+from logger import Logger
 
 defaultConfig = {
     "maxLen": 150,
@@ -56,8 +57,8 @@ class DrawText:
             img.save(path)
             # img.convert("RGB").save(path, "BMP")
             return width, height
-        except Exception as error_message:
-            print(str(error_message))
+        except Exception as e:
+            Logger.e('文字转图片失败', e)
 
     def draw_file(self, filePath, imgPath):
         try:
@@ -94,19 +95,29 @@ class DrawText:
                 top += sizes[index][1]  #从上往下拼接，左上角的纵坐标递增
                 target.save(imgPath, quality=100)
             shutil.rmtree(tempPath)
-        except Exception as error_message:
-            print(str(error_message))
+        except Exception as e:
+            Logger.e('文本文件转图片失败', e)
 
 
 def text2Image(text, path=None):
     if path is None:
         path = 'temp/{}.png'.format(text[:5])
     DrawText().draw_text(text, path)
+    result = path
+    if not os.path.exists(path):
+        result = '生成图片失败'
+    return result
 
 
 def textFile2Image(filePath, path=None):
-    # lines = len([ "" for line in open(logName,"r")])
     if path is None:
         temp = filePath.split('/')
         path = 'temp/{}.png'.format(temp[-1].split('.')[0])
+    dir = os.path.dirname(path)
+    if not os.path.exists(dir):
+       os.mkdir(dir)
     DrawText().draw_file(filePath, path)
+    result = path
+    if not os.path.exists(path):
+        result = '生成图片失败'
+    return result

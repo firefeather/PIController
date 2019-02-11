@@ -183,8 +183,7 @@ def _getSysLog(name):
     if os.path.exists(logName):
         try:
             logImg = 'temp/log.png'
-            Text2Image.textFile2Image(logName, logImg)
-            result = logImg
+            result = Text2Image.textFile2Image(logName, logImg)
         except Exception as e:
             Logger.e('读取日志文件' + logName + '失败', e)
             result = '读取日志失败'
