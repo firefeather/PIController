@@ -7,7 +7,7 @@ from fetch import get,download
 import platform
 from logger import Logger
 
-voiceFile = 'auido.mp3'
+voiceFile = 'temp/auido.mp3'
 
 voiceConfig = getVoiceConfig()
 appId = voiceConfig['appid']

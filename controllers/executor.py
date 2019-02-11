@@ -21,6 +21,7 @@ from logger import Logger
 import task
 from utils.speaker import speak
 from config import getGeneralConfig
+import utils.text2image as Text2Image
 
 
 def executCommand(command, user):
@@ -96,6 +97,7 @@ def executCommand(command, user):
         result = '已执行'
     elif command.Name == ALL_COMANDS[18].Name:  #读取日志
         result = sendResultLater(user, _getSysLog, command.Parmas)
+        # result = _getSysLog(user, command.Parmas)
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
@@ -180,8 +182,9 @@ def _getSysLog(name):
     result = ''
     if os.path.exists(logName):
         try:
-            with open(logName, 'r') as file:
-                result = file.read()
+            logImg = 'temp/log.png'
+            Text2Image.textFile2Image(logName, logImg)
+            result = logImg
         except Exception as e:
             Logger.e('读取日志文件' + logName + '失败', e)
             result = '读取日志失败'
