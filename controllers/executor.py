@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# 主控制器,所有的命令经由这里分发
+# 命令执行器 具体命令执行
 
 import time, threading, shutil, subprocess, os
 from users import getUsers, updateUserByDict, findUser

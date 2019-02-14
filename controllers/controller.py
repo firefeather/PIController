@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# 主控制器,所有的命令经由这里分发
+# 主控制器,所有的命令经由这里分发 做执行前的判断和拦截(用法及权限判断)
 
 import time
 from allComands import findComandByStr
