@@ -64,7 +64,7 @@ class Handle(object):
                                         '作用:'+comand.Func+'\n'+\
                                         '用法:'+comand.Usage+'\n'
                                 descs.append(desc)
-                            content = '\n\n'.join(descs)
+                            content = '\n'.join(descs)
                     elif recMsg.Eventkey == 'movie':
                          content = controllers.handText(ALL_COMANDS[4].Name,fromUser)
                     elif recMsg.Eventkey == 'news':
