@@ -25,13 +25,11 @@ def _toString(goodsList):
       result+='描述:'+good['summary']+'\n'
       result+='价格:{}\n'.format(good['price_min']/100)
       result+='图片:'+good['img_square']+'\n'
+      result+='详情:'+good['jump_url']+'\n'
       result+='人数:{}\n'.format(good['saled'])
       result+='剩余:{}天\n'.format((datetime.fromtimestamp(good['cf_end'])-datetime.now()).days)
       result+='\n'
   return result
-
-        
-
 
 if __name__ == "__main__":
     getGoodList()
