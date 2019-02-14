@@ -6,6 +6,9 @@ from logger import Logger
 from script.miPay import startMiPay
 from apscheduler.schedulers.background import BackgroundScheduler
 from script.wangyiPlanet import autoCollectCoins
+from spider.miCrowdfunding import getGoodList
+from notice.sendWechat import sendTextMsg
+from users import MANAGER
 
 config = getGeneralConfig()
 
@@ -61,6 +64,12 @@ def _startWangyiCollet():  #网易星球自动收钻
     _addWangyiJob()
 
 
+def _startMiZhongchou():  #发送小米众筹产品信息
+    Logger.v('开始获取小米众筹产品信息并发送')
+    info = getGoodList()
+    sendTextMsg(MANAGER.Id, info)
+
+
 def _addWangyiJob():
     job_ids['_startWangyiCollet'] = scheduler.add_job(
         func=_startWangyiCollet,
@@ -105,12 +114,24 @@ def _addMiTaskJob():
     ).id
 
 
+def _addMiZhongchouJob():
+    job_ids['_addMiZhongchouJob'] = scheduler.add_job(
+        func=_startMiZhongchou,
+        trigger='cron',
+        day_of_week='0-6',
+        hour=10,
+        minute=0,
+        second=0  #每天早上10点发送小米众筹产品信息
+    ).id
+
+
 def startTasks():
     _addClearLogJob()
     _addMiDakaJob()
     _addMiTaskJob()
     _addWangyiJob()
-
+    _addMiZhongchouJob()
+    
     scheduler.start()
 
 
@@ -124,7 +145,6 @@ def getJobs():
             text += str(job) + '\n\n'
     else:
         text = '暂无任务'
-
     return text
 
 

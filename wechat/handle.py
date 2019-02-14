@@ -66,17 +66,17 @@ class Handle(object):
                                 descs.append(desc)
                             content = '\n\n'.join(descs)
                     elif recMsg.Eventkey == 'movie':
-                         content = controllers.handText('最新电影',fromUser)
+                         content = controllers.handText(ALL_COMANDS[4].Name,fromUser)
                     elif recMsg.Eventkey == 'news':
-                         content = controllers.handText('新闻',fromUser)
+                         content = controllers.handText(ALL_COMANDS[6].Name,fromUser)
                     elif recMsg.Eventkey == 'screen':
-                         content = controllers.handText('截屏',fromUser)
+                         content = controllers.handText(ALL_COMANDS[5].Name,fromUser)
                     elif recMsg.Eventkey == 'task':
-                         content = controllers.handText('获取任务详情',fromUser)
+                         content = controllers.handText(ALL_COMANDS[15].Name,fromUser)
                     elif recMsg.Eventkey == 'restart':
-                         content = controllers.handText('重启系统',fromUser)
+                         content = controllers.handText(ALL_COMANDS[19].Name,fromUser)
                     elif recMsg.Eventkey == 'log':
-                         content = controllers.handText('查看日志',fromUser)
+                         content = controllers.handText(ALL_COMANDS[18].Name,fromUser)
                     else:
                         content = '未识别的操作'
                 elif recMsg.Event in ('subscribe', 'unsubscribe'):

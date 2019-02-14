@@ -22,6 +22,7 @@ import task
 from utils.speaker import speak
 from config import getGeneralConfig
 import utils.text2image as Text2Image
+from spider.miCrowdfunding import getGoodList
 
 
 def executCommand(command, user):
@@ -103,6 +104,8 @@ def executCommand(command, user):
             target=_executeShell,
             args=(user, 'git pull && sudo /home/pi/Script/start/controller.sh')).start()
         result = '正在重启控制器'
+    elif command.Name == ALL_COMANDS[20].Name:  #小米众筹
+        result = sendResultLater(user, getGoodList)
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
