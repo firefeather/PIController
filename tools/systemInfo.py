@@ -47,9 +47,8 @@ def getSystemInfo():
         result = '当前设备信息:\n\n' +\
               + ('CPU温度:%.1f ℃,\n' %cpuTemp)+\
               + ('CPU使用率:%.1f' %cpuUsage+'%,\n')+\
-              + ('总内存:%.1f MB,已使用:%.1f MB,剩余:%.1f MB,\n' %ramTotal %ramUsed %ramFree)+\
-              + ('总硬盘:%.1f MB,已使用:%.1f MB,剩余:%.1f MB,\n' %diskTotal %diskUsed %diskFree)
-
+              + ('总内存:%.1f MB,已使用:%.1f MB,剩余:%.1f MB,\n' %(ramTotal,ramUsed,ramFree))+\
+              + ('总硬盘:%.1f MB,已使用:%.1f MB,剩余:%.1f MB,\n' %(diskTotal,diskUsed,diskFree))
     else:
         result = '暂不支持获取此设备信息'
     return result

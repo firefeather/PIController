@@ -77,6 +77,8 @@ class Handle(object):
                          content = controllers.handText(ALL_COMANDS[19].Name,fromUser)
                     elif recMsg.Eventkey == 'log':
                          content = controllers.handText(ALL_COMANDS[18].Name,fromUser)
+                    elif recMsg.Eventkey == 'sysInfo':
+                         content = controllers.handText(ALL_COMANDS[21].Name,fromUser)
                     else:
                         content = '未识别的操作'
                 elif recMsg.Event in ('subscribe', 'unsubscribe'):
