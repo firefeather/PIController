@@ -3,8 +3,11 @@
 from tools.systemInfo import getCPUtemp
 from logger import Logger
 from RPi import GPIO as gpio  #注意RPi中的i是小写的
+import time, subprocess
 
 FAN_GPIO = 15  #控制风扇的GPIO
+
+TEMP_POWER_OFF = 80  #关闭计算机的温度
 TEMP_ON = 60  #开启风扇的温度
 TEMP_OFF = 45  #关闭风扇的温度
 
@@ -22,6 +25,13 @@ def autoControlTemp():
     try:
         cupTemp = getCPUtemp()
         global IS_ON
+        if cupTemp >= TEMP_POWER_OFF:
+            Logger.n('温度过高', '即将关机,当前CPU温度: %.1f ℃' % cupTemp)
+            time.sleep(2)
+            status, output = subprocess.getstatusoutput('poweroff')
+            result = ('关机成功:' if status == 0 else '关机失败:') + output
+            Logger.v(result)
+            return
         if (not IS_ON) and (cupTemp >= TEMP_ON):  #如果之前关闭并且温度高了，就启动风扇
             gpio.output(FAN_GPIO, 1)
             IS_ON = True
