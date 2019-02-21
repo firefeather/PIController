@@ -23,7 +23,7 @@ from utils.speaker import speak
 from config import getGeneralConfig
 import utils.text2image as Text2Image
 from spider.miCrowdfunding import getGoodList
-
+from tools.systemInfo import getSystemInfo
 
 def executCommand(command, user):
     if command.Name == ALL_COMANDS[0].Name:  #获取所有用户
@@ -106,6 +106,8 @@ def executCommand(command, user):
         result = '正在重启控制器'
     elif command.Name == ALL_COMANDS[20].Name:  #小米众筹
         result = sendResultLater(user, getGoodList)
+    elif command.Name == ALL_COMANDS[21].Name:  #设备信息
+        result = sendResultLater(user, getSystemInfo)
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')

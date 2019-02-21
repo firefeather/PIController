@@ -29,6 +29,7 @@ ALL_COMANDS = [
    Command(name='查看日志',func='查看指定日期日志文件(格式YYYY-MM-DD)',usage='查看日志:X-X-X',parmas='STR',permission=PERMISSION_LEVEL['SUPER'],default=time.strftime("%Y-%m-%d",time.localtime(time.time()))),
    Command(name='重启系统',func='拉取最新代码并重启控制器',usage='重启系统',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
    Command(name='小米众筹',func='获取小米优品上最新的众筹产品信息',usage='小米众筹',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='设备信息',func='获取当前服务器的状态信息',usage='设备信息',parmas=None,permission=PERMISSION_LEVEL['ADMIN']),
 
 ]
 
