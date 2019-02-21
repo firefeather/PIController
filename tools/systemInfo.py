@@ -6,7 +6,7 @@ import os, platform, time
 
 def getCPUtemp():
     temp = os.popen('vcgencmd measure_temp').readline()
-    tempfloat = temp.replace('temp=', '').replace('\'C\n', '')
+    tempfloat = float(temp.replace('temp=', '').replace('\'C\n', '')) 
     return tempfloat
 
 
@@ -48,7 +48,7 @@ def getSystemInfo():
         cpuUsage = getCPUusage()
         RAM_stats = getRAM()
         DISK_stats = getDisk()
-        result = '当前设备信息:\n\n' + ('CPU温度: %s ℃,\n' % cpuTemp) + (
+        result = '当前设备信息:\n\n' + ('CPU温度: %.1f ℃,\n' % cpuTemp) + (
             'CPU使用率: %.1f' % cpuUsage + ' %,\n') + (
                 '总内存: %.1f MB,已使用: %.1f MB,剩余: %.1f MB,\n' %
                 (round(int(RAM_stats[0]) / 1024, 1),

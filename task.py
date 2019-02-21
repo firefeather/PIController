@@ -9,6 +9,7 @@ from script.wangyiPlanet import autoCollectCoins
 from spider.miCrowdfunding import getGoodList
 from notice.sendWechat import sendTextMsg
 from users import MANAGER
+from tools.autoTemp import autoControlTemp
 
 config = getGeneralConfig()
 
@@ -125,13 +126,22 @@ def _addMiZhongchouJob():
     ).id
 
 
+def _addAutoTempControlJob():  #开启自动温控系统
+    job_ids['_addAutoTempControlJob'] = scheduler.add_job(
+        func=autoControlTemp,
+        trigger='interval',
+        seconds=30  #每30秒执行一次
+    ).id
+
+
 def startTasks():
     _addClearLogJob()
     _addMiDakaJob()
     _addMiTaskJob()
     _addWangyiJob()
     _addMiZhongchouJob()
-    
+    _addAutoTempControlJob()
+
     scheduler.start()
 
 
