@@ -24,5 +24,5 @@ if __name__ == '__main__':
     #    result = controllers.handText("立即执行任务:name=_clearLog",MANAGER)
     #    result = controllers.handText("获取用户信息:id=omyqB1uI5qSm5Ypdum43V2zMrTVk",MANAGER)
     #    print('result',result)
-    task.startTasks()
+    # task.startTasks()
     # print(task.getJobs())
