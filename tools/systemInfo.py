@@ -41,11 +41,11 @@ def getSystemInfo():
         cpuUsage = getCPUusage()
         RAM_stats = getRAM()
         DISK_stats = getDisk()
-        result = '当前设备信息:\n\n' + ('CPU温度:%.1s ℃,\n' % cpuTemp) + (
-            'CPU使用率:%.1s' % cpuUsage + ' %,\n') + (
+        result = '当前设备信息:\n\n' + ('CPU温度:%s ℃,\n' % cpuTemp) + (
+            'CPU使用率:%s' % cpuUsage + ' %,\n') + (
                 '总内存:%.1f MB,已使用:%.1f MB,剩余:%.1f MB,\n' %
-                (round(int(RAM_stats[0]) / 1000,1), round(int(RAM_stats[1]) / 1000,1), round(int(RAM_stats[2]) / 1000,1))) + (
-                    '总硬盘:%s GB,已使用:%s GB,剩余:%s GB,\n' %
+                (round(int(RAM_stats[0]) / 1024,1), round(int(RAM_stats[1]) / 1024,1), round(int(RAM_stats[2]) / 1024,1))) + (
+                    '总硬盘:%s B,已使用:%s B,剩余:%s B,\n' %
                     (DISK_stats[0], DISK_stats[1], DISK_stats[2]))
     else:
         result = '暂不支持获取此设备信息'
