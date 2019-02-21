@@ -45,7 +45,7 @@ def getSystemInfo():
         ramTotal, ramUsed, ramFree = getRAM()
         diskTotal, diskUsed, diskFree = getDisk()
         result = '当前设备信息:\n\n' + ('CPU温度:%.1f ℃,\n' % cpuTemp) + (
-            'CPU使用率:%.1f' % cpuUsage + '%,\n') + (
+            'CPU使用率:%.1f' % cpuUsage + ' %,\n') + (
                 '总内存:%.1f MB,已使用:%.1f MB,剩余:%.1f MB,\n' %
                 (ramTotal, ramUsed, ramFree)) + (
                     '总硬盘:%.1f MB,已使用:%.1f MB,剩余:%.1f MB,\n' %
