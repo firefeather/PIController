@@ -140,7 +140,7 @@ def startTasks():
     _addMiTaskJob()
     _addWangyiJob()
     _addMiZhongchouJob()
-    _addAutoTempControlJob()
+    # _addAutoTempControlJob()
 
     scheduler.start()
 

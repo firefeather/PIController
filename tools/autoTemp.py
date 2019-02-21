@@ -30,8 +30,8 @@ def autoControlTemp():
             gpio.output(FAN_GPIO, 0)
             IS_ON = False
             Logger.v('关闭风扇,当前CPU温度: %.1f ℃' % cupTemp)
-        else:
-            Logger.v('风扇状态:'+str(IS_ON)+('当前CPU温度: %.1f ℃' % cupTemp))
+        # else:
+        #     Logger.v('风扇状态:'+str(IS_ON)+(',当前CPU温度: %.1f ℃' % cupTemp))
     except Exception as e:
         gpio.cleanup()
         Logger.e('开关风扇失败', e)
