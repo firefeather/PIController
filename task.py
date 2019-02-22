@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # 定时任务
-import os, logging, time, datetime, random
+import os, logging, time, datetime, random, platform
 from config import getGeneralConfig
 from logger import Logger
 from script.miPay import startMiPay
@@ -9,7 +9,6 @@ from script.wangyiPlanet import autoCollectCoins
 from spider.miCrowdfunding import getGoodList
 from notice.sendWechat import sendTextMsg
 from users import MANAGER
-from tools.autoTemp import autoControlTemp
 
 config = getGeneralConfig()
 
@@ -127,6 +126,7 @@ def _addMiZhongchouJob():
 
 
 def _addAutoTempControlJob():  #开启自动温控系统
+    from tools.autoTemp import autoControlTemp
     job_ids['_addAutoTempControlJob'] = scheduler.add_job(
         func=autoControlTemp,
         trigger='interval',
@@ -134,13 +134,27 @@ def _addAutoTempControlJob():  #开启自动温控系统
     ).id
 
 
+def _addNetListenerJob():  #监听网络连接情况
+    from tools.netCheck import isNetOK
+    isNetOK()
+    job_ids['_addNetListener'] = scheduler.add_job(
+        func=isNetOK,
+        trigger='interval',
+        minutes=1  #每1分钟执行一次
+    ).id
+
+
 def startTasks():
+    # if platform.system() == 'Linux':
+    #     _addAutoTempControlJob()
+
+    _addNetListenerJob()
+
     _addClearLogJob()
     _addMiDakaJob()
     _addMiTaskJob()
     _addWangyiJob()
     _addMiZhongchouJob()
-    # _addAutoTempControlJob()
 
     scheduler.start()
 

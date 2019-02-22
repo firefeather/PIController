@@ -7,6 +7,7 @@ from notice.sendWechat import sendTextMsg
 from users import MANAGER
 import task
 from logger import Logger
+from utils.speaker import speak
 
 urls = (
     '/wx', 'Handle',
@@ -14,7 +15,9 @@ urls = (
 
 if __name__ == '__main__':
     try:
-        sendTextMsg(MANAGER.Id,'树莓派控制器已启动')
+        noticeTxt = '树莓派控制器已启动'
+        speak(noticeTxt)
+        sendTextMsg(MANAGER.Id,noticeTxt)
         task.startTasks()
         app = web.application(urls, globals())
         app.run()
