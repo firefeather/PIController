@@ -16,7 +16,7 @@ ALL_COMANDS = [
    Command(name='截屏',func='获取服务器当前屏幕截图',usage='截屏',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
    Command(name='新闻',func='获取feebuf最新安全新闻',usage='新闻',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='翻译',func='获取有道翻译结果',usage='翻译:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
-   Command(name='查询天气',func='获取指定地区(最小为区县)的当日天气情况',usage='查询天气:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='天气',func='获取指定地区(最小为区县)的当日天气情况',usage='天气:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='设置机器人',func='设置聊天机器人,当前支持'+','.join(BOTS)+',如参数错误则随机机器人',usage='设置机器人:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='取消机器人',func='取消聊天机器人',usage='取消机器人',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='职位信息',func='获取指定岗位在拉勾上的最新信息',usage='职位信息:XXX',parmas='STR',permission=PERMISSION_LEVEL['NORMAL']),

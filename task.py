@@ -127,12 +127,19 @@ def _addMiZhongchouJob():
 
 def _addAutoTempControlJob():  #开启自动温控系统
     from tools.autoTemp import autoControlTemp
-    job_ids['_addAutoTempControlJob'] = scheduler.add_job(
+    job_ids['_addAutoTempControl'] = scheduler.add_job(
         func=autoControlTemp,
         trigger='interval',
         seconds=30  #每30秒执行一次
     ).id
 
+def _addTempWatcherJob():  #开启温度监测
+    from tools.tempWatcher import watchTemp
+    job_ids['_addTempWatcher'] = scheduler.add_job(
+        func=watchTemp,
+        trigger='interval',
+        seconds=30  #每30秒执行一次
+    ).id
 
 def _addNetListenerJob():  #监听网络连接情况
     from tools.netCheck import isNetOK
@@ -147,7 +154,7 @@ def _addNetListenerJob():  #监听网络连接情况
 def startTasks():
     # if platform.system() == 'Linux':
     #     _addAutoTempControlJob()
-
+    _addTempWatcherJob()
     _addNetListenerJob()
 
     _addClearLogJob()
