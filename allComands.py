@@ -30,6 +30,7 @@ ALL_COMANDS = [
    Command(name='重启系统',func='拉取最新代码并重启控制器',usage='重启系统',parmas=None,permission=PERMISSION_LEVEL['SUPER']),
    Command(name='小米众筹',func='获取小米优品上最新的众筹产品信息',usage='小米众筹',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='设备信息',func='获取当前服务器的状态信息',usage='设备信息',parmas=None,permission=PERMISSION_LEVEL['ADMIN']),
+   Command(name='双色球',func='获取指定期数双色球开奖号码',usage='双色球:XXX',parmas='STR/NONE',permission=PERMISSION_LEVEL['NORMAL']),
 
 ]
 
@@ -44,14 +45,14 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
        comand = copy.deepcopy(commandList[0])
        if comand.Parmas == None:
           result = comand
-       elif comand.Parmas == "STR":#字符串型参数
+       elif "STR" in comand.Parmas:#字符串型参数
           if len(args) > 1:#有参数命令,需解码参数
              comand.Parmas = args[1].strip()
              result = comand
           elif not comand.Default is None:
              comand.Parmas = comand.Default
              result = comand
-       elif comand.Parmas == "DIC":#字典型参数
+       elif "DIC" in comand.Parmas:#字典型参数
             if len(args) > 1:#有参数命令,需解码参数
                try:
                   parmasList = args[1].split(",")
@@ -71,7 +72,11 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
        else:
           result = comand
        if result is None:
-          result = '参数错误,用法:\n'+comand.Usage
+          if "NONE" in comand.Parmas:
+             comand.Parmas = None
+             result = comand
+          else:
+             result = '参数错误,用法:\n'+comand.Usage
        return result
     else:
       #   print('未找到指定命令')
