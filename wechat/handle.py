@@ -54,17 +54,7 @@ class Handle(object):
             elif isinstance(recMsg, receive.EventMsg):
                 if recMsg.Event == 'CLICK':
                     if recMsg.Eventkey == 'help':
-                        commandList = list(filter(lambda com:com.Permission <= fromUser.Level, ALL_COMANDS))
-                        if len(commandList) == 0:
-                           content = '暂无'
-                        else:
-                            descs = []
-                            for comand in commandList:
-                                desc = '命令:'+comand.Name+'\n'+\
-                                        '作用:'+comand.Func+'\n'+\
-                                        '用法:'+comand.Usage+'\n'
-                                descs.append(desc)
-                            content = '\n'.join(descs)
+                        content = controllers.handText(ALL_COMANDS[23].Name,fromUser)
                     elif recMsg.Eventkey == 'movie':
                          content = controllers.handText(ALL_COMANDS[4].Name,fromUser)
                     elif recMsg.Eventkey == 'news':

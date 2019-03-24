@@ -111,6 +111,8 @@ def executCommand(command, user):
         result = sendResultLater(user, getSystemInfo)
     elif command.Name == ALL_COMANDS[22].Name:  #双色球
         result = sendResultLater(user, getSSQResult, command.Parmas)
+    elif command.Name == ALL_COMANDS[23].Name:  #命令帮助
+        result = sendResultLater(user, getCommandsHelp,user)
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
@@ -189,7 +191,7 @@ def _runTaskRightNow(user, funcName):
         func()
 
 
-def _getSysLog(name):
+def _getSysLog(name=None):
     if name is None:
        name = time.strftime("%Y-%m-%d",time.localtime(time.time()))
     logPath = getGeneralConfig()['log_path']
@@ -205,3 +207,31 @@ def _getSysLog(name):
     else:
         result = '日志不存在'
     return result
+
+def getCommandsHelp(user):
+    def formatCommands(commands):
+        descs = []
+        for comand in commands:
+            desc = '命令:'+comand.Name+'\n'+\
+            '作用:'+comand.Func+'\n'+\
+            '用法:'+comand.Usage+'\n'
+            descs.append(desc)
+        return '\n'.join(descs)  
+    commandList = list(filter(lambda com:com.Permission <= user.Level, ALL_COMANDS))
+    commandsCount = len(commandList)
+    maxCount = 20
+    if commandsCount == 0:
+        return '暂无可用命令'
+    elif commandsCount > maxCount:#拆分
+        def splitList(orgList, length):
+            listGroups = zip(*(iter(orgList),) *length)
+            newList = [list(i) for i in listGroups]
+            count = len(orgList) % length
+            newList.append(orgList[-count:]) if count !=0 else newList
+            return newList
+        commandSplitList = splitList(commandList,maxCount)
+        for spList in commandSplitList:
+            sendTextMsg(user.Id,formatCommands(spList))
+    else:
+        return formatCommands(commandList)
+                                                
