@@ -190,6 +190,8 @@ def _runTaskRightNow(user, funcName):
 
 
 def _getSysLog(name):
+    if name is None:
+       name = time.strftime("%Y-%m-%d",time.localtime(time.time()))
     logPath = getGeneralConfig()['log_path']
     logName = logPath + name + '.log'
     result = ''
