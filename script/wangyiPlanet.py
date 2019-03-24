@@ -97,7 +97,7 @@ def autoCollectCoins():
         Logger.v('共有{}个黑钻可收取'.format(len(collectCoinsList)))
         for collectCoinsItem in collectCoinsList:
             collectCoins(collectCoinsItem['id'])
-        Logger.v('网易星球收取黑钻毕')
+        Logger.v('网易星球收取黑钻完毕')
 
 
 if __name__ == "__main__":
