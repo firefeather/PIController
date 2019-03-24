@@ -58,7 +58,10 @@ def executCommand(command, user):
     elif command.Name == ALL_COMANDS[4].Name:  #获取最新电影
         result = sendResultLater(user, getMovies)
     elif command.Name == ALL_COMANDS[5].Name:  #截屏
-        result = sendResultLater(user, getScreenImg)
+        img = getScreenImg()
+        sendImageMsg(user.Id, img)
+        os.remove(img)
+        result = '已开始执行'
     elif command.Name == ALL_COMANDS[6].Name:  #新闻
         result = sendResultLater(user, getNews)
     elif command.Name == ALL_COMANDS[7].Name:  #翻译
@@ -123,12 +126,15 @@ def sendResultLater(to, func, args=None):
     def getResultAndSend():
         try:
             result = func() if args is None else func(args)
-            if len(result) < 50 and ('.png' in result
-                                     or '.jpg' in result):  #如果是个图片 则发送图片
-                sendImageMsg(to.Id, result)
-                os.remove(result)
+            if not result is None:
+                if len(result) < 50 and ('.png' in result
+                                        or '.jpg' in result):  #如果是个图片 则发送图片
+                    sendImageMsg(to.Id, result)
+                    os.remove(result)
+                else:
+                    sendTextMsg(to.Id, result)
             else:
-                sendTextMsg(to.Id, result)
+                Logger.v(func.__name__ + '未返回执行结果')
         except Exception as e:
             Logger.e(func.__name__ + '执行失败', e)
         #  print(func,' error',e)
@@ -184,11 +190,15 @@ def _executeShell(user, command):
 
 
 def _runTaskRightNow(user, funcName):
-    func = getattr(task, funcName)
+    func = getattr(task, funcName,None)
     if func is None:
         sendTextMsg(user.Id, '未找到指定任务')
     else:
-        func()
+        if callable(func):
+            Logger.v('开始执行' + funcName)
+            func()
+        else:
+            Logger.e(func + '无法执行','not callable')
 
 
 def _getSysLog(name=None):
@@ -232,6 +242,7 @@ def getCommandsHelp(user):
         commandSplitList = splitList(commandList,maxCount)
         for spList in commandSplitList:
             sendTextMsg(user.Id,formatCommands(spList))
+        return ''
     else:
         return formatCommands(commandList)
                                                 
