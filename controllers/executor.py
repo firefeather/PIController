@@ -196,7 +196,7 @@ def _runTaskRightNow(user, funcName):
     else:
         if callable(func):
             Logger.v('开始执行' + funcName)
-            func()
+            func(True)
         else:
             Logger.e(func + '无法执行','not callable')
 

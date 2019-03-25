@@ -39,32 +39,35 @@ def _clearLog():
             _removeLog(log, int(logSaveDays))
 
 
-def _startMiDaka():  #只执行打卡
+def _startMiDaka(fromUser=False):  #只执行打卡
     Logger.v('开始执行小米早起打卡')
     username = config['mi_user_name']
     password = config['mi_pass_word']
     startMiPay(username, password, True)
-    scheduler.remove_job(job_ids['_startMiDaka'])
-    _addMiDakaJob()
+    if not fromUser:
+        scheduler.remove_job(job_ids['_startMiDaka'])
+        _addMiDakaJob()
 
 
-def _startMiTask():  #执行打卡和一分钱抽奖
+def _startMiTask(fromUser=False):  #执行打卡和一分钱抽奖
     Logger.v('开始执行小米抽奖和明日打卡')
     username = config['mi_user_name']
     password = config['mi_pass_word']
     startMiPay(username, password, False)
-    scheduler.remove_job(job_ids['_startMiTask'])
-    _addMiTaskJob()
+    if not fromUser:
+        scheduler.remove_job(job_ids['_startMiTask'])
+        _addMiTaskJob()
 
 
-def _startWangyiCollet():  #网易星球自动收钻
+def _startWangyiCollet(fromUser=False):  #网易星球自动收钻
     Logger.v('开始执行网易星球自动收取钻石')
     autoCollectCoins()
-    scheduler.remove_job(job_ids['_startWangyiCollet'])
-    _addWangyiJob()
+    if not fromUser:
+        scheduler.remove_job(job_ids['_startWangyiCollet'])
+        _addWangyiJob()
 
 
-def _startMiZhongchou():  #发送小米众筹产品信息
+def _startMiZhongchou(fromUser=False):  #发送小米众筹产品信息
     Logger.v('开始获取小米众筹产品信息并发送')
     info = getGoodList()
     sendTextMsg(MANAGER.Id, info)
@@ -130,7 +133,7 @@ def _addAutoTempControlJob():  #开启自动温控系统
     job_ids['_addAutoTempControl'] = scheduler.add_job(
         func=autoControlTemp,
         trigger='interval',
-        seconds=30  #每30秒执行一次
+        minutes=1  #每1分钟执行一次
     ).id
 
 def _addTempWatcherJob():  #开启温度监测
@@ -138,7 +141,7 @@ def _addTempWatcherJob():  #开启温度监测
     job_ids['_addTempWatcher'] = scheduler.add_job(
         func=watchTemp,
         trigger='interval',
-        seconds=30  #每30秒执行一次
+        minutes=1  #每1分钟执行一次
     ).id
 
 def _addNetListenerJob():  #监听网络连接情况
@@ -147,7 +150,7 @@ def _addNetListenerJob():  #监听网络连接情况
     job_ids['_addNetListener'] = scheduler.add_job(
         func=isNetOK,
         trigger='interval',
-        minutes=1  #每1分钟执行一次
+        minutes=3  #每3分钟执行一次
     ).id
 
 
