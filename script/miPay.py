@@ -124,9 +124,18 @@ def goodLuck(driver):  #一分钱抽奖
     while True:
         try:
             button = driver.find_element_by_link_text("立即参与")
-        except:
+            button.click()
+            sleep(2)
+            freeRadio = driver.find_elements_by_class_name('coupon')
+            if len(freeRadio) > 0:
+                freeRadio[0].click()
+                sleep(1)
+                okBtn = driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[6]/div[1]/div[6]/button[1]")
+                okBtn.click()
+                sleep(2)
+                continue
+        except Exception as e:
             break
-        button.click()
         sleep(2)
         payResult = pay(driver)
         if payResult:
