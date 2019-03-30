@@ -108,7 +108,7 @@ def pay(driver):
         driver.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)=''])[1]/following::li[1]"
         ).click()
-        sleep(1)
+        sleep(2)
         driver.find_element_by_link_text("确定").click()
         sleep(1)
         result = True
@@ -140,6 +140,7 @@ def goodLuck(driver):  #一分钱抽奖
         payResult = pay(driver)
         if payResult:
             paySuccessCount += 1
+        sleep(1)
         driver.find_element_by_link_text("继续参与").click()
         driver.get(driver.current_url)
         sleep(2)
