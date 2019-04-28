@@ -153,10 +153,11 @@ def goodLuck(driver):  #一分钱抽奖
         u"(.//*[normalize-space(text()) and normalize-space(.)='拼好运'])[1]/preceding::img[3]"
     ).click()
 
-    # 结束后发送通知
-    noticeTxt = '共有' + str(total) + '个活动, 新参加了' + str(
-        paySuccessCount) + '个活动,共参与了' + str(count) + '个活动.'
-    Logger.n('小米抽奖活动', noticeTxt)
+    if count > 0:
+        # 结束后发送通知
+        noticeTxt = '共有' + str(total) + '个活动, 新参加了' + str(
+            paySuccessCount) + '个活动,共参与了' + str(count) + '个活动.'
+        Logger.n('小米抽奖活动', noticeTxt)
     return driver
 
 

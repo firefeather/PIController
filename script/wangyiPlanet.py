@@ -25,9 +25,9 @@ cookies = {
     'UM_distinctid':
     '1658e273979387-0c28e0368534d7-56513d62-43113-1658e27397b231',
     'NTES_YD_SESS':
-    'FF.DjF126leVK7YfPc.3xgelvvZVu0StL4HIQwbFiILdkrW0kCD17oWTKWS5dvt1fMwndUGIHTH2v2KJ7rNLTaGgZq4eWCOGLV63vJfm9VoOMv2xyiI5FFvKiCA4NWUrv0en6XBBZQDvfJTiemNe6RPMaL.38Q4B0pDbU.Vz4kAnHET14BGNR5FZHAdWAOzWDopFBRZjoBhk9yPFjXn2OGf_yz5Cm9rq_G2ddNuOryVsV',
+    'MVVRC_niq.xk9UZN5lKrl_GQLgjsWC87J0louI4MPogGWh3VWELSHa3r83ZnGjeS7yI2GQkolrlCjC8RHh6grsk.q50p3EzkgXYTjR7bUXazyjCwvPonMMj8PE_063QhjVp2Y9ffquLj7RrPpb6pYNOysgJTtu0fVFL4QJXA0W_2lxrS0fk6NnMql_G3_zA3LaFMfNqmafiWUvOMm92Czk71vAnEbUh51kCGG6dzhvXBX',
     'STAR_YD_SESS':
-    'FF.DjF126leVK7YfPc.3xgelvvZVu0StL4HIQwbFiILdkrW0kCD17oWTKWS5dvt1fMwndUGIHTH2v2KJ7rNLTaGgZq4eWCOGLV63vJfm9VoOMv2xyiI5FFvKiCA4NWUrv0en6XBBZQDvfJTiemNe6RPMaL.38Q4B0pDbU.Vz4kAnHET14BGNR5FZHAdWAOzWDopFBRZjoBhk9yPFjXn2OGf_yz5Cm9rq_G2ddNuOryVsV'
+    'MVVRC_niq.xk9UZN5lKrl_GQLgjsWC87J0louI4MPogGWh3VWELSHa3r83ZnGjeS7yI2GQkolrlCjC8RHh6grsk.q50p3EzkgXYTjR7bUXazyjCwvPonMMj8PE_063QhjVp2Y9ffquLj7RrPpb6pYNOysgJTtu0fVFL4QJXA0W_2lxrS0fk6NnMql_G3_zA3LaFMfNqmafiWUvOMm92Czk71vAnEbUh51kCGG6dzhvXBX',
 }
 
 headers = {
@@ -92,6 +92,8 @@ def autoCollectCoins():
         verify=False)
     if response['data'] is None:
         Logger.e('网易星球收取黑钻失败',response['msg'])
+        if '登录失败' in response['msg']:
+            Logger.n('网易星球登录失败','可能为session过期')
         return
     collectCoinsList = response['data']['collectCoins']
     if len(collectCoinsList) == 0:
