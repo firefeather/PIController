@@ -2,6 +2,7 @@
 import os
 import sys
 import selenium
+import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from time import sleep, strftime
@@ -130,7 +131,7 @@ def goodLuck(driver):  #一分钱抽奖
             if len(freeRadio) > 0:
                 freeRadio[0].click()
                 sleep(1)
-                okBtn = driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[6]/div[1]/div[6]/button[1]")
+                okBtn = driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[7]/div[1]/div[6]/button[1]")
                 okBtn.click()
                 sleep(2)
                 continue
@@ -161,6 +162,21 @@ def goodLuck(driver):  #一分钱抽奖
         Logger.n('小米抽奖活动', noticeTxt)
     return driver
 
+def goodLuckAll(driver):  #一次性参与所有的一分钱抽奖
+    driver.get('https://s.pay.xiaomi.com')
+    all = driver.find_elements_by_class_name("alert-info")
+    if len(all) > 0:
+        btn = all[0]
+        count = btn.text.strip().split('，')[0][3:-6]
+        btn.click()
+        sleep(2)
+        payResult = pay(driver)
+        if payResult:
+            # 结束后发送通知
+            noticeTxt = '统一参与了' + str(count) + '个活动.'
+            Logger.n('小米抽奖活动', noticeTxt)
+        sleep(1)
+        driver.find_element_by_link_text("继续参与").click()
 
 def getUpEarly(driver, onlyDaka=False):
     driver.get('https://s.pay.xiaomi.com')
@@ -188,12 +204,16 @@ def startMiPay(username, password, onlyDaka=False):
     try:
         getUpEarly(driver, onlyDaka)
         if not onlyDaka:
-            goodLuck(driver)
+            today = datetime.date.today()
+            if today.day == 5:
+               goodLuckAll(driver)
+            else:
+               goodLuck(driver)
     except Exception as e:
         Logger.e('小米支付任务异常', e)
     finally:
         sleep(5)
-        driver.quit()
+        # driver.quit()
         Logger.v('小米支付任务执行完毕')
 
 
