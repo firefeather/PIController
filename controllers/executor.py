@@ -20,6 +20,8 @@ from tools.weiBoSender import sendWeibo
 from logger import Logger
 import task
 from utils.speaker import speak
+from utils.baiduVoice import voice
+from tools.netCheck import isNetOK
 from config import getGeneralConfig
 import utils.text2image as Text2Image
 from spider.miCrowdfunding import getGoodList
@@ -98,7 +100,10 @@ def executCommand(command, user):
         else:
             result = '参数错误'
     elif command.Name == ALL_COMANDS[17].Name:  #说话
-        speak(command.Parmas)
+        if isNetOK():
+            voice(command.Parmas)
+        else:
+            speak(command.Parmas)
         result = '已执行'
     elif command.Name == ALL_COMANDS[18].Name:  #读取日志
         result = sendResultLater(user, _getSysLog, command.Parmas)

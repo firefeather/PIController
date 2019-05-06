@@ -18,10 +18,10 @@ client = AipSpeech(appId, apiKey, secretKey)
 
 def voice(text):
     result  = client.synthesis(text, 'zh', 1, {
-    'vol': 10,#String	音量，取值0-15，默认为5中音量
-    'per':4,#	String	发音人选择, 0为女声，1为男声，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女
+    'vol': 15,#String	音量，取值0-15，默认为5中音量
+    'per':1,#	String	发音人选择, 0为女声，1为男声，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女
     # 'pit':6,#String	音调，取值0-9，默认为5中语调
-    # 'spd':6	#String	语速，取值0-9，默认为5中语速
+    'spd':4	#String	语速，取值0-9，默认为5中语速
     })
     # 识别正确返回语音二进制 错误则返回dict 参照下面错误码
     if not isinstance(result, dict):
@@ -49,10 +49,23 @@ def playSound():
        import pygame,time
        pygame.mixer.init()
        track = pygame.mixer.music.load(voiceFile)
+       isPlaying = False
+       lastIsPlaying = False
+       while True:
+  	  #检查音乐流播放，有返回True，没有返回False
+	    #如果没有音乐流则选择播放
+          isPlaying = pygame.mixer.music.get_busy() == 1
+          if not isPlaying:
+            if lastIsPlaying:
+               break
+            else:
+                pygame.mixer.music.play()
+          time.sleep(1)
+          lastIsPlaying = isPlaying
        #播放音乐10秒后停止
-       pygame.mixer.music.play()
-       time.sleep(10)
-       pygame.mixer.music.stop()
+      #  pygame.mixer.music.play(0)
+      #  time.sleep(10)
+      #  pygame.mixer.music.stop()
 
 if __name__ == '__main__':
     print(say('你好'))
