@@ -205,7 +205,7 @@ def startMiPay(username, password, onlyDaka=False):
         getUpEarly(driver, onlyDaka)
         if not onlyDaka:
             today = datetime.date.today()
-            if today.day == 5:
+            if today.day != 5:
                goodLuckAll(driver)
             else:
                goodLuck(driver)
