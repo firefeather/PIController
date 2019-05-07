@@ -42,10 +42,10 @@ def say(text):
     playSound()
 
 def playSound():
-    if platform.system() == 'Linux':
-       import subprocess
-       subprocess.Popen(['mplayer',voiceFile])
-    else:
+    # if platform.system() == 'Linux':
+    #    import subprocess
+    #    subprocess.Popen(['mplayer',voiceFile])
+    # else:
        import pygame,time
        pygame.mixer.init()
        track = pygame.mixer.music.load(voiceFile)
@@ -60,7 +60,7 @@ def playSound():
                break
             else:
                 pygame.mixer.music.play()
-          time.sleep(1)
+          time.sleep(0.5)
           lastIsPlaying = isPlaying
        #播放音乐10秒后停止
       #  pygame.mixer.music.play(0)
