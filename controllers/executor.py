@@ -100,15 +100,11 @@ def executCommand(command, user):
         else:
             result = '参数错误'
     elif command.Name == ALL_COMANDS[17].Name:  #说话
-        if isNetOK():
-            voice(command.Parmas)
-        else:
-            speak(command.Parmas)
-        result = '已执行'
+        speakFunc = voice if isNetOK() else speak
+        result = sendResultLater(user, speakFunc, command.Parmas)
     elif command.Name == ALL_COMANDS[18].Name:  #读取日志
         result = sendResultLater(user, _getSysLog, command.Parmas)
     elif command.Name == ALL_COMANDS[19].Name:  #重启控制器
-        Logger.n('警告', '正在尝试重启控制器')
         threading.Thread(
             target=_executeShell,
             args=(user, 'git pull && sudo /home/pi/Script/start/controller.sh')).start()

@@ -60,7 +60,7 @@ def playSound():
                break
             else:
                 pygame.mixer.music.play()
-          time.sleep(0.5)
+          # time.sleep(0.5)
           lastIsPlaying = isPlaying
        #播放音乐10秒后停止
       #  pygame.mixer.music.play(0)
