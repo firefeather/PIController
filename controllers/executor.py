@@ -117,6 +117,8 @@ def executCommand(command, user):
         result = sendResultLater(user, getSSQResult, command.Parmas)
     elif command.Name == ALL_COMANDS[23].Name:  #命令帮助
         result = sendResultLater(user, getCommandsHelp,user)
+    elif command.Name == ALL_COMANDS[24].Name:  #小爱同学
+        result = sendResultLater(user, callXiaoAi,command.Parmas)
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
@@ -247,3 +249,7 @@ def getCommandsHelp(user):
     else:
         return formatCommands(commandList)
                                                 
+def callXiaoAi(text):
+    voice('小爱同学')
+    time.sleep(1)
+    voice(text)

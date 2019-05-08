@@ -32,6 +32,7 @@ ALL_COMANDS = [
    Command(name='设备信息',func='获取当前服务器的状态信息',usage='设备信息',parmas=None,permission=PERMISSION_LEVEL['ADMIN']),
    Command(name='双色球',func='获取指定期数双色球开奖号码',usage='双色球:XXX',parmas='STR/NONE',permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='帮助',func='获取命令帮助及用法',usage='帮助',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
+   Command(name='小爱同学',func='让树莓派呼叫小爱同学并对其说话',usage='小爱同学:XXX',parmas='STR',permission=PERMISSION_LEVEL['ADMIN']),
 
 ]
 
