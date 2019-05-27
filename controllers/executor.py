@@ -60,16 +60,13 @@ def executCommand(command, user):
     elif command.Name == ALL_COMANDS[4].Name:  #获取最新电影
         result = sendResultLater(user, getMovies)
     elif command.Name == ALL_COMANDS[5].Name:  #截屏
-        img = getScreenImg()
-        sendImageMsg(user.Id, img)
-        os.remove(img)
-        result = '已开始执行'
+        result = sendResultLater(user, getScreenImg)
     elif command.Name == ALL_COMANDS[6].Name:  #新闻
         result = sendResultLater(user, getNews)
     elif command.Name == ALL_COMANDS[7].Name:  #翻译
-        result = translate(command.Parmas)
+        result = sendResultLater(user, translate,command.Parmas)
     elif command.Name == ALL_COMANDS[8].Name:  #天气
-        result = getWeather(command.Parmas)
+        result = sendResultLater(user, getWeather,command.Parmas)
     elif command.Name == ALL_COMANDS[9].Name:  #设置机器人
         result = setChatBot(command.Parmas)
     elif command.Name == ALL_COMANDS[10].Name:  #取消机器人
