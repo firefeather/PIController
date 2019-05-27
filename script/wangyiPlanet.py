@@ -3,6 +3,9 @@ from logger import Logger
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+global cookie
+cookie = '24s1XDhRBx7GTbouqfOLp1zxMVO2tLtp5irWPzo6LrzS.6Js.4TFkUJNSJMjLxqFGCXmLHg9WNWbxbSPk6zrNQghyva5J48grBARxPGI7BU8CxbVEc9j22xSc4eazJH6xs5mAfddylTxGPNc5Iz5AOKCQriRZladsRm8NBAgMFAPtVkqyqd3T5WRr6r0VrUufVOai5X4j4_rVnd33D9KMgwGYIBHaOBBYqwCEKovZ1eRB'
+
 cookies = {
     'NTES_YD_SESS':
     'TYAM.QOaEKLc36wgIzNf3629f7Y1JCiZu8kECjGYnH69DJLIDjktuVik3_h7dJJM1h4.I8gSIzOvdTVbPBHVxDfWWEfWp84xVtycq3hZTnvmlcA57cV0WfasmJnsgKRmj_CHsXWhQgerAbxRjua4gZmF5gpzlwkrVEr0YicUYm9yE0iA2puQcm14Ad1GGrsMelTa9QeG8SiLNJ_B3q4ZCv0x1',
@@ -24,10 +27,8 @@ cookies = {
     'd7004ec5777c97e999d8f57cb0a8813e',
     'UM_distinctid':
     '1658e273979387-0c28e0368534d7-56513d62-43113-1658e27397b231',
-    'NTES_YD_SESS':
-    'MVVRC_niq.xk9UZN5lKrl_GQLgjsWC87J0louI4MPogGWh3VWELSHa3r83ZnGjeS7yI2GQkolrlCjC8RHh6grsk.q50p3EzkgXYTjR7bUXazyjCwvPonMMj8PE_063QhjVp2Y9ffquLj7RrPpb6pYNOysgJTtu0fVFL4QJXA0W_2lxrS0fk6NnMql_G3_zA3LaFMfNqmafiWUvOMm92Czk71vAnEbUh51kCGG6dzhvXBX',
-    'STAR_YD_SESS':
-    'MVVRC_niq.xk9UZN5lKrl_GQLgjsWC87J0louI4MPogGWh3VWELSHa3r83ZnGjeS7yI2GQkolrlCjC8RHh6grsk.q50p3EzkgXYTjR7bUXazyjCwvPonMMj8PE_063QhjVp2Y9ffquLj7RrPpb6pYNOysgJTtu0fVFL4QJXA0W_2lxrS0fk6NnMql_G3_zA3LaFMfNqmafiWUvOMm92Czk71vAnEbUh51kCGG6dzhvXBX',
+    'NTES_YD_SESS':cookie,
+    'STAR_YD_SESS':cookie,
 }
 
 headers = {
@@ -94,7 +95,9 @@ def autoCollectCoins():
         Logger.e('网易星球收取黑钻失败',response['msg'])
         if '登录失败' in response['msg']:
             Logger.n('网易星球登录失败','可能为session过期')
-        return
+            getCookie()
+        else:
+            return
     collectCoinsList = response['data']['collectCoins']
     if len(collectCoinsList) == 0:
         Logger.v('网易星球当前没有黑钻可收取')
@@ -107,6 +110,24 @@ def autoCollectCoins():
                count+=float(collectCoinsItem['virCount'])
         Logger.v('网易星球收取黑钻完毕,本次收取{}颗黑钻'.format(count))
 
+def getCookie():
+    Logger.v('尝试自动更新网易星球cookie')
+    data={
+        'p':'SAmsdBV+moUeDdvBbRUuAc/ShOCiz6IKgs9epb6qLwBgUF7Cp9EVZhjfzpzcr4WpiWsUR8j6apiqvV6sHwGXulwTpSp/pSxFTg5IGdgCxixujZjrjphEGg8fBkaL7yf+tF/Y+WbRB9Er3wr9KvyEmsrMLuuD0KJLpLjnauZWiOMj67t/kfaSrD2Wp6t8vLOmYXktBZ3eM9jkWDQIVAwCytT041htoSg4Jr1Gd2dll/oGO32PvhtzF7gRT5foKQqEc1vK7F23+mQQmpzx1v3LVYQCLKodFix+r8S1X4T0UTtuvCwLGZSh5UIlBF5Vbory2SUasZAcFHSMG3hUsVpfNpzY6bj+lERh+ZcYlw4r9+do+1Pg8u903SFmvL4dlfYXnq+DVc8YTgExt0TROQMfpw==',
+        'k':'b4h+FNm0kIztyRd25ADGo8tGQMufNy+WW3Kuf4/kI3cIvCQ9jx/DFu9iWVm6w/qVQufzVDo9ULepwHhfymGhkUGbt8Bype6LE0UyW0j4icz0ttV2UdWxWl3UymL9+A3hJgiqs77bfBO8B+jgKe+elBjfTq4f4zKpeKdtAwxEEZo='
+    }
+    response = post(
+        'https://star.8.163.com/api/starUser/getCookie',
+        data,
+        headers=headers,
+        cookies=cookies,
+        verify=False)
+    newCookie = response['data']['cookie']
+    if not newCookie is None:
+        global cookie
+        cookie = newCookie
+        Logger.v('已自动更新网易星球cookie')
+    
 
 if __name__ == "__main__":
     autoCollectCoins()
