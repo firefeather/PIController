@@ -123,7 +123,7 @@ def _addMiZhongchouJob():
         trigger='cron',
         day_of_week='0-6',
         hour=10,
-        minute=0,
+        minute=30,
         second=0  #每天早上10点发送小米众筹产品信息
     ).id
 
@@ -141,7 +141,7 @@ def _addTempWatcherJob():  #开启温度监测
     job_ids['_addTempWatcher'] = scheduler.add_job(
         func=watchTemp,
         trigger='interval',
-        minutes=1  #每1分钟执行一次
+        minutes=5  #每5分钟执行一次
     ).id
 
 def _addNetListenerJob():  #监听网络连接情况
@@ -150,7 +150,7 @@ def _addNetListenerJob():  #监听网络连接情况
     job_ids['_addNetListener'] = scheduler.add_job(
         func=isNetOK,
         trigger='interval',
-        minutes=3  #每3分钟执行一次
+        minutes=10  #每10分钟执行一次
     ).id
 
 
