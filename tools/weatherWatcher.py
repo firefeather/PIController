@@ -17,14 +17,15 @@ def getAdress():
     return adress
 
 def watchWeather():
+    Logger.v('开始查询最近天气')
     adr = getAdress()
     if adress is None:
        Logger.e('获取本机地址信息失败','可能是网络问题或接口不可用')
-    city = adr['city']
+    city = adr['city'] or '洪山'
     if not city is None:
        res = get(WEATHER_API+city)
        forecasts = res['data']['forecasts']
-       result='有异常天气预警:\n'
+       result = city + '有异常天气预警:\n'
        for index in range(0, len(forecasts)):
            if index == 0 or index > 2:
               continue
@@ -62,9 +63,12 @@ def watchWeather():
               Logger.e('天气数据解析错误',e)
            if len(weather) > 0:
               result += weather+date +'详细天气:'+formatWeather()
-       if len(result) > 9:
+       if len(result) > 15:
            result += '请注意防范!\n'
+           Logger.v('有异常天气!'+result)
            say(result)
+       else:
+           Logger.v('未发现异常天气')
 
 
 
