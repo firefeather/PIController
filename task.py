@@ -9,6 +9,9 @@ from script.wangyiPlanet import autoCollectCoins
 from spider.miCrowdfunding import getGoodList
 from notice.sendWechat import sendTextMsg
 from users import MANAGER
+from tools.weatherWatcher import watchWeather
+from tools.netCheck import isNetOK
+from tools.tempWatcher import watchTemp
 
 config = getGeneralConfig()
 
@@ -137,7 +140,6 @@ def _addAutoTempControlJob():  #开启自动温控系统
     ).id
 
 def _addTempWatcherJob():  #开启温度监测
-    from tools.tempWatcher import watchTemp
     job_ids['_addTempWatcher'] = scheduler.add_job(
         func=watchTemp,
         trigger='interval',
@@ -145,7 +147,6 @@ def _addTempWatcherJob():  #开启温度监测
     ).id
 
 def _addNetListenerJob():  #监听网络连接情况
-    from tools.netCheck import isNetOK
     isNetOK()
     job_ids['_addNetListener'] = scheduler.add_job(
         func=isNetOK,
@@ -153,12 +154,22 @@ def _addNetListenerJob():  #监听网络连接情况
         minutes=10  #每10分钟执行一次
     ).id
 
+def _addWeatherWatcherJob():  #监听天气情况
+    job_ids['_addWeatherWatcherJob'] = scheduler.add_job(
+        func=watchWeather,
+        trigger='cron',
+        day_of_week='0-6',
+        hour=22,
+        minute=0,
+        second=0  #每晚22点查询天气情况
+    ).id
 
 def startTasks():
     # if platform.system() == 'Linux':
     #     _addAutoTempControlJob()
     _addTempWatcherJob()
     _addNetListenerJob()
+    _addWeatherWatcherJob()
 
     _addClearLogJob()
     _addMiDakaJob()
