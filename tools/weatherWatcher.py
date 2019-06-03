@@ -21,7 +21,7 @@ def watchWeather():
     adr = getAdress()
     if adress is None:
        Logger.e('获取本机地址信息失败','可能是网络问题或接口不可用')
-    city = adr['city'] or '洪山'
+    city = adr['city'] or '洪山区'
     if not city is None:
        res = get(WEATHER_API+city)
        forecasts = res['data']['forecasts']
