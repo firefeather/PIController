@@ -1,5 +1,5 @@
 from fetch import get
-from utils.baiduVoice import say
+from utils.baiduVoice import voice
 from logger import Logger
 
 HOST = 'https://www.mxnzp.com/api'
@@ -66,7 +66,7 @@ def watchWeather():
        if len(result) > 15:
            result += '请注意防范!\n'
            Logger.v('有异常天气!'+result)
-           say(result)
+           voice(result)
        else:
            Logger.v('未发现异常天气')
 
