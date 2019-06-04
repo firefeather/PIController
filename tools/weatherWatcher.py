@@ -56,7 +56,7 @@ def watchWeather():
               weather += date+'夜间天气异常:'+nightWeather+'.'
            try:
               if int(dayTemp.split('℃')[0]) < 0 or int(dayTemp.split('℃')[0]) > 35:
-                  weather += date+'白天有高温:'+dayTemp+'.'
+                  weather += date+'白天有高温或低温:'+dayTemp+'.'
               if int(dayWindPower.split('级')[0]) > 5:
                   weather += date+'白天有大风:'+dayWindPower+'.'
            except Exception as e:
