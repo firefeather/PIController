@@ -12,6 +12,7 @@ from users import MANAGER
 from tools.weatherWatcher import watchWeather
 from tools.netCheck import isNetOK
 from tools.tempWatcher import watchTemp
+from script.baiduDog import autoCollect
 
 config = getGeneralConfig()
 
@@ -69,6 +70,12 @@ def _startWangyiCollet(fromUser=False):  #网易星球自动收钻
         scheduler.remove_job(job_ids['_startWangyiCollet'])
         _addWangyiJob()
 
+def _startBaiduCollet(fromUser=False):  #百度莱茨狗自动收元气
+    Logger.v('开始执行百度自动收元气')
+    autoCollect()
+    if not fromUser:
+        scheduler.remove_job(job_ids['_startBaiduCollet'])
+        _addBaiduJob()
 
 def _startMiZhongchou(fromUser=False):  #发送小米众筹产品信息
     Logger.v('开始获取小米众筹产品信息并发送')
@@ -86,6 +93,15 @@ def _addWangyiJob():
         second=random.randint(0, 59)  #每天8-22点随机时刻收取网易星球黑钻
     ).id
 
+def _addBaiduJob():
+    job_ids['_startBaiduCollet'] = scheduler.add_job(
+        func=_startBaiduCollet,
+        trigger='cron',
+        day_of_week='0-6',
+        hour=random.randint(8, 22),
+        minute=random.randint(0, 59),
+        second=random.randint(0, 59)  #每天8-22点随机时刻收取百度元气
+    ).id
 
 def _addMiDakaJob():
     job_ids['_startMiDaka'] = scheduler.add_job(
@@ -176,6 +192,7 @@ def startTasks():
     _addMiTaskJob()
     _addWangyiJob()
     _addMiZhongchouJob()
+    _addBaiduJob()
 
     scheduler.start()
 
