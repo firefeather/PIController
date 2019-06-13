@@ -13,6 +13,7 @@ from tools.weatherWatcher import watchWeather
 from tools.netCheck import isNetOK
 from tools.tempWatcher import watchTemp
 from script.baiduDog import autoCollect
+from script.toutiaoLottery import autoLottery
 
 config = getGeneralConfig()
 
@@ -77,6 +78,13 @@ def _startBaiduCollet(fromUser=False):  #百度莱茨狗自动收元气
         scheduler.remove_job(job_ids['_startBaiduCollet'])
         _addBaiduJob()
 
+def _startToutiaoLottery(fromUser=False):  #头条全民抽奖
+    Logger.v('开始执行头条全民抽奖')
+    autoLottery()
+    if not fromUser:
+        scheduler.remove_job(job_ids['_startToutiaoLottery'])
+        _addTouTiaoJob()
+
 def _startMiZhongchou(fromUser=False):  #发送小米众筹产品信息
     Logger.v('开始获取小米众筹产品信息并发送')
     info = getGoodList()
@@ -101,6 +109,16 @@ def _addBaiduJob():
         hour=random.randint(8, 22),
         minute=random.randint(0, 59),
         second=random.randint(0, 59)  #每天8-22点随机时刻收取百度元气
+    ).id
+
+def _addTouTiaoJob():
+    job_ids['_startToutiaoLottery'] = scheduler.add_job(
+        func=_startToutiaoLottery,
+        trigger='cron',
+        day_of_week='0-6',
+        hour=random.randint(8, 22),
+        minute=random.randint(0, 59),
+        second=random.randint(0, 59)  #每天8-22点随机时刻参与头条抽奖
     ).id
 
 def _addMiDakaJob():

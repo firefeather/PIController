@@ -35,9 +35,8 @@ def getVigorList():
         headers=getHeader(timestamp),
         data=data,
         verify=False)
-    print('response',response)
     if response['errorNo'] != '00':
-       Logger.e('百度莱茨狗收取元气失败','错误代码'+response['errorNo'])
+       Logger.n('百度莱茨狗收取元气失败','错误代码'+response['errorNo'])
        return
     vigorList = response['data']['amounts']
     if len(vigorList) == 0:
@@ -47,7 +46,7 @@ def getVigorList():
         # count = 0.0
         # for vigor in vigorList:
         #     count += collectVigor(vigor)
-        # Logger.v('百度莱茨狗收取元气完毕,本次收取{}颗元气'.format(count))
+        # Logger.v('百度莱茨狗收取元气完毕,本次收取{}个元气'.format(count))
         collectAllVigor()
 
 def collectVigor(id):
@@ -78,7 +77,7 @@ def collectAllVigor():
         count = 0.0
         for amount in amounts:
             count += float(amount)
-    Logger.v('百度莱茨狗一键收取元气完毕,本次收取{}颗元气'.format(count))
+    Logger.v('百度莱茨狗一键收取元气完毕,本次收取{}个元气'.format(count))
         
 def lottery():
     time.sleep(2)
