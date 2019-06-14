@@ -106,9 +106,9 @@ def _addBaiduJob():
         func=_startBaiduCollet,
         trigger='cron',
         day_of_week='0-6',
-        hour=random.randint(8, 22),
+        hour=random.randint(8, 23),
         minute=random.randint(0, 59),
-        second=random.randint(0, 59)  #每天8-22点随机时刻收取百度元气
+        second=random.randint(0, 59)  #每天8-23点随机时刻收取百度元气
     ).id
 
 def _addTouTiaoJob():
@@ -116,9 +116,9 @@ def _addTouTiaoJob():
         func=_startToutiaoLottery,
         trigger='cron',
         day_of_week='0-6',
-        hour=random.randint(8, 22),
+        hour=random.randint(8, 23),
         minute=random.randint(0, 59),
-        second=random.randint(0, 59)  #每天8-22点随机时刻参与头条抽奖
+        second=random.randint(0, 59)  #每天8-23点随机时刻参与头条抽奖
     ).id
 
 def _addMiDakaJob():
@@ -211,6 +211,7 @@ def startTasks():
     _addWangyiJob()
     _addMiZhongchouJob()
     _addBaiduJob()
+    _addTouTiaoJob()
 
     scheduler.start()
 
