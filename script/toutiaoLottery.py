@@ -54,14 +54,14 @@ def getLotteryList():
             if result == 1:
                 successCount+=1
             elif result == 3:
-                Logger.v('今日头条抽奖完成,共成功参与{}次抽奖'.format(successCount))
+                Logger.v('今日头条全民抽奖完成,共成功参与{}次抽奖'.format(successCount))
                 break
             else:
                 continue
       else:
-          Logger.e('今日头条抽奖失败','未获取到抽奖列表')
+          Logger.e('今日头条全民抽奖失败','未获取到抽奖列表')
    else:
-      Logger.n('今日头条抽奖失败','获取抽奖列表失败,'+response['Msg'])
+      Logger.n('今日头条全民抽奖失败','获取抽奖列表失败,'+response['Msg'])
 
 def joinLotery(no):
     time.sleep(3)
@@ -82,7 +82,7 @@ def joinLotery(no):
     elif response['Status'] == 101:
        return 3
     else:
-       Logger.e('今日头条抽奖失败',response['Msg'] or response['message'])
+       Logger.e('今日头条全民抽奖失败',response['Msg'] or response['message'])
        return 2
        
 def autoLottery():
