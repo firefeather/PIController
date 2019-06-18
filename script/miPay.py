@@ -70,27 +70,13 @@ def login(username, password):
 
 def pay(driver):
     result = False
-    # try:
-    # 	sleep(1)
-    # 	# 换成招商银行卡支付
-    # 	driver.find_element_by_xpath("(.//*[normalize-space(text()) and normalize-space(.)=''])[1]/following::span[4]").click()
-    # except:
-    # 	driver.find_element_by_xpath(u"(.//*[normalize-space(text()) and normalize-space(.)='一分钱拼好运优惠券'])[1]/following::button[1]").click()
-    # 	driver.find_element_by_xpath("(.//*[normalize-space(text()) and normalize-space(.)=''])[1]/following::span[4]").click()
-    # 	pass
-    # for i in range(3, 5):
-    # 	path = "(.//*[normalize-space(text()) and normalize-space(.)=''])[" + str(i) + "]/following::span[2]"
-    # 	a = driver.find_element_by_xpath(path)
-    # 	# 中信银行信用卡 尾号8311
-    # 	if a.text == '招商银行信用卡 尾号2508':
-    # 		a.click()
-    # 		break
     sleep(1)
     # 输入支付密码
     try:
         driver.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)=''])[2]/following::button[1]"
         ).click()
+        sleep(2)
         driver.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)=''])[1]/following::li[5]"
         ).click()
@@ -110,6 +96,21 @@ def pay(driver):
             "(.//*[normalize-space(text()) and normalize-space(.)=''])[1]/following::li[1]"
         ).click()
         sleep(2)
+        driver.find_element_by_class_name("ui-form-confirm-button").click()
+        sleep(1)
+        result = True
+    except Exception as e:
+        Logger.e('小米支付失败', e)
+    finally:
+        return result
+
+def pay2(driver):
+    result = False
+    sleep(1)
+    # 输入支付密码
+    try:
+        driver.find_element_by_xpath('/html[1]/body[1]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/input[1]').send_keys(584521)
+        sleep(2)
         driver.find_element_by_link_text("确定").click()
         sleep(1)
         result = True
@@ -123,23 +124,29 @@ def goodLuck(driver):  #一分钱抽奖
     driver.get('https://s.pay.xiaomi.com')
     paySuccessCount = 0
     while True:
+        free = False
         try:
             button = driver.find_element_by_link_text("立即参与")
             button.click()
-            sleep(2)
-            freeRadio = driver.find_elements_by_class_name('coupon')
-            if len(freeRadio) > 0:
-                freeRadio[0].click()
-                sleep(1)
-                okBtn = driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[7]/div[1]/div[6]/button[1]")
-                okBtn.click()
+            if '暂无' not in driver.find_elements_by_class_name('coupon-num')[0].text:
                 sleep(2)
-                continue
+                freeRadio = driver.find_elements_by_class_name('coupons')
+                if len(freeRadio) > 0:
+                    freeRadio[0].click()
+                    sleep(1)
+                    juans = driver.find_elements_by_class_name('coupon')
+                    juans[0].click()
+                    free = True
         except Exception as e:
             break
         sleep(2)
-        payResult = pay(driver)
-        if payResult:
+        driver.find_element_by_xpath('/html[1]/body[1]/div[1]/div[1]/div[1]/div[7]/div[1]/div[2]/div[5]/button[1]').click()
+        sleep(2)
+        if not free:
+            payResult = pay(driver)
+            if payResult:
+                paySuccessCount += 1
+        else:
             paySuccessCount += 1
         sleep(1)
         driver.find_element_by_link_text("继续参与").click()
@@ -169,6 +176,8 @@ def goodLuckAll(driver):  #一次性参与所有的一分钱抽奖
         btn = all[0]
         count = btn.text.strip().split('，')[0][3:-6]
         btn.click()
+        sleep(1)
+        driver.find_element_by_xpath('/html[1]/body[1]/div[1]/div[1]/div[1]/div[7]/div[1]/div[2]/div[4]/button[1]').click()
         sleep(2)
         payResult = pay(driver)
         if payResult:
@@ -205,7 +214,7 @@ def startMiPay(username, password, onlyDaka=False):
         getUpEarly(driver, onlyDaka)
         if not onlyDaka:
             today = datetime.date.today()
-            if today.day != 5:
+            if today.day != 5 and today.day != 20:
                goodLuckAll(driver)
             else:
                goodLuck(driver)
