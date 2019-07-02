@@ -166,7 +166,7 @@ def goodLuck(driver):  #一分钱抽奖
         # 结束后发送通知
         noticeTxt = '共有' + str(total) + '个活动, 新参加了' + str(
             paySuccessCount) + '个活动,共参与了' + str(count) + '个活动.'
-        Logger.n('小米抽奖活动', noticeTxt)
+        Logger.v('小米抽奖活动'+ noticeTxt)
     return driver
 
 def goodLuckAll(driver):  #一次性参与所有的一分钱抽奖
@@ -183,7 +183,7 @@ def goodLuckAll(driver):  #一次性参与所有的一分钱抽奖
         if payResult:
             # 结束后发送通知
             noticeTxt = '统一参与了' + str(count) + '个活动.'
-            Logger.n('小米抽奖活动', noticeTxt)
+            Logger.v('小米抽奖活动'+ noticeTxt)
         sleep(1)
         driver.find_element_by_link_text("继续参与").click()
 
