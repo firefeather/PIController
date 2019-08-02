@@ -4,7 +4,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 global cookie
-cookie = 'vhy75AqDc_8XlmMIrYNfetbCXSl.wFfflNJL6cVPWJceTPr9Tw.qDBrier5CWbFqljaEWd3sLiLxbxe6DPcJif3Rn2XMrw_3JUKhb6l0uUB_jbxomzsCvvbezwSXcrdPb9MEKQHHnG.bl6izM0cMKYAjfJNhpGXH9XM6mTOS3stZjpOKJnvAPCa89RkXVDa0J7_oU8nWqLfXuLQlR9VinXwlO0UdXYUUOF4jmAV2ptShU'
+cookie = 'roc10j5JjvJbRFtePrsoVNGn600ruteh0V4jXUAaC4UGxaw1xYbLvewoGwgRCPWLyh8NC5Etjoj6P6GXvaU4opE0.J_3wY7E4SQIPXyzqSe7hP6KiBtRrrPGBYl_Uw5aP13NQZMM.nbPyXoB3zU3Q9fhp4VIkn_M16lQRVoVU2qzV2iUwl1MD1OpvhdHrAMLQhXtU7GICXQCMC8qaY7kxPVyszS5_9SSsWOhifAJkdlIS'
 
 cookies = {
     'NTES_YD_SESS':
@@ -122,6 +122,7 @@ def getCookie():
         headers=headers,
         cookies=cookies,
         verify=False)
+    print(response)
     newCookie = response['data']['cookie']
     if not newCookie is None:
         global cookie
