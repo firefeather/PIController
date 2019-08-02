@@ -225,10 +225,10 @@ def startTasks():
     _addWeatherWatcherJob()
 
     _addClearLogJob()
-    _addMiDakaJob()
-    _addMiTaskJob()
+    # _addMiDakaJob()
+    # _addMiTaskJob()
     _addWangyiJob()
-    _addMiZhongchouJob()
+    # _addMiZhongchouJob()
     _addBaiduJob()
     _addTouTiaoJob()
     _addTouTiaoJob2()
