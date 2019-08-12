@@ -59,7 +59,7 @@ def getBigLotteryList():
    else:
       Logger.n('今日头条全民大抽奖失败','获取大抽奖列表失败,'+response['Msg'])
 
-def getSmallLotteryList():
+def getNewLotteryList():
    headers={
       'content-type':	'application/json',
       'user-agent':	'Mozilla/5.0 (Linux; Android 8.1.0; Mi Note 3 Build/OPM1.171019.019; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/62.0.3202.84 Mobile Safari/537.36 NewsArticle/7.2.7 ToutiaoMicroApp/1.19.3.4 PluginVersion/72707',
@@ -67,7 +67,7 @@ def getSmallLotteryList():
       'accept-encoding':	'gzip',
       'cookie':	COOKIE
    }
-   api = HOST+'feed'
+   api = HOST+'feed?LastActivityNo='
    response = get(api,headers=headers,verify=False)
    if response['Status']==0:
       lotteryList = response['LotteryActivityList']
@@ -79,15 +79,44 @@ def getSmallLotteryList():
             if result == 1:
                 successCount+=1
             elif result == 3:
-                Logger.v('今日头条全民小抽奖完成,共成功参与{}次抽奖'.format(successCount))
+                Logger.v('今日头条全民抽奖完成,共成功参与{}次抽奖'.format(successCount))
                 break
             else:
                 continue
       else:
-          Logger.e('今日头条全民小抽奖失败','未获取到小抽奖列表')
+          Logger.e('今日头条全民抽奖失败','未获取到小抽奖列表')
    else:
-      Logger.n('今日头条全民小抽奖失败','获取抽奖小列表失败,'+response['Msg'])
+      Logger.n('今日头条全民抽奖失败','获取抽奖列表失败,'+response['Msg'])
 
+def getSmallLotteryList():
+    headers={
+            'content-type':	'application/json',
+            'user-agent':	'Mozilla/5.0 (Linux; Android 8.1.0; Mi Note 3 Build/OPM1.171019.019; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/62.0.3202.84 Mobile Safari/537.36 NewsArticle/7.2.7 ToutiaoMicroApp/1.19.3.4 PluginVersion/72707',
+            'referer':	'https://tmaservice.developer.toutiao.com?appid=ttec4d9af07367551a&version=2.5.7',
+            'accept-encoding':	'gzip',
+            'cookie':	COOKIE
+         }
+    api = HOST+'feed'
+    response = get(api,headers=headers,verify=False)
+    if response['Status']==0:
+       lotteryList = response['LotteryActivityList']
+       if not lotteryList is None:
+              unJoinList = list(filter(lambda lottery: lottery['JoinState'] != 'JOIN', lotteryList)) or []
+              successCount = 0
+              for item in unJoinList:
+                  result = joinLotery(item['ActivityNo'])
+                  if result == 1:
+                      successCount+=1
+                  elif result == 3:
+                      Logger.v('今日头条全民小抽奖完成,共成功参与{}次抽奖'.format(successCount))
+                      break
+                  else:
+                      continue
+       else:
+                Logger.e('今日头条全民小抽奖失败','未获取到小抽奖列表')
+    else:
+            Logger.n('今日头条全民小抽奖失败','获取抽奖小列表失败,'+response['Msg'])
+      
 def joinLotery(no):
     time.sleep(3)
     headers={
@@ -110,8 +139,9 @@ def joinLotery(no):
        return 2
        
 def autoLottery():
-   getBigLotteryList()
-   getSmallLotteryList()
+   # getBigLotteryList()
+   # getSmallLotteryList()
+   getNewLotteryList()
 
 if __name__ == "__main__":
     getLotteryList()
