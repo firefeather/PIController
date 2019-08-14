@@ -139,8 +139,8 @@ def joinLotery(no):
        return 2
        
 def autoLottery():
-   # getBigLotteryList()
-   # getSmallLotteryList()
+   getBigLotteryList()
+   getSmallLotteryList()
    getNewLotteryList()
 
 if __name__ == "__main__":
