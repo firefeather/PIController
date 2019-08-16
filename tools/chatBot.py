@@ -130,7 +130,7 @@ def getReply(msg):
     elif _CURRENT_BOT == BOTS[2]:
         reply = getXiaoIResponse(msg)
     # 发送腾讯回复内容
-    elif _CURRENT_BOT == BOTS[2]:
+    elif _CURRENT_BOT == BOTS[3]:
         reply = getTencentResponse(msg)
     else:
         reply = '请先设置聊天机器人'
