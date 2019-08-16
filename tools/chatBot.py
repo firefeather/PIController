@@ -1,11 +1,12 @@
-import requests, time, random, re, base64, os, json
-from urllib.parse import quote
+import requests, time, random, re, base64, os, json,string
+from urllib.parse import quote,urlencode
 from logger import Logger
+import hashlib
 
-BOTS = ['图灵', '小冰', '小I']
+BOTS = ['图灵', '小冰', '小I','腾讯']
 
 global _CURRENT_BOT
-_CURRENT_BOT = BOTS[0]
+_CURRENT_BOT = BOTS[3]
 
 
 def setChatBot(bot):
@@ -70,7 +71,49 @@ def getXiaoIResponse(msg):
     result = pattern.findall(r.text)
     return random.choice(result).strip(r'\n\r\n')
 
+def ranstr(num=16):
+    rule = string.ascii_lowercase + string.digits
+    str = random.sample(rule, num)
+    return "".join(str)
 
+global tencent_session
+tencent_session='89898'
+
+def getTencentSign(para, app_key='yUqMILgIFnDAFymX'):
+    # 签名的key有严格要求，按照key升序排列
+    data = sorted(para.items(), key=lambda item: item[0])
+    data.append(('app_key',app_key))
+    s = urlencode(data)
+    # 计算md5报文信息
+    md5 = hashlib.md5()
+    md5.update(s.encode())
+    digest = md5.hexdigest()
+    return digest.upper()
+
+def getTencentResponse(msg):
+    try:
+        global tencent_session
+        api = 'https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat'
+        params = {
+            'app_id':'2120411915',
+            'time_stamp':str(int(time.time())),
+            'nonce_str':ranstr(),
+            'session':tencent_session,
+            'question':msg.encode('gbk'),
+        }
+        params['sign']=getTencentSign(params)
+        res = requests.post(api, data=params).json()
+        result = ''
+        if res['ret'] == 0:
+            data = res['data']
+            result = data['answer']
+            tencent_session = data['session']
+        else:
+            result = res['msg']
+        return result
+    except Exception as e:
+        Logger.e('获取腾讯智能闲聊结果失败', e)
+        return 'Emmmmm'
 # def getXiaoBingResponse(msg):
 
 
@@ -86,6 +129,9 @@ def getReply(msg):
     # 发送小I回复内容
     elif _CURRENT_BOT == BOTS[2]:
         reply = getXiaoIResponse(msg)
+    # 发送腾讯回复内容
+    elif _CURRENT_BOT == BOTS[2]:
+        reply = getTencentResponse(msg)
     else:
         reply = '请先设置聊天机器人'
     return reply or 'I received: ' + msg
@@ -133,4 +179,8 @@ def getPictureReplyByXiaoBing(url):
         return text1
     except Exception as e:
         Logger.e('图片分析失败', e)
+        return 'Emmmmm'
         # print('图片分析失败:',e)
+
+if __name__ == '__main__':
+    print(getTencentResponse('你好'))
