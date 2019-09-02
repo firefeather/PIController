@@ -4,7 +4,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 global cookie
-cookie = 'roc10j5JjvJbRFtePrsoVNGn600ruteh0V4jXUAaC4UGxaw1xYbLvewoGwgRCPWLyh8NC5Etjoj6P6GXvaU4opE0.J_3wY7E4SQIPXyzqSe7hP6KiBtRrrPGBYl_Uw5aP13NQZMM.nbPyXoB3zU3Q9fhp4VIkn_M16lQRVoVU2qzV2iUwl1MD1OpvhdHrAMLQhXtU7GICXQCMC8qaY7kxPVyszS5_9SSsWOhifAJkdlIS'
+cookie = 'y6ZleFqsbqpav7PMpjqWBU9P7YCaxkP6ER.DNY0ik.Yt3iTX3xgZlsThtTq2kmpZHvoCkuWaDhDEmEtNliY.hBWJ5nVFTxAW.9crmNH4Q9sAvmEIjOa2yymtOx1VYTuimXFCcU775dgmHNhOF4YFc6zvB.RredV7XkhJOed7a3noazH95VR7k9ayvDfEW.zfGVW_cdjEZzjOHEgFDBkLcPhHP49uV699Ppbvjz0ne81r9'
 
 cookies = {
     'NTES_YD_SESS':
@@ -112,15 +112,18 @@ def autoCollectCoins():
 
 def getCookie():
     Logger.v('尝试自动更新网易星球cookie')
-    data={
-        'p':'SAmsdBV+moUeDdvBbRUuAc/ShOCiz6IKgs9epb6qLwBgUF7Cp9EVZhjfzpzcr4WpiWsUR8j6apiqvV6sHwGXulwTpSp/pSxFTg5IGdgCxixujZjrjphEGg8fBkaL7yf+tF/Y+WbRB9Er3wr9KvyEmsrMLuuD0KJLpLjnauZWiOMj67t/kfaSrD2Wp6t8vLOmYXktBZ3eM9jkWDQIVAwCytT041htoSg4Jr1Gd2dll/oGO32PvhtzF7gRT5foKQqEc1vK7F23+mQQmpzx1v3LVYQCLKodFix+r8S1X4T0UTtuvCwLGZSh5UIlBF5Vbory2SUasZAcFHSMG3hUsVpfNpzY6bj+lERh+ZcYlw4r9+do+1Pg8u903SFmvL4dlfYXnq+DVc8YTgExt0TROQMfpw==',
-        'k':'b4h+FNm0kIztyRd25ADGo8tGQMufNy+WW3Kuf4/kI3cIvCQ9jx/DFu9iWVm6w/qVQufzVDo9ULepwHhfymGhkUGbt8Bype6LE0UyW0j4icz0ttV2UdWxWl3UymL9+A3hJgiqs77bfBO8B+jgKe+elBjfTq4f4zKpeKdtAwxEEZo='
+    data='{"p":"SAmsdBV+moUeDdvBbRUuAc/ShOCiz6IKgs9epb6qLwBgUF7Cp9EVZhjfzpzcr4WpiWsUR8j6apiqvV6sHwGXulwTpSp/pSxFTg5IGdgCxixujZjrjphEGg8fBkaL7yf+tF/Y+WbRB9Er3wr9KvyEmsrMLuuD0KJLpLjnauZWiOMj67t/kfaSrD2Wp6t8vLOmYXktBZ3eM9jkWDQIVAwCytT041htoSg4Jr1Gd2dll/oGO32PvhtzF7gRT5foKQqEc1vK7F23+mQQmpzx1v3LVYQCLKodFix+r8S1X4T0UTtuvCwLGZSh5UIlBF5Vbory2SUasZAcFHSMG3hUsVpfNpzY6bj+lERh+ZcYlw4r9+do+1Pg8u903SFmvL4dlfYXnq+DVc8YTgExt0TROQMfpw==","k":"b4h+FNm0kIztyRd25ADGo8tGQMufNy+WW3Kuf4/kI3cIvCQ9jx/DFu9iWVm6w/qVQufzVDo9ULepwHhfymGhkUGbt8Bype6LE0UyW0j4icz0ttV2UdWxWl3UymL9+A3hJgiqs77bfBO8B+jgKe+elBjfTq4f4zKpeKdtAwxEEZo="}'
+    headers={
+        'user-agent':	'Mozilla/5.0 (Linux; Android 8.1.0; Mi Note 3 Build/OPM1.171019.019; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.112 Mobile Safari/537.36',
+        'appmeta':	'eyJhcHBWZXJzaW9uIjoiMS45LjMiLCJPUyI6IkFuZHJvaWRfMjciLCJhcHBOYW1lIjoi5pif55CDIiwiY2hhbm5lbCI6ImUwMTE3MDAwNCIsImFudGlTcGFtSW5mbyI6IntcImRhdGF0eXBlXCI6XCJhaW10X2RhdGFzXCIsXCJpZF92ZXJcIjpcIkFuZHJvaWRfMS4wLjFcIixcInJkYXRhXCI6XCI5N0NhV1NwbHdQSDBFS1NZYStUMGM0anRZQ05Fc0pEMHpCUm1LWXUyMVdBeDBnMlVpZWJSRndaVzhMSzhLRnM5a1B3UFBnRTc3VzcrYWRXWmliYnVvSURCTHp6NlRwdWtkazBzL3ozcTlWVWFSbUlBZ1lsRHNNT3U3U0dENXlZQXYzZ1V0R0RINVRoVUsrZlJZdXB4V2pycHpxVjFmejd2WDU3cGhibkQ0eU9BdEkrMkZtbHdkV3J0WGU3Ynpya2dzcTUxY0FkRzl5OTNJc3VHR2EvcnAxdXQxOVFxUUVYQWNzcjJqT3B4bmM3T2ZEK1VGN2J3YlhZaFlqKzV3MXFON3I1SG5KYVdURmF5WGhPK0pxUlZhbys5YVNIOGhnczlUZlRiRDBvb2pDZ2FlcGNMTXhVMmRRT0NISlhDMGRuNzA2TmRKVTZvVjYxYnlOeG5xL1l2cWFqcVdhZFd5Yk8yQm5tQWxPNUtONk16OG5OVVhFZXpQQ3FwYVYyTS90RzdpNWNidDJwbWpickFBSjRhdW84TGFjMVNiM1VhcWJWSldRdllkNkxhbFVkdW9NRmloRHF3cUprNEdpaGRxazNvOE5LbWtzaFJxY050SEFUNW5DakhyOWdzbE10QXV2U0loUEZZQTQ1NGJJeThWKzM0ZXJKSHNTTk9UOGZsR1l1UUVHaG5uQVVidE81Q2plU1RMdjJkMTF1NFJGZDV2S0w5UythZzNqQkVRWFpKRkxXcjZZSEgxQmFsUlFZWk44bm5vQTltTHBLQ2hwVlRzWnpuejNPSVRSMFFHRUdiY1RHQWNzZ29vVjNhU01aN0RMeG5QdVNaRjIxSkd1elEzNnVUXCIsXCJya1wiOlwidkFBWWUrT29uZTA1ejJCb2J1MW93WHVFdllpbEtsOHAwRlNXTzBBcjlydFJoUXhiZ0ZzWE82L3FQbWp5V2NXeVM0bWVHdkM5T2toOXRhZCtCTlg5UmYrb25yVEVXOTNtL1JtMFc2UERYZUowbnRsUDEzaE1nTW9IZmlycmwrRjh6c0lDTzBacDRUd21wWVpGYkFVL25kSGpPclJBcFdkN0ZoUWtkVXRPQ0gwXHUwMDNkXCJ9XG4iLCJtb2RlbCI6Ik1pIE5vdGUgMyIsInBhY2thZ2VOYW1lIjoiY29tLm5ldGVhc2UuYmxvY2tjaGFpbiIsImFwcFZlcnNpb25Db2RlIjoiMjY5IiwibWFudWZhY3R1cmVyIjoiWGlhb21pIn0=',
+        'content-type':	'application/json; charset=utf-8',
+        'content-length':	'610',
+        'accept-encoding':	'gzip'
     }
     response = post(
         'https://star.8.163.com/api/starUser/getCookie',
-        data,
+        data=data,
         headers=headers,
-        cookies=cookies,
         verify=False)
     print(response)
     newCookie = response['data']['cookie']
