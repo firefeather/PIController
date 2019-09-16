@@ -124,7 +124,7 @@ def _addTouTiaoJob():
         func=_startToutiaoLottery,
         trigger='cron',
         day_of_week='0-6',
-        hour=random.randint(8, 23),
+        hour=random.randint(10, 22),
         minute=random.randint(0, 59),
         second=random.randint(0, 59)  #每天8-23点随机时刻参与头条抽奖
     ).id
