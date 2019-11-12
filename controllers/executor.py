@@ -104,7 +104,7 @@ def executCommand(command, user):
     elif command.Name == ALL_COMANDS[19].Name:  #重启控制器
         threading.Thread(
             target=_executeShell,
-            args=(user, 'git pull && sudo /home/pi/Script/start/controller.sh')).start()
+            args=(user, 'git pull && sudo /home/pi/Codes/AutoRun/startPiController.sh')).start()
         result = '正在重启控制器'
     elif command.Name == ALL_COMANDS[20].Name:  #小米众筹
         result = sendResultLater(user, getGoodList)
