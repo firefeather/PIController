@@ -32,6 +32,9 @@ def getSmsConfig():
 
 def getVoiceConfig():
     return getConfig().configs['voice']
+
+def getCosConfig():
+    return getConfig().configs['cos']
     
 def getConfig():
     global config

@@ -27,6 +27,7 @@ import utils.text2image as Text2Image
 from spider.miCrowdfunding import getGoodList
 from tools.systemInfo import getSystemInfo
 from tools.shuangseqiu import getSSQResult
+from utils.cosOper import uploadFile
 
 def executCommand(command, user):
     if command.Name == ALL_COMANDS[0].Name:  #获取所有用户
@@ -100,7 +101,7 @@ def executCommand(command, user):
         speakFunc = voice if isNetOK() else speak
         result = sendResultLater(user, speakFunc, command.Parmas)
     elif command.Name == ALL_COMANDS[18].Name:  #读取日志
-        result = sendResultLater(user, _getSysLog, command.Parmas)
+        result = sendResultLater(user, _getSysLogByCos, command.Parmas)
     elif command.Name == ALL_COMANDS[19].Name:  #重启控制器
         threading.Thread(
             target=_executeShell,
@@ -200,8 +201,8 @@ def _runTaskRightNow(user, funcName):
         else:
             Logger.e(func + '无法执行','not callable')
 
-
-def _getSysLog(name=None):
+#截图发送日志
+def _getSysLogByImage(name=None):
     if name is None:
        name = time.strftime("%Y-%m-%d",time.localtime(time.time()))
     logPath = getGeneralConfig()['log_path']
@@ -213,6 +214,23 @@ def _getSysLog(name=None):
             result = Text2Image.textFile2Image(logName, logImg)
         except Exception as e:
             Logger.e('读取日志文件' + logName + '失败', e)
+            result = '读取日志失败'
+    else:
+        result = '日志不存在'
+    return result
+
+#上传至cos后返回访问地址
+def _getSysLogByCos(name=None):
+    if name is None:
+       name = time.strftime("%Y-%m-%d",time.localtime(time.time()))
+    logPath = getGeneralConfig()['log_path']
+    logName = logPath + name + '.log'
+    result = ''
+    if os.path.exists(logName):
+        try:
+            result = uploadFile(logName)
+        except Exception as e:
+            Logger.e('上传日志文件' + logName + '失败', e)
             result = '读取日志失败'
     else:
         result = '日志不存在'
