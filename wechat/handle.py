@@ -47,6 +47,10 @@ class Handle(object):
                        replyMsg = reply.ImageMsg(toUserName, fromUserName, recMsg.MediaId)
                     else:
                        replyMsg = reply.TextMsg(toUserName, fromUserName, result)
+                elif recMsg.MsgType == 'voice':
+                     content = recMsg.Recognition.decode('utf-8')
+                     result = controllers.handVoice(content,fromUser)
+                     replyMsg = '识别结果:'+content+'\n'+reply.TextMsg(toUserName, fromUserName, result)
                 else:
                     content = "好的,朕知道了!"
                     replyMsg = reply.TextMsg(toUserName, fromUserName, content)

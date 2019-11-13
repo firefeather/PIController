@@ -8,9 +8,13 @@ from tools.chatBot import getCurrentChatBot, getReply, getPictureReplyByXiaoBing
 from logger import Logger
 
 
-def handText(text, user):
+def handText(text, user,isVoice=False):
     # print('命令:',text,'发起人:',user)
-    Logger.v('收到<' + user.Name + '>的文本消息<' + text + '>')
+    if not isVoice:
+        Logger.v('收到<' + user.Name + '>的文本消息<' + text + '>')
+    if text.endswith('。') and text.find('，')<6:#尝试处理下语音消息
+          text = text.replace('，',':',1)
+          text=text[:-1]
     command = findComandByStr(text.strip())
     if command is None:
         if getCurrentChatBot() is None:
@@ -35,4 +39,9 @@ def handImage(imageUrl, user):
     #  if not getCurrentChatBot() is None:
     #  result = getPictureReplyByXiaoBing(imageUrl)
     result = getPictureReplyByXiaoBing(imageUrl)
+    return result
+
+def handVoice(content, user):
+    Logger.v('收到<' + user.Name + '>的语音消息<' + content + '>')
+    result = handText(content,user,isVoice=True)
     return result
