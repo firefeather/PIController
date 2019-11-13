@@ -44,4 +44,4 @@ def handImage(imageUrl, user):
 def handVoice(content, user):
     Logger.v('收到<' + user.Name + '>的语音消息<' + content + '>')
     result = handText(content,user,isVoice=True)
-    return result
+    return '识别结果:'+content+'\n'+result

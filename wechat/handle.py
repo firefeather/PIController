@@ -32,9 +32,7 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            print('webData',webData)
             recMsg = receive.parse_xml(webData)
-            print('recMsg',recMsg)
             toUserName = recMsg.FromUserName
             fromUserName = recMsg.ToUserName
             fromUser = findAndCreatedIfUserNotFound(id=toUserName)[0]
@@ -52,7 +50,7 @@ class Handle(object):
                 elif recMsg.MsgType == 'voice':
                      content = recMsg.Recognition.decode('utf-8')
                      result = controllers.handVoice(content,fromUser)
-                     replyMsg = '识别结果:'+content+'\n'+reply.TextMsg(toUserName, fromUserName, result)
+                     replyMsg = reply.TextMsg(toUserName, fromUserName, result)
                 else:
                     content = "好的,朕知道了!"
                     replyMsg = reply.TextMsg(toUserName, fromUserName, content)
