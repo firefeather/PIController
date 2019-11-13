@@ -12,10 +12,6 @@ def handText(text, user,isVoice=False):
     # print('命令:',text,'发起人:',user)
     if not isVoice:
         Logger.v('收到<' + user.Name + '>的文本消息<' + text + '>')
-    if text.endswith('。'):#尝试处理下语音消息
-        text=text[:-1]
-        if text.find('，')<6:
-           text = text.replace('，',':',1)
     command = findComandByStr(text.strip())
     if command is None:
         if getCurrentChatBot() is None:
@@ -44,5 +40,9 @@ def handImage(imageUrl, user):
 
 def handVoice(content, user):
     Logger.v('收到<' + user.Name + '>的语音消息<' + content + '>')
+    if content.endswith('。'):#尝试处理下语音消息
+        content=content[:-1]
+        if content.find('，')<6:
+           content = content.replace('，',':',1)
     result = handText(content,user,isVoice=True)
     return '识别结果:'+content+'\n'+result
