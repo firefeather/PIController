@@ -6,7 +6,6 @@ from wechat import receive,reply
 import controllers.controller as controllers
 from users import findAndCreatedIfUserNotFound
 from allComands import ALL_COMANDS
-from logger import Logger
  
 class Handle(object):
     def GET(self):
@@ -33,9 +32,9 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            Logger.v('webData:'+webData)
+            print('webData',webData)
             recMsg = receive.parse_xml(webData)
-            Logger.v('recMsg:'+recMsg)
+            print('recMsg',recMsg)
             toUserName = recMsg.FromUserName
             fromUserName = recMsg.ToUserName
             fromUser = findAndCreatedIfUserNotFound(id=toUserName)[0]
