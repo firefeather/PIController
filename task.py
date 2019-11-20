@@ -161,7 +161,7 @@ def _addMiDakaJob():
 
 def _addSmallTargetJob():
     job_ids['_startSmallTarget'] = scheduler.add_job(
-        func=_startMiDaka,
+        func=_startSmallTarget,
         trigger='cron',
         day_of_week='0-6',
         hour=22,
