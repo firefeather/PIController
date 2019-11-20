@@ -15,6 +15,7 @@ from tools.tempWatcher import watchTemp
 from script.baiduDog import autoCollect
 from script.toutiaoLottery import autoLottery
 from script.toutiaoLottery2 import autoJoinLottery
+from phone.target.target import autoFollow
 
 config = getGeneralConfig()
 
@@ -98,6 +99,14 @@ def _startMiZhongchou(fromUser=False):  #发送小米众筹产品信息
     info = getGoodList()
     sendTextMsg(MANAGER.Id, info)
 
+def _startSmallTarget(fromUser=False):  #达目标自动围观
+    Logger.v('开始执行达目标自动围观')
+    result = autoFollow()
+    if result.new_money>0:
+        Logger.v('达目标围观新分得了{}元钱'.format(result.new_money))
+        sendTextMsg(MANAGER.Id, '达目标围观新分得了{}元钱'.format(result.new_money))
+
+
 
 def _addWangyiJob():
     job_ids['_startWangyiCollet'] = scheduler.add_job(
@@ -150,6 +159,15 @@ def _addMiDakaJob():
         second=random.randint(0, 59)  #每天早上6点-6点半执行小米早起打卡
     ).id
 
+def _addSmallTargetJob():
+    job_ids['_startSmallTarget'] = scheduler.add_job(
+        func=_startMiDaka,
+        trigger='cron',
+        day_of_week='0-6',
+        hour=22,
+        minute=random.randint(0, 30),
+        second=random.randint(0, 59)  #每天晚上10点执行达目标
+    ).id
 
 def _addClearLogJob():
     job_ids['_clearLog'] = scheduler.add_job(
@@ -232,6 +250,7 @@ def startTasks():
     _addBaiduJob()
     _addTouTiaoJob()
     _addTouTiaoJob2()
+    _addSmallTargetJob()
 
     scheduler.start()
 

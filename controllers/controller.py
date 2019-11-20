@@ -21,7 +21,7 @@ def handText(text, user,isVoice=False):
     elif isinstance(command, str):
         result = '<' + text + '>' + command
     else:
-        #  print('找到命令:',command)
+        # print('找到命令:',command)
         Logger.v('执行命令<' + command.Name + '>,参数<' +
                  (str(command.Parmas) or '无') + '>,发起人<' + user.Name + '>')
         if command.Permission > user.Level:

@@ -42,7 +42,6 @@ def findComandByStr(text):#根据用户输入尝试解析出对应命令
     global ALL_COMANDS
     commandList = list(filter(lambda com:com.Name == comandName, ALL_COMANDS))
     result = None
-
     if len(commandList) != 0:#找到了该命令
        comand = copy.deepcopy(commandList[0])
        if comand.Parmas == None:
