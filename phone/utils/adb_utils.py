@@ -21,9 +21,7 @@ if "ANDROID_HOME" in os.environ:
     else:
         command = os.path.join(os.environ["ANDROID_HOME"], "platform-tools", "adb")
 else:
-    raise EnvironmentError(
-        "Adb not found in $ANDROID_HOME path: %s." % os.environ["ANDROID_HOME"])
-
+    command = 'adb'
 
 class AdbUtils(object):
     """
