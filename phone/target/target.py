@@ -29,7 +29,8 @@ class SmallTarget(object):
             self.adb = AdbUtils()
             auto_setup(__file__)
             self.connected=True
-        except:
+        except Exception as e:
+            Logger.e('连接设备失败',e)
             self.connected=False
         self.readCount=0
         self.money=0
