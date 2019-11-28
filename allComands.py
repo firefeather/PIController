@@ -34,7 +34,7 @@ ALL_COMANDS = [
    Command(name='帮助',func='获取命令帮助及用法',usage='帮助',parmas=None,permission=PERMISSION_LEVEL['NORMAL']),
    Command(name='小爱同学',func='让树莓派呼叫小爱同学并对其说话',usage='小爱同学:XXX',parmas='STR',permission=PERMISSION_LEVEL['ADMIN']),
    Command(name='发微信',func='给指定人发送文字微信',usage='发微信:to=XXX,text=XXX',parmas='DIC',permission=PERMISSION_LEVEL['ADMIN']),
-   Command(name='微信电话',func='给指定人发送微信视频电话',usage='微信电话:XXX',parmas='STR',permission=PERMISSION_LEVEL['ADMIN']),
+   Command(name='微信电话',func='给指定人发送微信视频电话',usage='微信电话:XXX',parmas='STR/NONE',permission=PERMISSION_LEVEL['ADMIN']),
 
 ]
 
