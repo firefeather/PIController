@@ -32,6 +32,7 @@ class SmallTarget(object):
         except Exception as e:
             Logger.e('连接设备失败',e)
             self.connected=False
+        self.prepared = False
         self.readCount=0
         self.money=0
 
@@ -40,6 +41,8 @@ class SmallTarget(object):
             Logger.e('达目标自动围观失败','连接设备失败,无法执行')
             return
         self._pre()
+        if not self.prepared:
+            return
         self._go_to_message_list()
         self._exit()
     
@@ -56,6 +59,7 @@ class SmallTarget(object):
         if not self.adb.isInstall(package_name):
             Logger.e('达目标自动围观失败','未安装{},无法执行'.format(package_name))
             return
+        self.prepared = True
         #解锁手机
         self.adb.unlockPhone()
         # # 删除缓存文件
@@ -169,6 +173,7 @@ class SmallTarget(object):
                        success = True
                        btn_info.click()
                        self.poco(id_modal_follow_result_content).wait_for_appearance()
+                       Logger.v('达目标新围观成功')
                        self.adb.sendKeyEvent(BACK)
                        break
             except Exception as e:

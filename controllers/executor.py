@@ -28,6 +28,7 @@ from spider.miCrowdfunding import getGoodList
 from tools.systemInfo import getSystemInfo
 from tools.shuangseqiu import getSSQResult
 from utils.cosOper import uploadFile
+from phone.wechat.wechat import sendText,makeVideoCall
 
 def executCommand(command, user):
     if command.Name == ALL_COMANDS[0].Name:  #获取所有用户
@@ -117,6 +118,10 @@ def executCommand(command, user):
         result = sendResultLater(user, getCommandsHelp,user)
     elif command.Name == ALL_COMANDS[24].Name:  #小爱同学
         result = sendResultLater(user, callXiaoAi,command.Parmas)
+    elif command.Name == ALL_COMANDS[25].Name:  #文字微信
+        result = sendResultLater(user, sendText,command.Parmas)
+    elif command.Name == ALL_COMANDS[26].Name:  #微信电话
+        result = sendResultLater(user, makeVideoCall,command.Parmas)
     else:
         result = '暂未完成'
     Logger.v(user.Name + '的命令<' + command.Name + '>执行结果<' + result + '>')
@@ -126,7 +131,7 @@ def executCommand(command, user):
 def sendResultLater(to, func, args=None):
     def getResultAndSend():
         try:
-            result = func() if args is None else func(args)
+            result = func() if args is None else func(**args)
             if not result is None:
                 if len(result) < 50 and ('.png' in result
                                         or '.jpg' in result):  #如果是个图片 则发送图片
