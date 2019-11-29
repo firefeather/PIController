@@ -27,3 +27,9 @@ id_wechat_message_more_func_item_txt = 'com.tencent.mm:id/zr'
 id_wechat_recent_message_list = 'com.tencent.mm:id/dcf'
 #微信tab1最近消息item文字
 id_wechat_recent_message_item_txt = 'com.tencent.mm:id/baj'
+#微信点击视频通话后弹出的视频和语音选择界面 
+id_wechat_calls_select_list = 'com.tencent.mm:id/bdz'
+#微信点击视频通话后弹出的视频和语音选择界面 视频选项
+id_wechat_calls_item_video = 'com.tencent.mm:id/czu'
+#微信点击视频通话后弹出的视频和语音选择界面 语音选项
+id_wechat_calls_item_voice = 'com.tencent.mm:id/dk9'
