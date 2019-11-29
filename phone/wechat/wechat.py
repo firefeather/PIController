@@ -134,9 +134,7 @@ class Wechat(object):
                     id_wechat_message_more_func_item_txt).get_text().strip()
                 if item_info_text == '视频通话':
                     item.click()
-                    sleep(1)
-                    if self.poco(id_wechat_calls_select_list).exists():
-                        self.poco(id_wechat_calls_item_video).click()
+                    self.poco(id_wechat_calls_item_video).wait(2).click()
                     Logger.v('拨打微信电话成功')
                     break
             except Exception as e:
