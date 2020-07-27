@@ -131,7 +131,7 @@ def executCommand(command, user):
 def sendResultLater(to, func, args=None):
     def getResultAndSend():
         try:
-            result = func() if args is None else func(**args)
+            result = func() if args is None else func(args)
             if not result is None:
                 if len(result) < 50 and ('.png' in result
                                         or '.jpg' in result):  #如果是个图片 则发送图片

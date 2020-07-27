@@ -250,7 +250,7 @@ def startTasks():
     _addBaiduJob()
     _addTouTiaoJob()
     _addTouTiaoJob2()
-    _addSmallTargetJob()
+    # _addSmallTargetJob()
 
     scheduler.start()
 

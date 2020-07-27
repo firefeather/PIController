@@ -14,6 +14,9 @@ def sendMsg(msgJson):
     return result
 
 def sendTextMsg(toId,content):
+    if content is None or content == '':
+       Logger.e('发送微信消息失败',"消息内容为空")
+       return '发送失败'
     msgJson = {
               "touser":toId,
               "msgtype":"text",
