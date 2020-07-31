@@ -40,6 +40,8 @@ ALL_COMANDS = [
 
 def findComandByStr(text):#根据用户输入尝试解析出对应命令
     args = text.split(":",1)  # 参数以:为分割符
+    if len(args) == 1:
+       args = text.split("：",1)  # 再尝试参数以：为分割符
     comandName = args[0].strip()#命令名
     global ALL_COMANDS
     commandList = list(filter(lambda com:com.Name == comandName, ALL_COMANDS))
