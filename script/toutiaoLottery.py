@@ -44,10 +44,10 @@ def getBigLotteryList():
       lotteryList = response['LotteryActivityList']
       if not lotteryList is None:
           unJoinList = list(filter(lambda lottery: lottery['JoinState'] != 'JOIN', lotteryList)) or []
-          successCount = 0
           if len(unJoinList) == 0:
               Logger.e('今日头条全民大抽奖','没有未参加的大抽奖项目')
           else:
+             successCount = 0
              for item in unJoinList:
                 result = joinLotery(item['ActivityNo'])
                 if result == 1:
@@ -76,6 +76,9 @@ def getNewLotteryList():
       lotteryList = response['LotteryActivityList']
       if not lotteryList is None:
           unJoinList = list(filter(lambda lottery: lottery['JoinState'] != 'JOIN', lotteryList)) or []
+          if len(unJoinList) == 0:
+              Logger.e('今日头条全民抽奖','没有未参加的抽奖项目')
+              return
           successCount = 0
           for item in unJoinList:
             result = joinLotery(item['ActivityNo'])
@@ -105,6 +108,9 @@ def getSmallLotteryList():
        lotteryList = response['LotteryActivityList']
        if not lotteryList is None:
               unJoinList = list(filter(lambda lottery: lottery['JoinState'] != 'JOIN', lotteryList)) or []
+              if len(unJoinList) == 0:
+                Logger.e('今日头条全民小抽奖','没有未参加的小抽奖项目')
+              return
               successCount = 0
               for item in unJoinList:
                   result = joinLotery(item['ActivityNo'])
