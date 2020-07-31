@@ -22,8 +22,8 @@ def getHeader(timestamp):
         'Referer':	'https://pet-chain.duxiaoman.com/',
         'Accept-Encoding':	'gzip, deflate',
         'Accept-Language':	'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Cookie':'STDCJUVF=eyJ1YSI6IkJhaWR1V2FsbGV0LTguMi4wLjgtQW5kcm9pZC13YWxsZXRhcHBfMTA4MF8xOTIwX01pLU5vdGUtMy1qYXNvbl8yN184LjEuMF80LjAuNV80MDUiLCJjdSI6IjU0QkNFM0ZBMzM1QTZFM0QyQjZCNjU4MEVERkJDQjdDIiwiY3UyIjoiNTRCQ0UzRkEzMzVBNkUzRDJCNkI2NTgwRURGQkNCN0N8MTI2ODg3MTMwMzE0NjY4In0=; Hm_lvt_2a9b55018981a1911dd3914ca3f9bcf6={}; BDUSS=duMEUyMkJXMm1YTTZ6aktHcTdmQ09IYU1BcDE2S0UxZGV2WHFKMUM5Nm41aDVkRVFBQUFBJCQAAAAAAAAAAAEAAABki8A~T2FfZmx5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKdZ91ynWfdcUE; STOKEN=67893d44de76f46e5d8c57dd6b53767fa76df3b163b960151891b3177b398799; Hm_lpvt_2a9b55018981a1911dd3914ca3f9bcf6={}'.format(int(timestamp/1000)-3600,int(timestamp/1000)),
-        'X-Requested-With':	'com.baidu.wallet'
+        'Cookie':'BDUSS=pgElm1Xf5gIBxZZDPwI4Yw==; OPENBDUSS=QAAAAEAAACwpweJJhvbBde9EywgavSCK6am_GnfC2RAp3fpzq4BzWHdyG9lSbH7FGN0mxA0qC4cX2eoT97c7-NVWrQu7V5pziZMVjD_7LxuhJZO_B95gaoXeKIu_jOHivRVkNwsS_oe6rTG7HUwUKj5vQPv8J0CjTEGL3ogVLPZHObfAonZZgA; STOKEN=c5eb0c605a44961d0f3b8533e9de8cd3b1f93338f122b75b82a2e60bddb3ad8d; Hm_lvt_2a9b55018981a1911dd3914ca3f9bcf6={},{}; Hm_lpvt_2a9b55018981a1911dd3914ca3f9bcf6={}'.format(int(timestamp/1000)-3600,int(timestamp/1000),int(timestamp/1000)),
+        'DNT':'1',
     }
 
 def getVigorList():
