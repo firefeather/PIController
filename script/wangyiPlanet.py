@@ -4,7 +4,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 global cookie
-cookie = 'vxbnUBPOq2_bEvWLkEBUgXm8Zq3zEmIGeNJL6cVPWJceTPr9Tw.qDBrier5CWbFqljaEWd3sLiLxbxe6DPcJif3Rn2XMrw_3JUKhb6l0uUB_jbxomzsCvvbezwSXcrdPb9MEKQHHnG.bl6izM0cMKYAjfJNhpGXH90NKGh7TvSBOx0A6u1Sf8GmZUJaxv9muyXTISlrp5iQ3Cf4veMOnn7NlO0UdXYUUOF4jmAV2ptShU'
+cookie = 'orwX6kG8DLSG1YIDt4Qu3aZ.aw3RveGJh1APSqHe6AqCceKDcQzbiWKtCK4X6BxbhaG96JYkPtPUBUCSieqAt3Y_0VlwKQyYAL58BSh7.LWyaBUdsFkXooBCFQjlqKJeBDw95grr0RzBhStFw7qw5ZMa3A18ERlrDOnjfUHbLqf1S5xc6rXU_YzAcZvynJOlp3SyTiW1U7c1nUfMWfeAsSQhp7LJlZLLpxfasMHVE2j8L'
 
 cookies = {
     'NTES_YD_SESS':
@@ -84,6 +84,9 @@ def collectCoins(coinId):
         return False
     return True
 
+global retryTimes
+retryTimes = 0
+
 def autoCollectCoins():
     # 1、请求首页数据，检查是否有coin可以收集。有则将coin保存到列表容器
     response = post(
@@ -95,7 +98,13 @@ def autoCollectCoins():
         Logger.e('网易星球收取黑钻失败',response['msg'])
         if '登录失败' in response['msg']:
             Logger.n('网易星球登录失败','可能为session过期')
-            getCookie()
+            global retryTimes
+            if  retryTimes < 1:
+                retryTimes += 1
+                getCookie()
+                autoCollectCoins()
+            else:
+                retryTimes = 0
         else:
             return
     collectCoinsList = response['data']['collectCoins']
@@ -112,10 +121,10 @@ def autoCollectCoins():
 
 def getCookie():
     Logger.v('尝试自动更新网易星球cookie')
-    data='{"p":"SAmsdBV+moUeDdvBbRUuAc/ShOCiz6IKgs9epb6qLwBgUF7Cp9EVZhjfzpzcr4WpiWsUR8j6apiqvV6sHwGXulwTpSp/pSxFTg5IGdgCxixujZjrjphEGg8fBkaL7yf+tF/Y+WbRB9Er3wr9KvyEmsrMLuuD0KJLpLjnauZWiOMj67t/kfaSrD2Wp6t8vLOmYXktBZ3eM9jkWDQIVAwCytT041htoSg4Jr1Gd2dll/oGO32PvhtzF7gRT5foKQqEc1vK7F23+mQQmpzx1v3LVYQCLKodFix+r8S1X4T0UTtuvCwLGZSh5UIlBF5Vbory2SUasZAcFHSMG3hUsVpfNpzY6bj+lERh+ZcYlw4r9+do+1Pg8u903SFmvL4dlfYXnq+DVc8YTgExt0TROQMfpw==","k":"b4h+FNm0kIztyRd25ADGo8tGQMufNy+WW3Kuf4/kI3cIvCQ9jx/DFu9iWVm6w/qVQufzVDo9ULepwHhfymGhkUGbt8Bype6LE0UyW0j4icz0ttV2UdWxWl3UymL9+A3hJgiqs77bfBO8B+jgKe+elBjfTq4f4zKpeKdtAwxEEZo="}'
+    data='{"p":"WObwO2HPjFkkaaEjWgRG1EHmrIP/SOaQT+GMoThH609UM47CRGDYhD4YKQ5p6Gy4PvmcJwPszmWv8S/NerKjNI7ELqmlu5IlnxqGhyPjIHxe6LVMKe4EbJD2da8vRaR/E9Wrxqvrto6qCZsDDjWoH4Ul7Uqg/YP9gCmFJE2lnYmqNxLaRZ4s6i7m3EEt8Ew2vIc85P3XGVTT3hwV4ZMNylket04jcCCEXWJM5zZMJL2Y9Jg+TFu71C0vFMDu637L2ruD2zALKxs4tGdHC9EtT3e5Miwq+0GaJd+v0xL5bGInKW8QOSrQzrQOENeYRO7NF80xtlLu9bmyYtqpr6wS835BUxrn3hn6MV4EtR6NNNI\u003d","k":"Zoqzg9mEAOr3bo6N/Qp5T8+mBUZB5mv7iUzon1J0VcyvWAmCVWOh3/x6FCHNo/qIjV5qlTFnWJL7Fw8zynmevfGTdsIGmzrAD8QAQ5SySNJHujWvpQo51eEk4d5EyI/WWaGrUqx2VzswCQikqEER/UcG4Qo8A053HP8zHkVYu70\u003d"}'
     headers={
         'user-agent':	'Mozilla/5.0 (Linux; Android 8.1.0; Mi Note 3 Build/OPM1.171019.019; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.112 Mobile Safari/537.36',
-        'appmeta':	'eyJhcHBWZXJzaW9uIjoiMS45LjMiLCJPUyI6IkFuZHJvaWRfMjciLCJhcHBOYW1lIjoi5pif55CDIiwiY2hhbm5lbCI6ImUwMTE3MDAwNCIsImFudGlTcGFtSW5mbyI6IntcImRhdGF0eXBlXCI6XCJhaW10X2RhdGFzXCIsXCJpZF92ZXJcIjpcIkFuZHJvaWRfMS4wLjFcIixcInJkYXRhXCI6XCI5N0NhV1NwbHdQSDBFS1NZYStUMGM0anRZQ05Fc0pEMHpCUm1LWXUyMVdBeDBnMlVpZWJSRndaVzhMSzhLRnM5a1B3UFBnRTc3VzcrYWRXWmliYnVvSURCTHp6NlRwdWtkazBzL3ozcTlWVWFSbUlBZ1lsRHNNT3U3U0dENXlZQXYzZ1V0R0RINVRoVUsrZlJZdXB4V2pycHpxVjFmejd2WDU3cGhibkQ0eU9BdEkrMkZtbHdkV3J0WGU3Ynpya2dzcTUxY0FkRzl5OTNJc3VHR2EvcnAxdXQxOVFxUUVYQWNzcjJqT3B4bmM3T2ZEK1VGN2J3YlhZaFlqKzV3MXFON3I1SG5KYVdURmF5WGhPK0pxUlZhbys5YVNIOGhnczlUZlRiRDBvb2pDZ2FlcGNMTXhVMmRRT0NISlhDMGRuNzA2TmRKVTZvVjYxYnlOeG5xL1l2cWFqcVdhZFd5Yk8yQm5tQWxPNUtONk16OG5OVVhFZXpQQ3FwYVYyTS90RzdpNWNidDJwbWpickFBSjRhdW84TGFjMVNiM1VhcWJWSldRdllkNkxhbFVkdW9NRmloRHF3cUprNEdpaGRxazNvOE5LbWtzaFJxY050SEFUNW5DakhyOWdzbE10QXV2U0loUEZZQTQ1NGJJeThWKzM0ZXJKSHNTTk9UOGZsR1l1UUVHaG5uQVVidE81Q2plU1RMdjJkMTF1NFJGZDV2S0w5UythZzNqQkVRWFpKRkxXcjZZSEgxQmFsUlFZWk44bm5vQTltTHBLQ2hwVlRzWnpuejNPSVRSMFFHRUdiY1RHQWNzZ29vVjNhU01aN0RMeG5QdVNaRjIxSkd1elEzNnVUXCIsXCJya1wiOlwidkFBWWUrT29uZTA1ejJCb2J1MW93WHVFdllpbEtsOHAwRlNXTzBBcjlydFJoUXhiZ0ZzWE82L3FQbWp5V2NXeVM0bWVHdkM5T2toOXRhZCtCTlg5UmYrb25yVEVXOTNtL1JtMFc2UERYZUowbnRsUDEzaE1nTW9IZmlycmwrRjh6c0lDTzBacDRUd21wWVpGYkFVL25kSGpPclJBcFdkN0ZoUWtkVXRPQ0gwXHUwMDNkXCJ9XG4iLCJtb2RlbCI6Ik1pIE5vdGUgMyIsInBhY2thZ2VOYW1lIjoiY29tLm5ldGVhc2UuYmxvY2tjaGFpbiIsImFwcFZlcnNpb25Db2RlIjoiMjY5IiwibWFudWZhY3R1cmVyIjoiWGlhb21pIn0=',
+        'appmeta':	'eyJhcHBWZXJzaW9uIjoiMS45LjYiLCJPUyI6IkFuZHJvaWRfMjkiLCJhcHBOYW1lIjoi5pif55CDIiwiY2hhbm5lbCI6ImUwMTE3MDAwNCIsImFudGlTcGFtSW5mbyI6IntcImRhdGF0eXBlXCI6XCJhaW10X2RhdGFzXCIsXCJpZF92ZXJcIjpcIkFuZHJvaWRfMS4wLjFcIixcInJkYXRhXCI6XCJqSkRHLzhFNmtWb0lZRjJ0UXJCajdBVHlHaFEvYVhON3RtdU9mUW16ek5SeUdyT2JPQVBLU0lwZUFpdFQwbXFaYURxcWtKck5GSmtmQmpaY3ZwZklGSjlmV1NaYThnVVBvaWhhZzVtSndTVXBvTkEwZWtqT0EwbVRKSEw0ZFZ2enBUd0RZT0FjU05oNThHWG9NaFVwOXVuODl1TGh1YytRS1gzWU41R1hxNW43bWR2aXVJRklhTVlGUzdoSXVnWFF5d3lZSFh2OXp1VEM0WG1mVzUvVHNIRUYwVlltd0hlNjY1SGxVaFZUdzhxaU4xRWU1ZmhoWG9xSC9MTm9ncTRVWk1TeFdkT3RacnFkOXB3SGN2bmZPazZ0TDdwUUhBV096L3VVNnk2VldVV2RCQjlwQUZRUUpIV3d6TGliVEpiOHpmS1ozb0VUOEIyTXU2enhBdUpMSTNIS1U5UEZzb2JhcUNXV2l3R1RKOFNmN1ZsekpWb0hvTkpreHMvSGU4ODdWMHRobFRXdzRzblBwT1B3SGtPdlN2Y3AvUzFVUEh5c1EyZmx1aEpGelV0S0F3dmJNL2IvbEpKcUM3ZVloeVdKN0VRQjRZS3lYVU5IQ2wwQmhHV2hEN04zb3p4Wm1yYkxXMjFZMEtaNTZSakw1YW8vd1ZIV0huTzQveGtDaUVZY3h5eW1DU2JXLzhEOTNYU2ZReVFMcXJDMGRKd1NGRTZHR1ByU3FucmlRcC93Z0dYT2lOWWhlTWlQZ2pubXV2eXFKOTRPSVZGYStTZTRuL3RJeVhaQlhRXHUwMDNkXHUwMDNkXCIsXCJya1wiOlwicDQ4U1AxankwY2RlWm4zYlFnSWJ0STBBa3IxQjVnU2c2NDlGWU5KNjR4YWRPSDZnNWxhS0NFQU9FSk5LZ25EZVNGMFUyNTI4NlhuZnJ5b3hyT2l6cVZQM1U5Ui9xcUxXakRUSnRJV3dXVjBiQnQwMFRpeG84dDZuQWJIaU5HaTBRL2lvQjRoQTdTaWhrMzB6NXVlN2VuMVYvNXZKajhZTWppa1FWcVcyM3lBXHUwMDNkXCJ9XG4iLCJtb2RlbCI6IlRBUy1BTjAwIiwicGFja2FnZU5hbWUiOiJjb20ubmV0ZWFzZS5ibG9ja2NoYWluIiwiYXBwVmVyc2lvbkNvZGUiOiIyNzkiLCJtYW51ZmFjdHVyZXIiOiJIVUFXRUkifQ==',
         'content-type':	'application/json; charset=utf-8',
         'content-length':	'610',
         'accept-encoding':	'gzip'
@@ -130,7 +139,7 @@ def getCookie():
     if not newCookie is None:
         global cookie
         cookie = newCookie
-        Logger.v('已自动更新网易星球cookie')
+        Logger.v('已自动更新网易星球cookie:'+cookie)
     
 
 if __name__ == "__main__":
