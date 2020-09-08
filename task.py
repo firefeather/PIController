@@ -240,7 +240,7 @@ def startTasks():
     #     _addAutoTempControlJob()
     _addTempWatcherJob()
     _addNetListenerJob()
-    _addWeatherWatcherJob()
+    # _addWeatherWatcherJob()
 
     _addClearLogJob()
     # _addMiDakaJob()
@@ -249,7 +249,7 @@ def startTasks():
     # _addMiZhongchouJob()
     _addBaiduJob()
     _addTouTiaoJob()
-    _addTouTiaoJob2()
+    # _addTouTiaoJob2()
     # _addSmallTargetJob()
 
     scheduler.start()
