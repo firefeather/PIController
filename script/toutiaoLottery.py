@@ -161,7 +161,7 @@ def autoLottery():
     global COOKIE
     for cookie in cookies:
         COOKIE = cookie
-        Logger.v('今日头条全民抽奖用户抽奖:' + COOKIE[0,10])
+        Logger.v('今日头条全民抽奖用户抽奖:' + COOKIE[0:15])
         autoUserLottery()
 
 
