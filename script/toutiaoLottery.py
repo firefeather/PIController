@@ -267,7 +267,5 @@ def _configAdress(no):
         Logger.e('今日头条全民抽奖填写地址:' + no + '失败:', response['Msg'])
         return False
 
-    print(response)
-   
 if __name__ == "__main__":
     autoLottery()
