@@ -136,7 +136,7 @@ def getSmallLotteryList():
                        lotteryList)) or []
             if len(unJoinList) == 0:
                 Logger.e('今日头条全民小抽奖', '没有未参加的小抽奖项目')
-            return
+                return
             successCount = 0
             for item in unJoinList:
                 result = joinLotery(item['ActivityNo'])
