@@ -18,9 +18,12 @@ def sendTemplateSMS(toNumber,text):
             template_id, params, sign=sign, extend="", ext="")
         if sendResult['result']!=0:
             Logger.e('短信发送失败',sendResult['errmsg'])
+            return False
+        return True
         # print('短信发送结果:',sendResult)
     except Exception as e:
         Logger.e('发送短信失败', e)
+        return False
 
 def sendGroupTemplateSMS(toNumbers,text):
     msender = qcloudsms.SmsMultiSender()

@@ -11,12 +11,13 @@ def sendMsg(msgJson):
     result = post(postUrl,json=msgJson)
     if result['errcode']:
        Logger.e('发送微信消息失败',result['errmsg'])
-    return result
+       return False
+    return True
 
 def sendTextMsg(toId,content):
     if content is None or content == '':
        Logger.e('发送微信消息失败',"消息内容为空")
-       return '发送失败'
+       return False
     msgJson = {
               "touser":toId,
               "msgtype":"text",

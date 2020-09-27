@@ -27,7 +27,7 @@ password = emailConfig['password']
 def sendText(receiver,text,title=subject):
     # MIMEText有三个参数，第一个对应文本内容，第二个对应文本的格式，第三个对应文本编码
     thebody = MIMEText(text, 'plain', 'utf-8')
-    loginAndSend(receiver,thebody,title)
+    return loginAndSend(receiver,thebody,title)
 
 def sendFile(receiver,text,filePath,title=subject):
     # 读取xlsx文件作为附件，open()要带参数'rb'，使文件变成二进制格式,从而使'base64'编码产生作用，否则附件打开乱码
@@ -57,9 +57,11 @@ def loginAndSend(receiver,content,title):
     #发送给多人、同时抄送给多人，发送人和抄送人放在同一个列表中
     receiverStr = receiver.split(',') if isinstance(receiver,list) else receiver
     try:
-       smtp.sendmail(username, receiverStr, msgroot.as_string())
+      result = smtp.sendmail(username, receiverStr, msgroot.as_string())
+      return True if result == {} else False
     except Exception as e:
         Logger.e('发送邮件失败', e)
+        return False
     finally:
       smtp.quit()
 
