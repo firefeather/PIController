@@ -174,8 +174,6 @@ def autoLottery():
         COOKIE = cookie
         Logger.v('今日头条全民抽奖用户抽奖:' + COOKIE[0:15])
         autoUserLottery()
-        break
-
 
 def autoUserLottery():
     getWinList()
