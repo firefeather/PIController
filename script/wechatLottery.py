@@ -7,11 +7,18 @@ from script.wechatLottery2 import joinWechatLottery2
 from script.wechatLottery3 import joinWechatLottery3
 
 HOST = 'https://lucky.nocode.com/v2/lottery/'
-SESSION_ID = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MDcwNjYzODEsImlhdCI6MTYwMjQ5OTU5MiwiZXhwIjoxNjAzMTA0MzkyfQ.osH0aBIiprbrEmAqk7aZDskso0Mf-8HL1n3zdlpbEgg'
+SESSION_IDS = [
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MDcwNjYzODEsImlhdCI6MTYwMjQ5OTU5MiwiZXhwIjoxNjAzMTA0MzkyfQ.osH0aBIiprbrEmAqk7aZDskso0Mf-8HL1n3zdlpbEgg',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMzM4MDczNTIsImlhdCI6MTYwMjUxMzQzMCwiZXhwIjoxNjAzMTE4MjMwfQ.J8AOaT-DKVZ4XuG13B5tQH6VcSVLu9OIRZtZzbnsouk'
+]
+
+global SESSION_ID
+SESSION_ID = ''
 
 
 def getHeaders():
     timestamp = time.time() * 1000
+    global SESSION_ID
     return {
         'Host':
         'lucky.nocode.com',
@@ -53,12 +60,12 @@ def getLotteryListAndJoin():
     response = get(api, headers=getHeaders(), verify=False)
     pubicList = response['public']
     if pubicList is None:
-        Logger.e('微信抽奖助手抽奖失败','未获取到大抽奖列表')
+        Logger.e('微信抽奖助手抽奖失败', '未获取到大抽奖列表')
     else:
         joinLoterryOneByOne(pubicList)
     squareList = response['square']
     if squareList is None:
-        Logger.e('微信抽奖助手抽奖失败','未获取到小抽奖列表')
+        Logger.e('微信抽奖助手抽奖失败', '未获取到小抽奖列表')
     else:
         joinLoterryOneByOne(squareList)
     next = response['links']['next']
@@ -75,10 +82,10 @@ def getMoreAndJoin(next):
     response = get(api, headers=getHeaders(), verify=False)
     squareList = response.get('square')
     if squareList is None:
-        Logger.e('微信抽奖助手抽奖失败','未获取到小抽奖列表')
+        Logger.e('微信抽奖助手抽奖失败', '未获取到小抽奖列表')
     else:
         joinLoterryOneByOne(squareList)
-    next = response.get('links',{}).get('next')
+    next = response.get('links', {}).get('next')
     if not next is None:
         getMoreAndJoin(next)
 
@@ -96,23 +103,45 @@ def joinLoterryOneByOne(lotteryList):
                 if joinLotery(item['id']):
                     joinedCount += 1
 
+
 def joinLotery(productId):
     api = HOST + productId + '/join'
     data = '{"form_id":"subscribe_message","subscribe_message":["join_lottery"]}'
     response = post(api, headers=getHeaders(), data=data, verify=False)
     result = response.get('result')
     if result is None:
-       Logger.e('微信抽奖助手抽奖'+productId+'失败', response.get('error',{}).get('message'))
-       return False
+        Logger.e('微信抽奖助手抽奖' + productId + '失败',
+                 response.get('error', {}).get('message'))
+        return False
     else:
-       return result
+        return result
+
+
+def joinWechatLottery1():
+    global SESSION_ID
+    for session in SESSION_IDS:
+        SESSION_ID = session
+        Logger.v('微信抽奖助手抽奖开始:' + session)
+        getLotteryListAndJoin()
+
 
 def joinWechatLottery():
-    getLotteryListAndJoin()
-    time.sleep(10)
-    joinWechatLottery2()
-    time.sleep(10)
-    joinWechatLottery3()
+    try:
+        joinWechatLottery1()
+        time.sleep(10)
+    except Exception as e:
+        Logger.e('微信抽奖第一个失败', e)
+    try:
+        joinWechatLottery2()
+        time.sleep(10)
+    except Exception as e:
+        Logger.e('微信抽奖第二个失败', e)
+    try:
+        joinWechatLottery3()
+        time.sleep(10)
+    except Exception as e:
+        Logger.e('微信抽奖第三个失败', e)
+
 
 if __name__ == "__main__":
     joinWechatLottery()

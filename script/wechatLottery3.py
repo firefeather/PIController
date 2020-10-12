@@ -6,7 +6,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HOST = 'https://api-xcx.qunsou.co/xcx/lotto/'
 
-TOKEN = 'fcd578398b3d4000bbdbbf9ef0db733f'
+TOKENS = [
+    'fcd578398b3d4000bbdbbf9ef0db733f', 'b20efed575204292a83d412f4e70034f'
+]
+global TOKEN
+TOKEN = ''
+
 
 def getHeaders():
     return {
@@ -32,7 +37,8 @@ joinedCount = 0
 
 
 def getBigLotteryListAndJoin():
-    api = HOST + 'v2/sponsor/daily?access_token='+TOKEN+'&from=1'
+    global TOKEN
+    api = HOST + 'v2/sponsor/daily?access_token=' + TOKEN + '&from=1'
     response = get(api, headers=getHeaders(), verify=False)
     lotteryList = response.get('data', {}).get('lotto')
     if lotteryList is None:
@@ -43,7 +49,8 @@ def getBigLotteryListAndJoin():
 
 def getSmallLotteryListAndJoin(page=1):
     Logger.v('微信抽奖工具小抽奖获取第{}页'.format(page))
-    api = HOST + 'v1/self/list?access_token='+TOKEN+'&page={}'.format(page)
+    global TOKEN
+    api = HOST + 'v1/self/list?access_token=' + TOKEN + '&page={}'.format(page)
     response = get(api, headers=getHeaders(), verify=False)
     lotteryList = response.get('data')
     if lotteryList is None:
@@ -51,7 +58,7 @@ def getSmallLotteryListAndJoin(page=1):
     else:
         if len(lotteryList) != 0:
             joinLoterryOneByOne(lotteryList)
-            getSmallLotteryListAndJoin(page+1)
+            getSmallLotteryListAndJoin(page + 1)
 
 
 def joinLoterryOneByOne(lotteryList):
@@ -66,27 +73,32 @@ def joinLoterryOneByOne(lotteryList):
             if joinLotery(item['lid']):
                 joinedCount += 1
 
+
 def joinLotery(productId):
     api = HOST + 'v4/join'
-    data ='{"lid": "'+productId+'","access_token":"'+TOKEN+'","join": 1,"join_token": "","more": 1}'
+    global TOKEN
+    data = '{"lid": "' + productId + '","access_token":"' + TOKEN + '","join": 1,"join_token": "","more": 1}'
     # data ={"lid": productId,"access_token":TOKEN,"join": 1,"join_token": "","more": 1}
     response = post(api, headers=getHeaders(), data=data, verify=False)
-    result = response.get('msg','error')
-    if result  == '':
+    result = response.get('msg', 'error')
+    if result == '':
         return True
     else:
-        Logger.e('微信抽奖工具抽奖' + productId + '失败',
-                 result)
+        Logger.e('微信抽奖工具抽奖' + productId + '失败', result)
         return False
 
 
 def joinWechatLottery3():
-    getBigLotteryListAndJoin()
-    time.sleep(5)
-    getSmallLotteryListAndJoin()
-    global joinedCount
-    Logger.v('微信抽奖工具抽奖完毕:共成功参与{}次抽奖'.format(joinedCount))
-    joinedCount = 0
+    global TOKEN
+    for token in TOKENS:
+        TOKEN = token
+        Logger.v('微信抽奖工具抽奖开始:' + token)
+        getBigLotteryListAndJoin()
+        time.sleep(5)
+        getSmallLotteryListAndJoin()
+        global joinedCount
+        Logger.v('微信抽奖工具' + TOKEN + '抽奖完毕:共成功参与{}次抽奖'.format(joinedCount))
+        joinedCount = 0
 
 
 if __name__ == "__main__":

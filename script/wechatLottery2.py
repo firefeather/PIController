@@ -5,10 +5,15 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HOST = 'https://api-hdcj.9w9.com/v5/'
-USER_INFO = {
+USER_INFOS = [{
     'uid': '5WQHFMZ',
     'token': '0365e6e32dccb1b8bcbfce935ca10b33',
-}
+}, {
+    'uid': 'ZAUJR29',
+    'token': '410c703c1e597f92726b91923698c3ff',
+}]
+global USER_INFO
+USER_INFO = {}
 
 
 def getHeaders():
@@ -53,6 +58,7 @@ def getBigLotteryListAndJoin():
     else:
         joinLoterryOneByOne(lotteryList)
 
+
 def getSmallLotteryListAndJoin():
     api = HOST + 'index?gzh_number=&type=1'
     response = get(api, headers=getHeaders(), verify=False)
@@ -62,9 +68,11 @@ def getSmallLotteryListAndJoin():
     else:
         joinLoterryOneByOne(lotteryList)
 
+
 def joinLoterryOneByOne(lotteryList):
     unJoinList = list(
-        filter(lambda lottery: lottery.get('joinStatus',True) != True, lotteryList)) or []
+        filter(lambda lottery: lottery.get('joinStatus', True) != True,
+               lotteryList)) or []
     if len(unJoinList) != 0:
         global joinedCount
         for item in unJoinList:
@@ -73,11 +81,12 @@ def joinLoterryOneByOne(lotteryList):
             if joinLotery(item['id']):
                 joinedCount += 1
 
+
 def joinLotery(productId):
-    api = HOST +'lotteries/'+ productId + '/join'
+    api = HOST + 'lotteries/' + productId + '/join'
     data = '{"template": "lGOfpVZAzg5VaoX761nwQAmtQ94-UssmZ4ARrnUXegY"}'
     response = post(api, headers=getHeaders(), data=data, verify=False)
-    result = response.get('success',False)
+    result = response.get('success', False)
     if result:
         return result
     else:
@@ -87,12 +96,18 @@ def joinLotery(productId):
 
 
 def joinWechatLottery2():
-    getBigLotteryListAndJoin()
-    time.sleep(5)
-    getSmallLotteryListAndJoin()
-    global joinedCount
-    Logger.v('微信活动抽奖抽奖完毕:共成功参与{}次抽奖'.format(joinedCount))
-    joinedCount = 0
+    global USER_INFO
+    for user in USER_INFOS:
+        USER_INFO = user
+        Logger.v('微信活动抽奖抽奖开始:' + user['uid'])
+        getBigLotteryListAndJoin()
+        time.sleep(5)
+        getSmallLotteryListAndJoin()
+        global joinedCount
+        Logger.v('微信活动抽奖' + user['uid'] +
+                 '抽奖完毕:共成功参与{}次抽奖'.format(joinedCount))
+        joinedCount = 0
+
 
 if __name__ == "__main__":
     joinWechatLottery2()
