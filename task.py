@@ -15,6 +15,7 @@ from tools.tempWatcher import watchTemp
 from script.baiduDog import autoCollect
 from script.toutiaoLottery import autoLottery
 from script.toutiaoLottery2 import autoJoinLottery
+from script.wechatLottery import joinWechatLottery
 from phone.target.target import autoFollow
 
 config = getGeneralConfig()
@@ -94,6 +95,13 @@ def _startToutiaoLottery2(fromUser=False):  #头条人人抽奖
         scheduler.remove_job(job_ids['_startToutiaoLottery2'])
         _addTouTiaoJob2()
 
+def _startWechatLottery(fromUser=False):  #微信各种小程序抽奖
+    Logger.v('开始执行微信抽奖')
+    joinWechatLottery()
+    if not fromUser:
+        scheduler.remove_job(job_ids['_startWechatLottery'])
+        _addWechatJob()
+
 def _startMiZhongchou(fromUser=False):  #发送小米众筹产品信息
     Logger.v('开始获取小米众筹产品信息并发送')
     info = getGoodList()
@@ -148,6 +156,15 @@ def _addTouTiaoJob2():
         second=random.randint(0, 59)  #每天8-23点随机时刻参与头条抽奖
     ).id
 
+def _addWechatJob():
+    job_ids['_startWechatLottery'] = scheduler.add_job(
+        func=_startWechatLottery,
+        trigger='cron',
+        day_of_week='0-6',
+        hour=random.randint(8, 23),
+        minute=random.randint(0, 59),
+        second=random.randint(0, 59)  #每天8-22点随机时刻参与微信抽奖
+    ).id
 
 def _addMiDakaJob():
     job_ids['_startMiDaka'] = scheduler.add_job(
