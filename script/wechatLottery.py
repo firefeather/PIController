@@ -3,6 +3,8 @@ from fetch import post, get
 from logger import Logger
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+from script.wechatLottery2 import joinWechatLottery2
+from script.wechatLottery3 import joinWechatLottery3
 
 HOST = 'https://lucky.nocode.com/v2/lottery/'
 SESSION_ID = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MDcwNjYzODEsImlhdCI6MTYwMjQ5OTU5MiwiZXhwIjoxNjAzMTA0MzkyfQ.osH0aBIiprbrEmAqk7aZDskso0Mf-8HL1n3zdlpbEgg'
@@ -50,9 +52,15 @@ def getLotteryListAndJoin():
     api = HOST + 'public'
     response = get(api, headers=getHeaders(), verify=False)
     pubicList = response['public']
-    joinLoterryOneByOne(pubicList)
+    if pubicList is None:
+        Logger.e('微信抽奖助手抽奖失败','未获取到大抽奖列表')
+    else:
+        joinLoterryOneByOne(pubicList)
     squareList = response['square']
-    joinLoterryOneByOne(squareList)
+    if squareList is None:
+        Logger.e('微信抽奖助手抽奖失败','未获取到小抽奖列表')
+    else:
+        joinLoterryOneByOne(squareList)
     next = response['links']['next']
     if not next is None:
         getMoreAndJoin(next)
@@ -65,8 +73,11 @@ def getMoreAndJoin(next):
     Logger.v('微信抽奖助手获取下一页:' + next)
     api = HOST.replace('lottery/', next)
     response = get(api, headers=getHeaders(), verify=False)
-    squareList = response['square']
-    joinLoterryOneByOne(squareList)
+    squareList = response.get('square')
+    if squareList is None:
+        Logger.e('微信抽奖助手抽奖失败','未获取到小抽奖列表')
+    else:
+        joinLoterryOneByOne(squareList)
     next = response.get('links',{}).get('next')
     if not next is None:
         getMoreAndJoin(next)
@@ -84,8 +95,6 @@ def joinLoterryOneByOne(lotteryList):
                 id = item['id']
                 if joinLotery(item['id']):
                     joinedCount += 1
-                else:
-                    Logger.e('微信抽奖助手抽奖'+id+'失败', '未知原因')
 
 def joinLotery(productId):
     api = HOST + productId + '/join'
@@ -100,7 +109,10 @@ def joinLotery(productId):
 
 def joinWechatLottery():
     getLotteryListAndJoin()
-
+    time.sleep(10)
+    joinWechatLottery2()
+    time.sleep(10)
+    joinWechatLottery3()
 
 if __name__ == "__main__":
     joinWechatLottery()

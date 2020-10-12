@@ -14,7 +14,6 @@ from tools.netCheck import isNetOK
 from tools.tempWatcher import watchTemp
 from script.baiduDog import autoCollect
 from script.toutiaoLottery import autoLottery
-from script.toutiaoLottery2 import autoJoinLottery
 from script.wechatLottery import joinWechatLottery
 from phone.target.target import autoFollow
 
@@ -88,13 +87,6 @@ def _startToutiaoLottery(fromUser=False):  #头条全民抽奖
         scheduler.remove_job(job_ids['_startToutiaoLottery'])
         _addTouTiaoJob()
 
-def _startToutiaoLottery2(fromUser=False):  #头条人人抽奖
-    Logger.v('开始执行头条人人抽奖')
-    autoJoinLottery()
-    if not fromUser:
-        scheduler.remove_job(job_ids['_startToutiaoLottery2'])
-        _addTouTiaoJob2()
-
 def _startWechatLottery(fromUser=False):  #微信各种小程序抽奖
     Logger.v('开始执行微信抽奖')
     joinWechatLottery()
@@ -142,16 +134,6 @@ def _addTouTiaoJob():
         trigger='cron',
         day_of_week='0-6',
         hour=random.randint(10, 22),
-        minute=random.randint(0, 59),
-        second=random.randint(0, 59)  #每天8-23点随机时刻参与头条抽奖
-    ).id
-
-def _addTouTiaoJob2():
-    job_ids['_startToutiaoLottery2'] = scheduler.add_job(
-        func=_startToutiaoLottery2,
-        trigger='cron',
-        day_of_week='0-6',
-        hour=random.randint(8, 23),
         minute=random.randint(0, 59),
         second=random.randint(0, 59)  #每天8-23点随机时刻参与头条抽奖
     ).id
@@ -266,9 +248,9 @@ def startTasks():
     # _addMiZhongchouJob()
     _addBaiduJob()
     _addTouTiaoJob()
-    # _addTouTiaoJob2()
     # _addSmallTargetJob()
-
+    _addWechatJob()
+    
     scheduler.start()
 
 
