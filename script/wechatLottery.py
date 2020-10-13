@@ -4,7 +4,6 @@ from logger import Logger
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from script.wechatLottery2 import joinWechatLottery2
-from script.wechatLottery3 import joinWechatLottery3
 
 HOST = 'https://lucky.nocode.com/v2/lottery/'
 SESSION_IDS = [
@@ -136,11 +135,6 @@ def joinWechatLottery():
         time.sleep(10)
     except Exception as e:
         Logger.e('微信抽奖第二个失败', e)
-    try:
-        joinWechatLottery3()
-        time.sleep(10)
-    except Exception as e:
-        Logger.e('微信抽奖第三个失败', e)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HOST = 'https://api-xcx.qunsou.co/xcx/lotto/'
 
 TOKENS = [
-    'fcd578398b3d4000bbdbbf9ef0db733f', 'b20efed575204292a83d412f4e70034f'
+    'bb9485911de24c21b2bee53157c8539a', 'b20efed575204292a83d412f4e70034f'
 ]
 global TOKEN
 TOKEN = ''
