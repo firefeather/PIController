@@ -106,8 +106,8 @@ def executCommand(command, user):
     elif command.Name == ALL_COMANDS[19].Name:  #重启控制器
         threading.Thread(
             target=_executeShell,
-            args=(user, 'sudo git pull && sudo /home/pi/Codes/AutoRun/startPiController.sh')).start()
-        result = '正在重启控制器'
+            args=(user, 'cd /home/pi/Codes/Blinker/blinker-pi && sudo git pull && sudo /home/pi/Codes/AutoRun/startBlinkerPi.sh')).start()
+        result = '正在重启Blinker'
     elif command.Name == ALL_COMANDS[20].Name:  #小米众筹
         result = sendResultLater(user, getGoodList)
     elif command.Name == ALL_COMANDS[21].Name:  #设备信息
